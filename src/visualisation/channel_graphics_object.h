@@ -17,7 +17,7 @@ class ChannelGraphicsObject : public BaseGraphicsObject
     Q_OBJECT
     Q_PROPERTY (int height READ height WRITE setHeight)
 public:
-    explicit ChannelGraphicsObject (QString const& signal, int channel,
+    explicit ChannelGraphicsObject (SignalTypeFlag signal, int channel,
                                     int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
                                     QSharedPointer<SignalViewSettings> view_settings,
                                     QGraphicsItem *parent = 0);
@@ -33,7 +33,7 @@ public Q_SLOTS:
 private:
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    QString const signal_;
+    SignalTypeFlag const signal_;
     int channel_;
     int sampling_rate_;
     QSharedPointer<DataBuffer const> data_buffer_;

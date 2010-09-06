@@ -1,6 +1,8 @@
 #ifndef SIGNAL_INFO_DOCK_WIDGET_H
 #define SIGNAL_INFO_DOCK_WIDGET_H
 
+#include "base/user_types.h"
+
 #include "config/ss_meta_info.h"
 
 #include <QDockWidget>
@@ -28,8 +30,8 @@ public:
     void setSignalInfo (SignalInfo const& signal_info);
 
 Q_SIGNALS:
-    void signalVisibilityChanged (QString const& signal, bool visibility);
-    void signalChannelFTEnabledChanged (QString const& signal, int channel, bool enabled);
+    void signalVisibilityChanged (SignalTypeFlag signal, bool visibility);
+    void signalChannelFTEnabledChanged (SignalTypeFlag signal, int channel, bool enabled);
 
 private Q_SLOTS:
     void on_signalTree_itemChanged (QTreeWidgetItem* item, int column);

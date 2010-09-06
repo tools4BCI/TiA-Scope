@@ -25,9 +25,10 @@ FourierTransformThread::FourierTransformThread (QSharedPointer<DataBuffer const>
 }
 
 //-------------------------------------------------------------------------------------------------
-void FourierTransformThread::enableFT (QString const& signal, int channel, bool enabled)
+void FourierTransformThread::enableFT (SignalTypeFlag signal, int channel, bool enabled)
 {
     ft_enabled_[signal][channel] = enabled;
+    Q_EMIT FTEnabledChanged (signal, channel, enabled);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ void FourierTransformThread::run ()
 
     while (running_)
     {
-        Q_FOREACH (QString signal, ft_enabled_.keys())
+        Q_FOREACH (SignalTypeFlag signal, ft_enabled_.keys())
         {
             Q_FOREACH (int channel, ft_enabled_[signal].keys())
             {
@@ -61,7 +62,7 @@ void FourierTransformThread::run ()
 
 
 //-------------------------------------------------------------------------------------------------
-void FourierTransformThread::calculateAndEmitFT (QString const& signal, int channel)
+void FourierTransformThread::calculateAndEmitFT (SignalTypeFlag signal, int channel)
 {
     int sample_rate = data_buffer_->sampleRate (signal);
     int buffer_limit = data_buffer_->getSampleLimit (signal);

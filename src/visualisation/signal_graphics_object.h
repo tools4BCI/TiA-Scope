@@ -18,6 +18,7 @@ namespace tobiss { namespace scope {
 class ChannelGraphicsObject;
 class FrequencySpectrumGraphicsObject;
 class BaseGraphicsObject;
+class AperiodicDataGraphicsObject;
 
 //-------------------------------------------------------------------------------------------------
 class SignalGraphicsObject : public QGraphicsObject
@@ -33,13 +34,16 @@ public:
 
     virtual QRectF boundingRect() const;
     int height () const {return height_;}
-    int defaultHeight () const {return 200 * channels_.size();}
+    int defaultHeight () const {if (aperiodic_signal_) return 200; else return 200 * channels_.size();}
 
 public Q_SLOTS:
     void updateToDataBuffer ();
     void setVisibleTrue () {setVisible (true);}
     void setVisibleFalse () {setVisible (false);}
     void setHeight (int height);
+
+private Q_SLOTS:
+    void ftEnabled (SignalTypeFlag signal, int channel, bool enbaled);
 
 
 private:
@@ -48,10 +52,12 @@ private:
 
 
     int height_;
-    QString signal_type_;
+    int width_;
+    SignalTypeFlag signal_type_;
     QMap<int, ChannelGraphicsObject*> channels_;
     QMap<int, FrequencySpectrumGraphicsObject*> fts_;
     QList<BaseGraphicsObject*> children_;
+    AperiodicDataGraphicsObject* aperiodic_signal_;
 };
 
 } } // namespace

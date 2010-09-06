@@ -12,25 +12,22 @@ class BaseGraphicsObject : public QGraphicsObject
 {
     Q_OBJECT
     Q_PROPERTY (double yScalingFactor READ yScalingFactor WRITE setYScalingFactor)
+    Q_PROPERTY (int width READ width WRITE setWidth)
 public:
     BaseGraphicsObject (QGraphicsItem* parent) : QGraphicsObject (parent), y_scaling_factor_ (1)
     {
-        setFlags (flags() | QGraphicsItem::ItemIsMovable);
+        //setFlags (flags() | QGraphicsItem::ItemIsMovable);
     }
 
     double yScalingFactor () const {return y_scaling_factor_;}
 
+    int width () const {return width_;}
+
 public Q_SLOTS:
     void setYScalingFactor (double factor) {y_scaling_factor_ = factor;}
+    void setWidth (int width) {width_ = width;}
 
 private:
-//    virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event)
-//    {
-//        y_scaling_factor_ *= 1.2;
-//        event->accept();
-//        setPos (pos() + event->pos() - event->lastPos());
-//    }
-
     virtual void wheelEvent (QGraphicsSceneWheelEvent* event)
     {
         if (event->modifiers().testFlag (Qt::ControlModifier))
@@ -46,7 +43,7 @@ private:
     }
 
     double y_scaling_factor_;
-
+    int width_;
 };
 
 } } // namespace

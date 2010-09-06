@@ -2,7 +2,10 @@
 #include "datapacket/data_packet.h"
 #include "signalserver-client/ssconfig.h"
 #include "config/ss_meta_info.h"
-#include "definitions/constants.h"
+#include "base/user_types.h"
+
+#include <QDebug>
+#include <iostream>
 
 namespace tobiss { namespace scope {
 
@@ -30,7 +33,6 @@ void ReaderThread::run ()
     DataPacket packet;
     std::vector<double> data;
     SSConfig config = client_->config();
-    Constants constants;
 
     client_->startReceiving (udp_);
 
@@ -42,30 +44,46 @@ void ReaderThread::run ()
              signal_iter != config.signal_info.signals().end ();
              ++signal_iter)
         {
+            data.clear();
+            SignalTypeFlag signal_flag = TypeConverter::stdStringToSignalTypeFlag (signal_iter->first);
             try
             {
-                data = packet.getSingleDataBlock (constants.getSignalFlag (signal_iter->first));
+                if (packet.getFlags () & signal_flag)
+                    data = packet.getSingleDataBlock (signal_flag);
             }
             catch (...)
             {
+                qDebug () << "getSingleDataBlock Exception for signal" << signal_iter->first.c_str();
                 data.clear();
             }
 
             if (data.size() == 0)
                 continue;
 
-            int blocksize = signal_iter->second.blockSize ();
-            QList<double> list_data;
-            for (int i = 0; i < blocksize; i++)
-                list_data.append (i);
-            for (unsigned channel_index = 0; channel_index < signal_iter->second.channels ().size ();
-                 channel_index++)
+            if ((signal_flag == SIG_BUTTON) ||
+                (signal_flag == SIG_JOYSTICK))
             {
-                for (int sample_index = 0; sample_index < blocksize; sample_index++)
-                    list_data[sample_index] = data[(channel_index * blocksize) + sample_index];
-                data_buffer_->appendData (signal_iter->first.c_str(), channel_index, list_data);
+                QList<double> values;
+                for (int index = 1; index < data.size(); index++)
+                {
+                    values.append (data[index]);
+                }
+                data_buffer_->setAperiodicValues (signal_flag, data[0], values);
             }
-
+            else
+            {
+                int blocksize = signal_iter->second.blockSize ();
+                QList<double> list_data;
+                for (int i = 0; i < blocksize; i++)
+                    list_data.append (i);
+                for (unsigned channel_index = 0; channel_index < signal_iter->second.channels ().size ();
+                     channel_index++)
+                {
+                    for (int sample_index = 0; sample_index < blocksize; sample_index++)
+                        list_data[sample_index] = data[(channel_index * blocksize) + sample_index];
+                    data_buffer_->appendData (signal_flag, channel_index, list_data);
+                }
+            }
         }
     }
     if (client_->receiving ())

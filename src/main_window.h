@@ -34,6 +34,7 @@ public:
 private Q_SLOTS:
     void on_actionConnect_triggered ();
     void on_actionDisconnect_triggered ();
+    void on_actionReceiveData_toggled (bool checked);
 
     void ftThreadFinished ();
     void readerThreadFinished ();

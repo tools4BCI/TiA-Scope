@@ -1,45 +1,8 @@
 #include "button_graphics_object.h"
 
-#include "definitions/defines.h"
-
 #include <QPainter>
-#include <QGraphicsPixmapItem>
-#include <QStyle>
-#include <QWidget>
-#include <QToolButton>
 
 namespace tobiss { namespace scope {
-
-//-------------------------------------------------------------------------------------------------
-ButtonGraphicsObject::ButtonGraphicsObject (QSharedPointer<DataBuffer const> data_buffer, QGraphicsItem *parent) :
-    QGraphicsWidget (parent),
-    data_buffer_ (data_buffer)
-{
-    //QToolButton* bla = new QToolButton (this);
-    //bla->setIcon (style()->standardIcon (QStyle::SP_DialogCloseButton));
-}
-
-//-------------------------------------------------------------------------------------------------
-void ButtonGraphicsObject::updateView ()
-{
-    QList<DeviceID> devices = data_buffer_->getAperiodicDeviceIDs (SIG_BUTTON);
-
-    Q_FOREACH (DeviceID device, devices)
-    {
-        if (device_button_pressed_.contains (device) == false)
-            device_button_pressed_.insert (device, QVector<bool>());
-        QVector<bool>& pressed_vector = device_button_pressed_[device];
-        QList<double> values = data_buffer_->getAperiodicValues (SIG_BUTTON, device);
-        pressed_vector.resize (values.size());
-        for (int index = 0; index < values.size(); index++)
-        {
-            pressed_vector[index] = values[index] > 0;
-        }
-    }
-
-    update ();
-}
-
 
 //-------------------------------------------------------------------------------------------------
 void ButtonGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -47,13 +10,15 @@ void ButtonGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsI
     int X_SPACING = 25;
     int x_pos = 20;
 
-    Q_FOREACH (DeviceID device, device_button_pressed_.keys())
+    Q_FOREACH (DeviceID device, data_.keys())
     {
+        painter->setPen (Qt::black);
+        painter->setBrush (Qt::NoBrush);
         painter->drawText (x_pos, 50, QString ("Device \"").append(QString::number (device)).append("\":"));
-        painter->drawRect (x_pos - (X_SPACING / 2), 40, x_pos + X_SPACING * device_button_pressed_[device].size(), 150);
-        Q_FOREACH (bool button_pressed, device_button_pressed_[device])
+        painter->drawRect (x_pos - (X_SPACING / 2), 40, x_pos + X_SPACING * data_[device].size(), 150);
+        Q_FOREACH (double button_pressed, data_[device])
         {
-            if (button_pressed)
+            if (button_pressed > 0)
                 painter->setPen (Qt::green);
             else
                 painter->setPen (Qt::red);

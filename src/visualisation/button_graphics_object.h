@@ -2,6 +2,7 @@
 #define BUTTON_GRAPHICS_OBJECT_H
 
 #include "base/data_buffer.h"
+#include "aperiodic_data_graphics_object.h"
 
 #include <QSharedPointer>
 #include <QGraphicsWidget>
@@ -9,20 +10,14 @@
 namespace tobiss { namespace scope {
 
 //-------------------------------------------------------------------------------------------------
-class ButtonGraphicsObject : public QGraphicsWidget
+class ButtonGraphicsObject : public AperiodicDataGraphicsObject
 {
     Q_OBJECT
 public:
-    explicit ButtonGraphicsObject (QSharedPointer<DataBuffer const> data_buffer, QGraphicsItem *parent = 0);
-
-    virtual QRectF boundingRect() const {return QRectF(0, 0, 200, 400);}
-public Q_SLOTS:
-    void updateView ();
+    explicit ButtonGraphicsObject (QGraphicsItem *parent) : AperiodicDataGraphicsObject (parent) {}
 
 private:
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
-    QMap<DeviceID, QVector<bool> > device_button_pressed_;
-    QSharedPointer<DataBuffer const> data_buffer_;
 };
 
 } } // namespace

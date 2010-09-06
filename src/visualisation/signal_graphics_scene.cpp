@@ -12,7 +12,7 @@ SignalGraphicsScene::SignalGraphicsScene (QObject *parent) :
 }
 
 //-------------------------------------------------------------------------------------------------
-void SignalGraphicsScene::addSignalGraphicsObject (QString const& signal_name, SignalGraphicsObject* signal)
+void SignalGraphicsScene::addSignalGraphicsObject (SignalTypeFlag signal_name, SignalGraphicsObject* signal)
 {
     int y_pos = 0;
     if (signals_.size() > 0)
@@ -30,7 +30,7 @@ void SignalGraphicsScene::addSignalGraphicsObject (QString const& signal_name, S
 }
 
 //-------------------------------------------------------------------------------------------------
-void SignalGraphicsScene::setSignalVisibility (QString const& signal_name, bool visibility)
+void SignalGraphicsScene::setSignalVisibility (SignalTypeFlag signal_name, bool visibility)
 {
     QRectF scene_rect = sceneRect ();
     SignalGraphicsObject* signal = signal_map_[signal_name];

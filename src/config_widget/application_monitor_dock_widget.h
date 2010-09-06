@@ -3,6 +3,7 @@
 
 #include <QDockWidget>
 #include <QList>
+#include <QMutex>
 
 namespace Ui {
     class ApplicationMonitorDockWidget;
@@ -35,6 +36,7 @@ private Q_SLOTS:
 private:
     static QList<ApplicationMonitorDockWidget*> instances_;
     Ui::ApplicationMonitorDockWidget *ui;
+    static QMutex mutex_;
 };
 
 } } // namespace

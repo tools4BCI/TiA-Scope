@@ -8,6 +8,7 @@ namespace SignalInfoDockWidgetHelper
     const int NAME_COLUMN_INDEX = 0;
     const int SAMPLING_RATE_COLUMN_INDEX = 1;
     const int FT_COLUMN_INDEX = 2;
+    const int SIGNAL_TYPE_COLUMN_INDEX = 3;
 
     //-------------------------------------------------------------------------
     /// adds the given signals as a row to the given tree
@@ -21,6 +22,8 @@ SignalInfoDockWidget::SignalInfoDockWidget (QWidget *parent) :
     initializing_ (false)
 {
     ui->setupUi(this);
+    ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, true);
+    ui->signalTree->setColumnWidth (SignalInfoDockWidgetHelper::FT_COLUMN_INDEX, 20);
 }
 
 //-----------------------------------------------------------------------------
@@ -45,14 +48,14 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
         return;
     if (column == SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX)
     {
-        Q_EMIT signalVisibilityChanged (item->text(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX),
+        Q_EMIT signalVisibilityChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(),
                                         item->checkState(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX) == Qt::Checked);
     }
     else if (column == SignalInfoDockWidgetHelper::FT_COLUMN_INDEX)
     {
         for (int child_index = 0; child_index < item->childCount(); child_index++)
         {
-            Q_EMIT signalChannelFTEnabledChanged (item->text(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX), child_index,
+            Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), child_index,
                                                   item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
         }
     }
@@ -69,6 +72,7 @@ namespace SignalInfoDockWidgetHelper
              ++signal_iter)
         {
             QTreeWidgetItem* signal_item = new QTreeWidgetItem (tree_widget);
+            signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, TypeConverter::stdStringToSignalTypeFlag (signal_iter->first.c_str()));
             signal_item->setText (NAME_COLUMN_INDEX, QString (signal_iter->first.c_str())/*.append (" (").append (QString::number(signal_iter->second.channels ().size ())).append(" channels)")*/);
             signal_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
             signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);

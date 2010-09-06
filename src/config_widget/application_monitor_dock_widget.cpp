@@ -20,6 +20,7 @@ namespace tobiss { namespace scope {
 
 //-------------------------------------------------------------------------------------------------
 QList<ApplicationMonitorDockWidget*> ApplicationMonitorDockWidget::instances_;
+QMutex ApplicationMonitorDockWidget::mutex_;
 
 //-------------------------------------------------------------------------------------------------
 ApplicationMonitorDockWidget::ApplicationMonitorDockWidget (QWidget *parent) :
@@ -58,10 +59,12 @@ void ApplicationMonitorDockWidget::objectDestroyed (QObject* object)
 //-------------------------------------------------------------------------------------------------
 void ApplicationMonitorDockWidget::debugMessaging (QtMsgType type, const char* message)
 {
+    mutex_.lock();
     Q_FOREACH (ApplicationMonitorDockWidget* monitor, instances_)
     {
         monitor->ui->logTextEdit->appendPlainText (message);
     }
+    mutex_.unlock();
 }
 
 

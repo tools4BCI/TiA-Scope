@@ -1,6 +1,8 @@
 #ifndef SIGNAL_GRAPHICS_SCENE_H
 #define SIGNAL_GRAPHICS_SCENE_H
 
+#include "base/user_types.h"
+
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QString>
@@ -19,12 +21,12 @@ public:
     explicit SignalGraphicsScene(QObject *parent = 0);
 
     //---------------------------------------------------------------------------------------------
-    void addSignalGraphicsObject (QString const& signal_name, SignalGraphicsObject* signal);
+    void addSignalGraphicsObject (SignalTypeFlag signal_name, SignalGraphicsObject* signal);
 
 
 public Q_SLOTS:
     //---------------------------------------------------------------------------------------------
-    void setSignalVisibility (QString const& signal, bool visibility);
+    void setSignalVisibility (SignalTypeFlag signal, bool visibility);
 
     //---------------------------------------------------------------------------------------------
     void startTimer (int milli_seconds_interval);
@@ -33,7 +35,7 @@ private:
     QList<SignalGraphicsObject*> signals_;
     QHash<SignalGraphicsObject*, int> signal_list_index_;
     QTimer signals_timer_;
-    QHash<QString, SignalGraphicsObject*> signal_map_;
+    QHash<SignalTypeFlag, SignalGraphicsObject*> signal_map_;
 
 };
 

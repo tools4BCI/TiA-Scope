@@ -102,35 +102,32 @@ void MainWindow::on_actionConnect_triggered ()
         subject_info_widget_->setSubjectInfo (config.subject_info);
         view_settings_widget_->setSignalViewSettings (signal_view_settings);
         QSharedPointer<DataBuffer> data_buffer (new DataBuffer (config.signal_info.signals (), 5));
+        MainWindowHelper::monitorObjectLife (monitor_widget_, data_buffer.data());
 
         ft_thread_ =  new FourierTransformThread (data_buffer, this);
         MainWindowHelper::monitorObjectLife (monitor_widget_, ft_thread_);
-        connect (ft_thread_, SIGNAL(finished()), SLOT(ftThreadFinished()));
 
         graphics_scene_ = new SignalGraphicsScene (this);
         MainWindowHelper::monitorObjectLife (monitor_widget_, graphics_scene_);
-        graphics_scene_->connect (signal_info_widget_, SIGNAL(signalVisibilityChanged(QString,bool)), SLOT(setSignalVisibility(QString,bool)));
-        ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(QString,int,bool)), SLOT(enableFT(QString,int,bool)), Qt::QueuedConnection);
+        graphics_scene_->connect (signal_info_widget_, SIGNAL(signalVisibilityChanged(SignalTypeFlag,bool)), SLOT(setSignalVisibility(SignalTypeFlag,bool)));
+        ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
         for (SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
              signal_iter != config.signal_info.signals().end ();
              ++signal_iter)
         {
             SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
-            graphics_scene_->addSignalGraphicsObject (signal_iter->second.type().c_str(), signal_object);
+            graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
         }
         ui->graphicsView->setScene (graphics_scene_);
         graphics_scene_->startTimer (40);
 
         reader_thread_ = new ReaderThread (data_buffer, client_, connection_dialog.UDPEnabled(), this);
         MainWindowHelper::monitorObjectLife (monitor_widget_, reader_thread_);
-        connect (reader_thread_, SIGNAL(finished()), SLOT(readerThreadFinished()));
-
-        reader_thread_->start ();
-        ft_thread_->start ();
 
         ui->actionConnect->setEnabled (false);
         ui->actionDisconnect->setEnabled (true);
+        ui->actionReceiveData->setEnabled (true);
     }
     catch (std::ios_base::failure &exception)
     {
@@ -142,12 +139,34 @@ void MainWindow::on_actionConnect_triggered ()
 //-----------------------------------------------------------------------------
 void MainWindow::on_actionDisconnect_triggered ()
 {
-    ft_thread_->stop ();
-    reader_thread_->stop ();
+    connect (ft_thread_, SIGNAL(finished()), SLOT(ftThreadFinished()));
+    connect (reader_thread_, SIGNAL(finished()), SLOT(readerThreadFinished()));
+    ui->actionReceiveData->setChecked (false);
+
+    if (ft_thread_->isFinished())
+        ftThreadFinished();
+    if (reader_thread_->isFinished())
+        readerThreadFinished();
     ui->actionConnect->setEnabled (true);
     ui->actionDisconnect->setEnabled (false);
+    ui->actionReceiveData->setEnabled (false);
     delete graphics_scene_;
     graphics_scene_ = 0;
+}
+
+//-------------------------------------------------------------------------------------------------
+void MainWindow::on_actionReceiveData_toggled (bool checked)
+{
+    if (checked)
+    {
+        reader_thread_->start ();
+        ft_thread_->start ();
+    }
+    else
+    {
+        reader_thread_->stop();
+        ft_thread_->stop();
+    }
 }
 
 //-----------------------------------------------------------------------------

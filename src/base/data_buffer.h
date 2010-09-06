@@ -1,9 +1,12 @@
 #ifndef DATA_BUFFER_H
 #define DATA_BUFFER_H
 
+#include "user_types.h"
+
 #include "config/ss_meta_info.h"
 
 #include <QObject>
+#include <QMap>
 #include <QHash>
 #include <QList>
 #include <QString>
@@ -23,35 +26,46 @@ public:
 
     //-------------------------------------------------------------------------
     /// deletes the oldest data if the buffer size is exceeded
-    void appendData (QString const& signal, int channel, QList<double> const& data);
+    void appendData (SignalTypeFlag signal, int channel, QList<double> const& data);
+
+    //-------------------------------------------------------------------------
+    void setAperiodicValues (SignalTypeFlag signal_flag, DeviceID device_id, QList<double> const& data);
+
+    //-------------------------------------------------------------------------
+    QList<DeviceID> getAperiodicDeviceIDs (SignalTypeFlag signal_flag) const;
+
+    //-------------------------------------------------------------------------
+    QList<double> getAperiodicValues (SignalTypeFlag signal_flag, DeviceID device_id) const;
 
     //-------------------------------------------------------------------------
     void lockForRead () const {lock_.lockForRead();}
 
     //-------------------------------------------------------------------------
-    double getData (QString const& signal, int channel, int sample_index) const;
+    double getData (SignalTypeFlag signal, int channel, int sample_index) const;
 
     //-------------------------------------------------------------------------
     /// fill the data_array with the last samples of the given channel
-    void getData (QString const& signal, int channel, QVarLengthArray<double>& data_array) const;
+    void getData (SignalTypeFlag signal, int channel, QVarLengthArray<double>& data_array) const;
 
     //-------------------------------------------------------------------------
-    int numberNewSamples (QString const& signal, int channel) const;
+    int numberNewSamples (SignalTypeFlag signal, int channel) const;
 
     //-------------------------------------------------------------------------
     void unlockForRead () const {lock_.unlock();}
 
     //-------------------------------------------------------------------------
-    int sampleRate (QString const& signal) const;
+    int sampleRate (SignalTypeFlag signal) const;
 
     //-------------------------------------------------------------------------
-    int getSampleLimit (QString const& signal) const;
+    int getSampleLimit (SignalTypeFlag signal) const;
+
 private:
-    QHash<QString, QHash<int, QVector<double> > > data_;
-    QHash<QString, QHash<int, int> > end_index_;
-    mutable QHash<QString, QHash<int, int> > number_new_samples_;
-    QHash<QString, int> sample_limit_;
-    QHash<QString, int> sampling_rate_;
+    QMap<boost::uint32_t, QMap<DeviceID, QList<double> > > aperiodic_data_; // QMap<signal-flag, QMap<device-id, QList-data> >
+    QMap<SignalTypeFlag, QHash<int, QVector<double> > > data_;
+    QMap<SignalTypeFlag, QHash<int, int> > end_index_;
+    mutable QHash<SignalTypeFlag, QHash<int, int> > number_new_samples_;
+    QHash<SignalTypeFlag, int> sample_limit_;
+    QHash<SignalTypeFlag, int> sampling_rate_;
     mutable QReadWriteLock lock_;
 };
 

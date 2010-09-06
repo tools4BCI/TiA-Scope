@@ -11,25 +11,27 @@ namespace tobiss { namespace scope {
 //-----------------------------------------------------------------------------
 DataBuffer::DataBuffer (SignalInfo::SignalMap const& signal_map, int buffer_size_in_seconds)
 {
+    setObjectName ("DataBuffer");
+
     for (SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
          signal_iter != signal_map.end();
          ++signal_iter)
     {
-        QString signal_name (signal_iter->first.c_str());
-        sample_limit_[signal_name] = buffer_size_in_seconds * signal_iter->second.samplingRate ();
-        sampling_rate_[signal_name] = signal_iter->second.samplingRate ();
+        SignalTypeFlag signal_type = TypeConverter::stdStringToSignalTypeFlag (signal_iter->first);
+        sample_limit_[signal_type] = buffer_size_in_seconds * signal_iter->second.samplingRate ();
+        sampling_rate_[signal_type] = signal_iter->second.samplingRate ();
         for (unsigned channel_index = 0; channel_index < signal_iter->second.channels ().size ();
              ++channel_index)
         {
-            data_[signal_name][channel_index] = QVector<double> (sample_limit_[signal_iter->first.c_str()], 0);
-            end_index_[signal_name][channel_index] = 0;
-            number_new_samples_[signal_name][channel_index] = 0;
+            data_[signal_type][channel_index] = QVector<double> (sample_limit_[signal_type], 0);
+            end_index_[signal_type][channel_index] = 0;
+            number_new_samples_[signal_type][channel_index] = 0;
         }
     }
 }
 
 //-----------------------------------------------------------------------------
-void DataBuffer::appendData (QString const& signal, int channel, QList<double> const& data)
+void DataBuffer::appendData (SignalTypeFlag signal, int channel, QList<double> const& data)
 {
     QWriteLocker write_locker (&lock_);
 
@@ -45,8 +47,26 @@ void DataBuffer::appendData (QString const& signal, int channel, QList<double> c
     }
 }
 
+//-------------------------------------------------------------------------
+void DataBuffer::setAperiodicValues (boost::uint32_t signal_flag, boost::uint32_t device_id, QList<double> const& data)
+{
+    aperiodic_data_[signal_flag][device_id] = data;
+}
+
+//-------------------------------------------------------------------------
+QList<DeviceID> DataBuffer::getAperiodicDeviceIDs (boost::uint32_t signal_flag) const
+{
+    return aperiodic_data_[signal_flag].keys ();
+}
+
+//-------------------------------------------------------------------------
+QList<double> DataBuffer::getAperiodicValues (boost::uint32_t signal_flag, DeviceID device_id) const
+{
+    return aperiodic_data_[signal_flag][device_id];
+}
+
 //-----------------------------------------------------------------------------
-double DataBuffer::getData (QString const& signal, int channel, int sample_index) const
+double DataBuffer::getData (SignalTypeFlag signal, int channel, int sample_index) const
 {
     int const limit = sample_limit_[signal];
     int const end_index = end_index_[signal][channel];
@@ -65,7 +85,7 @@ double DataBuffer::getData (QString const& signal, int channel, int sample_index
 }
 
 //-------------------------------------------------------------------------
-void DataBuffer::getData (QString const& signal, int channel, QVarLengthArray<double>& data_array) const
+void DataBuffer::getData (SignalTypeFlag signal, int channel, QVarLengthArray<double>& data_array) const
 {
     int const limit = sample_limit_[signal];
     int const end_index = end_index_[signal][channel];
@@ -87,7 +107,7 @@ void DataBuffer::getData (QString const& signal, int channel, QVarLengthArray<do
 }
 
 //-------------------------------------------------------------------------
-int DataBuffer::numberNewSamples (QString const& signal, int channel) const
+int DataBuffer::numberNewSamples (SignalTypeFlag signal, int channel) const
 {
     int new_samples = number_new_samples_[signal][channel];
     number_new_samples_[signal][channel] = 0;
@@ -96,13 +116,13 @@ int DataBuffer::numberNewSamples (QString const& signal, int channel) const
 
 
 //-------------------------------------------------------------------------
-int DataBuffer::sampleRate (QString const& signal) const
+int DataBuffer::sampleRate (SignalTypeFlag signal) const
 {
     return sampling_rate_ [signal];
 }
 
 //-----------------------------------------------------------------------------
-int DataBuffer::getSampleLimit (QString const& signal) const
+int DataBuffer::getSampleLimit (SignalTypeFlag signal) const
 {
     return sample_limit_[signal];
 }

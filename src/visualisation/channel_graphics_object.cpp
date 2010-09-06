@@ -13,7 +13,7 @@ namespace ChannelGraphicsObjectHelper
 }
 
 //-----------------------------------------------------------------------------
-ChannelGraphicsObject::ChannelGraphicsObject (QString const& signal, int channel,
+ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel,
                                               int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
                                               QSharedPointer<SignalViewSettings> view_settings,
                                               QGraphicsItem *parent) :
@@ -32,7 +32,7 @@ ChannelGraphicsObject::ChannelGraphicsObject (QString const& signal, int channel
 //-----------------------------------------------------------------------------
 QRectF ChannelGraphicsObject::boundingRect() const
 {
-    return QRectF (0, 0, 400, height_);
+    return QRectF (0, 0, width (), height_);
 }
 
 //-----------------------------------------------------------------------------
@@ -40,12 +40,12 @@ void ChannelGraphicsObject::updateView ()
 {
     double seconds_to_display = view_settings_->getSignalVisualisationTime();
     data_.resize (seconds_to_display * sampling_rate_);
-    qreal x_step = 400;
+    qreal x_step = width ();
     x_step /= sampling_rate_ * seconds_to_display;
     data_buffer_->lockForRead();
     int new_samples = data_buffer_->numberNewSamples (signal_, channel_);
     cyclic_start_.setX (cyclic_start_.x() + x_step * new_samples);
-    if (cyclic_start_.x() >= 400)
+    if (cyclic_start_.x() >= width ())
         cyclic_start_.setX (0);
 
     data_buffer_->getData (signal_, channel_, data_);
@@ -59,15 +59,16 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
 {
     painter->setClipping (true);
     painter->setClipRect (boundingRect());
+    painter->drawRect (boundingRect());
     painter->translate (0, height_ / 2);
     bool cyclic_mode = view_settings_->getCyclicMode();
 
-    QPointF first (400, 0);
-    QPointF second (400, 0);
+    QPointF first (width (), 0);
+    QPointF second (width (), 0);
 
     double seconds_to_display = view_settings_->getSignalVisualisationTime();
 
-    qreal x_step = 400;
+    qreal x_step = width ();
     x_step /= sampling_rate_ * seconds_to_display;
 
     painter->setPen (Qt::red);
@@ -77,7 +78,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     if (cyclic_mode)
         first = cyclic_start_;
 
-    ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, 400);
+    ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, width ());
 
     bool first_run = true;
 
@@ -88,7 +89,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
         first.setX (first.x() - x_step);
         if (first.x() <= 0 && cyclic_mode)
         {
-            first.setX (400);
+            first.setX (width ());
             first_run = true;
         }
         first.setY (y);

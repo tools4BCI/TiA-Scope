@@ -1,6 +1,11 @@
 #include "signal_graphics_object.h"
 #include "channel_graphics_object.h"
 #include "frequency_spectrum_graphics_object.h"
+#include "aperiodic_data_graphics_object.h"
+#include "base/helpers.h"
+
+
+#include "definitions/constants.h"
 
 #include <QPainter>
 #include <QGraphicsSimpleTextItem>
@@ -12,18 +17,31 @@ namespace tobiss { namespace scope {
 //-----------------------------------------------------------------------------
 SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
                                             FourierTransformThread* ft_thread, QGraphicsItem *parent) :
-    QGraphicsObject(parent),
+    QGraphicsObject (parent),
     height_ (0),
-    signal_type_ (signal.type().c_str())
+    width_ (900),
+    signal_type_ (TypeConverter::stdStringToSignalTypeFlag (signal.type())),
+    aperiodic_signal_ (0)
 {
-    QGraphicsSimpleTextItem* signal_label = new QGraphicsSimpleTextItem (signal_type_, this);
+    QGraphicsSimpleTextItem* signal_label = new QGraphicsSimpleTextItem (signal.type().c_str(), this);
+
     int channel_amount = signal.channels().size();
+    if (signal_type_ & (SIG_BUTTON | SIG_JOYSTICK))
+    {
+        height_ = 200;
+        aperiodic_signal_ = AperiodicDataGraphicsObject::createAperiodicDataGraphicsObject (signal_type_, data_buffer, this);
+    }
+    else
+    {
+        if (ft_thread)
+            connect (ft_thread, SIGNAL (FTEnabledChanged (SignalTypeFlag, int, bool)), SLOT(ftEnabled(SignalTypeFlag,int,bool)));
     for (int channel_index = 0; channel_index < channel_amount; channel_index++)
     {
         height_ += 200;
         ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal.samplingRate(), data_buffer, view_settings, this);
         channel->setPos (0, 200 * channels_.size());
         channel->setHeight (200);
+        channel->setWidth (width_ - 50);
         channels_[channel_index] = channel;
         children_.append (channel);
         QGraphicsSimpleTextItem* channel_label = new QGraphicsSimpleTextItem (signal.channels()[channel_index].id().c_str (), channel);
@@ -34,19 +52,18 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
             ft_channel->setPos (450, 200 * (channels_.size() - 1));
             ft_channel->setHeight (200);
             ft_channel->setWidth (400);
-            ft_channel->connect (ft_thread, SIGNAL(FTFinished(QVector<double>, QString const&, int, int)), SLOT(updateData (QVector<double>, QString const&, int, int)), Qt::BlockingQueuedConnection);
+            ft_channel->connect (ft_thread, SIGNAL(FTFinished(QVector<double>, SignalTypeFlag, int, int)), SLOT(updateData (QVector<double>, SignalTypeFlag, int, int)), Qt::BlockingQueuedConnection);
             fts_[channel_index] = ft_channel;
             children_.append (ft_channel);
         }
     }
-    setFlags (flags() | QGraphicsItem::ItemIsMovable);
-
+    }
 }
 
 //-----------------------------------------------------------------------------
 QRectF SignalGraphicsObject::boundingRect() const
 {
-    return QRectF (0, 0, 900, height_);//200 * channels_.size());
+    return QRectF (0, 0, width_, height_);
 }
 
 //-----------------------------------------------------------------------------
@@ -54,6 +71,8 @@ void SignalGraphicsObject::updateToDataBuffer ()
 {
     Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
         channel->updateView ();
+    if (aperiodic_signal_)
+        aperiodic_signal_->updateView ();
     update ();
 }
 
@@ -72,9 +91,24 @@ void SignalGraphicsObject::setHeight (int height)
 }
 
 
-//-----------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------
+void SignalGraphicsObject::ftEnabled (SignalTypeFlag signal, int channel, bool enbaled)
+{
+    if (signal == signal_type_)
+    {
+        if (enbaled)
+            helpers::animateProperty (channels_[channel], "width", channels_[channel]->width(), (width_ / 2) - 50);
+        else
+            helpers::animateProperty (channels_[channel], "width", channels_[channel]->width(), width_ - 50);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
 void SignalGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    QPen pen = painter->pen();
+    pen.setWidth (2);
+    painter->setPen (pen);
     painter->drawRect (boundingRect());
 }
 
