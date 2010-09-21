@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/connect.png</file>
+        <file>icons/cancel.png</file>
+        <file>icons/player_play.png</file>
+        <file>icons/tobi.png</file>
+        <file>icons/user.png</file>
+    </qresource>
+</RCC>
