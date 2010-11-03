@@ -58,6 +58,7 @@ private:
     QMap<int, FrequencySpectrumGraphicsObject*> fts_;
     QList<BaseGraphicsObject*> children_;
     AperiodicDataGraphicsObject* aperiodic_signal_;
+    QSharedPointer<SignalViewSettings> view_settings_;
 };
 
 } } // namespace

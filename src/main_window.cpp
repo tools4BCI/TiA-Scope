@@ -51,14 +51,14 @@ MainWindow::MainWindow (QWidget *parent) :
 {
     ui->setupUi(this);
 
+    view_settings_widget_ = new ViewSettingsDockWidget (this);
+    addDockWidget (Qt::TopDockWidgetArea, view_settings_widget_);
+
     signal_info_widget_ = new SignalInfoDockWidget (this);
     addDockWidget (Qt::RightDockWidgetArea, signal_info_widget_);
 
     subject_info_widget_ = new SubjectInfoDockWidget (this);
     addDockWidget (Qt::RightDockWidgetArea, subject_info_widget_);
-
-    view_settings_widget_ = new ViewSettingsDockWidget (this);
-    addDockWidget (Qt::LeftDockWidgetArea, view_settings_widget_);
 
     if (QCoreApplication::arguments().contains ("--test") || QCoreApplication::arguments().contains("-t"))
     {
@@ -81,7 +81,7 @@ void MainWindow::on_actionConnect_triggered ()
 {
     qDebug () << metaObject()->className() << "." << __FUNCTION__;
 
-    ConnectDialog connection_dialog;
+    ConnectWizard connection_dialog;
     if (connection_dialog.exec() != QDialog::Accepted)
         return;
 

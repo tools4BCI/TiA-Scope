@@ -5,6 +5,9 @@ INCLUDEPATH += $$PWD/external/include \
 
 LIBS += -L$$PWD/external/lib \
         -lssclient \
-        -lboost_system \
-        -lboost_date_time \
+        /usr/lib/libboost_system.a \
+        /usr/lib/libboost_date_time.a \
         -lticpp
+
+RESOURCES += \
+    ../resources.qrc

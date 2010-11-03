@@ -1,8 +1,10 @@
 #include "view_settings_dock_widget.h"
 #include "ui_view_settings_dock_widget.h"
+#include "base/helpers.h"
 
 namespace tobiss { namespace scope {
 
+//-------------------------------------------------------------------------------------------------
 ViewSettingsDockWidget::ViewSettingsDockWidget(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::ViewSettingsDockWidget)
@@ -10,11 +12,13 @@ ViewSettingsDockWidget::ViewSettingsDockWidget(QWidget *parent) :
     ui->setupUi(this);
 }
 
+//-------------------------------------------------------------------------------------------------
 ViewSettingsDockWidget::~ViewSettingsDockWidget()
 {
     delete ui;
 }
 
+//-------------------------------------------------------------------------------------------------
 void ViewSettingsDockWidget::setSignalViewSettings (QSharedPointer<SignalViewSettings> settings)
 {
     signal_view_settings_ = settings;
@@ -24,5 +28,22 @@ void ViewSettingsDockWidget::setSignalViewSettings (QSharedPointer<SignalViewSet
     ui->cyclicModeCheckBox->setChecked (signal_view_settings_->getCyclicMode());
     signal_view_settings_->connect (ui->cyclicModeCheckBox, SIGNAL(toggled(bool)), SLOT(setCyclicMode(bool)));
 }
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_increaseYScaling_clicked ()
+{
+    if (signal_view_settings_.isNull())
+        return;
+    helpers::animateProperty (signal_view_settings_.data(), "basicYScaling", signal_view_settings_->getBasicYScaling(), signal_view_settings_->getBasicYScaling() * 2);
+}
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_decreaseYScaling_clicked ()
+{
+    if (signal_view_settings_.isNull())
+        return;
+    helpers::animateProperty (signal_view_settings_.data(), "basicYScaling", signal_view_settings_->getBasicYScaling(), signal_view_settings_->getBasicYScaling() / 2);
+}
+
 
 } } // namespace

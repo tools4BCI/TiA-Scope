@@ -21,7 +21,8 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
     height_ (0),
     width_ (900),
     signal_type_ (TypeConverter::stdStringToSignalTypeFlag (signal.type())),
-    aperiodic_signal_ (0)
+    aperiodic_signal_ (0),
+    view_settings_ (view_settings)
 {
     QGraphicsSimpleTextItem* signal_label = new QGraphicsSimpleTextItem (signal.type().c_str(), this);
 
@@ -119,15 +120,9 @@ void SignalGraphicsObject::wheelEvent (QGraphicsSceneWheelEvent* event)
     {
         event->accept ();
         if (event->delta() > 0)
-        {
-            Q_FOREACH (BaseGraphicsObject* child, children_)
-                child->setYScalingFactor (child->yScalingFactor() * 2);
-        }
+            view_settings_->setBasicYScaling (view_settings_->getBasicYScaling() * 2);
         else if (event->delta() < 0)
-        {
-            Q_FOREACH (BaseGraphicsObject* child, children_)
-                child->setYScalingFactor (child->yScalingFactor() / 2);
-        }
+            view_settings_->setBasicYScaling (view_settings_->getBasicYScaling() / 2);
     }
     else
         event->ignore();

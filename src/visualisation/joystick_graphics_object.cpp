@@ -19,7 +19,6 @@ JoystickGraphicsObject::JoystickGraphicsObject (QGraphicsItem *parent) :
 void JoystickGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     int X_SPACING = 40;
-    int x_pos = 20;
 
     Q_FOREACH (DeviceID device, data_.keys())
     {
@@ -35,25 +34,18 @@ void JoystickGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphic
                 dial->setMinimum (0);
                 dial->setMaximum (0);
                 dial->setValue (0);
-                dial->setStyle (new QGtkStyle);
-                //dial->setStyleSheet ("QDial {background: white; border: 1px solid black; color: black}");;
+                //dial->setStyle (new QGtkStyle);
                 proxy->setWidget (dial);
                 dials_[device].append (dial);
                 proxies_[device].append (proxy);
                 layout_->addItem (proxy);
             }
         }
-        painter->setPen (Qt::black);
-        painter->setBrush (Qt::NoBrush);
-        painter->drawText (x_pos, 50, QString ("Device \"").append(QString::number (device)).append("\":"));
-        painter->drawRect (x_pos - (X_SPACING / 2), 40, x_pos + X_SPACING * data_[device].size(), 150);
-
 
         double value = 0;
         QDial* dial = 0;
         for (int i = 0; i < data_[device].size(); i++)
         {
-            //proxies_[device][i]->setPos (x_pos, 10);
             dial = dials_[device][i];
             value = data_[device][i];
             if (dial->minimum() > value)
@@ -61,9 +53,7 @@ void JoystickGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphic
             if (dial->maximum() < value)
                 dial->setMaximum (value);
             dial->setValue (value);
-            x_pos += X_SPACING;
         }
-        x_pos += X_SPACING;
     }
 
 }

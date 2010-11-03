@@ -1,17 +1,18 @@
 #include "connect_dialog.h"
-#include "ui_connect_dialog.h"
+#include "ui_connect_wizard.h"
 
 #include <QSettings>
 
 namespace tobiss { namespace scope {
 
 //-----------------------------------------------------------------------------
-ConnectDialog::ConnectDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ConnectDialog)
+ConnectWizard::ConnectWizard(QWidget *parent) :
+    QWizard (parent),
+    ui (new Ui::ConnectWizard)
 {
     ui->setupUi(this);
     ui->portLineEdit->setValidator (new QIntValidator (0, 0xffff, this));
+    ui->connectionPage->setFinalPage (true);
 
     QSettings settings;
     ui->portLineEdit->setText (settings.value ("connection/port", "9000").toString());
@@ -20,25 +21,25 @@ ConnectDialog::ConnectDialog(QWidget *parent) :
 }
 
 //-----------------------------------------------------------------------------
-ConnectDialog::~ConnectDialog()
+ConnectWizard::~ConnectWizard()
 {
     delete ui;
 }
 
 //-----------------------------------------------------------------------------
-QString ConnectDialog::getIPAddress () const
+QString ConnectWizard::getIPAddress () const
 {
     return ui->IPAddressLineEdit->text();
 }
 
 //-----------------------------------------------------------------------------
-short unsigned ConnectDialog::getPort () const
+short unsigned ConnectWizard::getPort () const
 {
     return ui->portLineEdit->text().toUInt();
 }
 
 //-----------------------------------------------------------------------------
-bool ConnectDialog::UDPEnabled () const
+bool ConnectWizard::UDPEnabled () const
 {
     return ui->udpButton->isChecked ();
 }

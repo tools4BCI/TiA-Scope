@@ -23,6 +23,10 @@ public:
 
     void setSignalViewSettings (QSharedPointer<SignalViewSettings> settings);
 
+private Q_SLOTS:
+    void on_increaseYScaling_clicked ();
+    void on_decreaseYScaling_clicked ();
+
 private:
     Ui::ViewSettingsDockWidget *ui;
     QSharedPointer<SignalViewSettings> signal_view_settings_;

@@ -13,6 +13,7 @@ class SignalViewSettings : public QObject
 {
     Q_OBJECT
     Q_PROPERTY (double signalVisualisationTime READ getSignalVisualisationTime WRITE setSignalVisualisationTime)
+    Q_PROPERTY (double basicYScaling READ getBasicYScaling WRITE setBasicYScaling)
 
 public:
     //---------------------------------------------------------------------------------------------
@@ -24,9 +25,15 @@ public:
     //---------------------------------------------------------------------------------------------
     double getSignalVisualisationTime () const {return signal_visualisation_time_;}
 
+    //---------------------------------------------------------------------------------------------
+    double getBasicYScaling () const {return basic_y_scaling_;}
+
 public Q_SLOTS:
     //---------------------------------------------------------------------------------------------
     void setSignalVisualisationTime (double seconds) {signal_visualisation_time_ = seconds; Q_EMIT signalVisualisationTimeChanged (signal_visualisation_time_);}
+
+    //---------------------------------------------------------------------------------------------
+    void setBasicYScaling (double basicYScaling) {basic_y_scaling_ = basicYScaling;}
 
     //---------------------------------------------------------------------------------------------
     void setCyclicMode (bool cyclic_mode) {cyclic_mode_ = cyclic_mode;}
@@ -37,6 +44,7 @@ Q_SIGNALS:
 
 private:
     double signal_visualisation_time_;
+    double basic_y_scaling_;
     bool cyclic_mode_;
 };
 

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TOBI Remote Scope v0.1prealpha</string>
+   <string>TOBI Remote Scope</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -31,6 +31,12 @@
    </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>Connection</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -42,6 +48,10 @@
    <addaction name="actionReceiveData"/>
   </widget>
   <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/connect.png</normaloff>:/icons/connect.png</iconset>
+   </property>
    <property name="text">
     <string>Connect</string>
    </property>
@@ -52,6 +62,10 @@
   <action name="actionDisconnect">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/cancel.png</normaloff>:/icons/cancel.png</iconset>
    </property>
    <property name="text">
     <string>Disconnect</string>
@@ -64,6 +78,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/player_play.png</normaloff>:/icons/player_play.png</iconset>
+   </property>
    <property name="text">
     <string>Receive Data</string>
    </property>
@@ -73,6 +91,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -57,6 +57,7 @@ void ChannelGraphicsObject::updateView ()
 //-------------------------------------------------------------------------------------------------
 void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
+    painter->setPen (Qt::black);
     painter->setClipping (true);
     painter->setClipRect (boundingRect());
     painter->drawRect (boundingRect());
@@ -74,7 +75,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     painter->setPen (Qt::red);
     if (cyclic_mode)
         painter->drawLine (cyclic_start_.x(), -height_ / 2, cyclic_start_.x(), height_ / 2);
-    painter->setPen (Qt::black);
+    painter->setPen (Qt::darkBlue);
     if (cyclic_mode)
         first = cyclic_start_;
 
@@ -85,7 +86,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     for (int sample = data_.size() - 1; sample >= 0; sample--)
     {
         qreal y = 0;
-        y = data_[sample] * yScalingFactor();
+        y = data_[sample] * yScalingFactor() * view_settings_->getBasicYScaling();
         first.setX (first.x() - x_step);
         if (first.x() <= 0 && cyclic_mode)
         {

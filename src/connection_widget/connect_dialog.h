@@ -1,26 +1,30 @@
 #ifndef CONNECT_DIALOG_H
 #define CONNECT_DIALOG_H
 
-#include <QDialog>
+#include <QWizard>
 
 namespace Ui {
-    class ConnectDialog;
+    class ConnectWizard;
 }
 
-namespace tobiss { namespace scope {
+namespace tobiss {
+
+class SSClient;
+
+namespace scope {
 
 //-----------------------------------------------------------------------------
 /// ConnectDialog
-class ConnectDialog : public QDialog
+class ConnectWizard : public QWizard
 {
     Q_OBJECT
 
 public:
     //-------------------------------------------------------------------------
-    explicit ConnectDialog (QWidget *parent = 0);
+    explicit ConnectWizard (QWidget *parent = 0);
 
     //-------------------------------------------------------------------------
-    virtual ~ConnectDialog ();
+    virtual ~ConnectWizard ();
 
     //-------------------------------------------------------------------------
     QString getIPAddress () const;
@@ -32,7 +36,9 @@ public:
     bool UDPEnabled () const;
 
 private:
-    Ui::ConnectDialog *ui;
+    Ui::ConnectWizard *ui;
+
+    SSClient* client_;
 };
 
 } } // namespace

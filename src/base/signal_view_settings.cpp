@@ -11,6 +11,7 @@ SignalViewSettings::SignalViewSettings(QObject *parent) :
 {
     QSettings settings;
     signal_visualisation_time_ = settings.value ("visualisation/signal_visualisation_time", 2).toDouble();
+    basic_y_scaling_ = settings.value ("visualisation/basic_y_scaling", 1).toDouble();
 }
 
 } } // namespace
