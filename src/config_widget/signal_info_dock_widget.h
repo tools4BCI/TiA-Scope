@@ -30,7 +30,7 @@ public:
     void setSignalInfo (SignalInfo const& signal_info);
 
 Q_SIGNALS:
-    void signalVisibilityChanged (SignalTypeFlag signal, bool visibility);
+    void channelVisibilityChanged (SignalTypeFlag signal, ChannelID channel, bool visibility);
     void signalChannelFTEnabledChanged (SignalTypeFlag signal, int channel, bool enabled);
 
 private Q_SLOTS:

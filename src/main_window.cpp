@@ -18,9 +18,9 @@
 #include "data_collector/reader_thread.h"
 #include "data_collector/fourier_transform_thread.h"
 
-#include "signalserver-client/ssclient.h"
-#include "signalserver-client/ssconfig.h"
-#include "config/ss_meta_info.h"
+#include <tia/signalserver-client/ssclient.h>
+#include <tia/signalserver-client/ssconfig.h>
+#include <tia/config/ss_meta_info.h>
 
 #include <QCoreApplication>
 #include <QSharedPointer>
@@ -52,7 +52,7 @@ MainWindow::MainWindow (QWidget *parent) :
     ui->setupUi(this);
 
     view_settings_widget_ = new ViewSettingsDockWidget (this);
-    addDockWidget (Qt::TopDockWidgetArea, view_settings_widget_);
+    addDockWidget (Qt::LeftDockWidgetArea, view_settings_widget_);
 
     signal_info_widget_ = new SignalInfoDockWidget (this);
     addDockWidget (Qt::RightDockWidgetArea, signal_info_widget_);
@@ -67,7 +67,6 @@ MainWindow::MainWindow (QWidget *parent) :
         addDockWidget (Qt::LeftDockWidgetArea, monitor_widget_);
     }
     ui->graphicsView->setInteractive (true);
-    ui->graphicsView->setDragMode (QGraphicsView::NoDrag);
 }
 
 //-----------------------------------------------------------------------------
@@ -99,6 +98,8 @@ void MainWindow::on_actionConnect_triggered ()
         client_->requestConfig ();
         SSConfig config = client_->config();
         signal_info_widget_->setSignalInfo (config.signal_info);
+        signal_view_settings->connect (signal_info_widget_, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)), SLOT(setChannelVisibility(SignalTypeFlag,ChannelID,bool)));
+
         subject_info_widget_->setSubjectInfo (config.subject_info);
         view_settings_widget_->setSignalViewSettings (signal_view_settings);
         QSharedPointer<DataBuffer> data_buffer (new DataBuffer (config.signal_info.signals (), 5));
@@ -109,7 +110,6 @@ void MainWindow::on_actionConnect_triggered ()
 
         graphics_scene_ = new SignalGraphicsScene (this);
         MainWindowHelper::monitorObjectLife (monitor_widget_, graphics_scene_);
-        graphics_scene_->connect (signal_info_widget_, SIGNAL(signalVisibilityChanged(SignalTypeFlag,bool)), SLOT(setSignalVisibility(SignalTypeFlag,bool)));
         ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
         for (SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();

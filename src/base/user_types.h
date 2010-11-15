@@ -9,6 +9,7 @@ namespace tobiss { namespace scope {
 
 typedef boost::uint32_t SignalTypeFlag;
 typedef boost::uint32_t DeviceID;
+typedef int ChannelID;
 
 namespace TypeConverter {
     SignalTypeFlag stdStringToSignalTypeFlag (std::string const& type_string);

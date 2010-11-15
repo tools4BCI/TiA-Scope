@@ -26,11 +26,24 @@ public:
 
     int height () const {return height_;}
 
+    static int defaultHeight () {return 200;}
+
+Q_SIGNALS:
+    void bottomYChanged (int bottom_y);
+    void overlappingBottomYChanged (int overlapped_bottom_y);
+
 public Q_SLOTS:
-    void setHeight (int height) {height_ = height;}
+    void setYPos (int y_pos);
+    void setHeight (int height);
     void updateView ();
 
+private Q_SLOTS:
+    void hide ();
+    void updateOverlapping ();
+
 private:
+    virtual void contextMenuEvent (QGraphicsSceneContextMenuEvent *event);
+
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     SignalTypeFlag const signal_;
@@ -38,7 +51,7 @@ private:
     int sampling_rate_;
     QSharedPointer<DataBuffer const> data_buffer_;
     int height_;
-    QSharedPointer<SignalViewSettings const> view_settings_;
+    QSharedPointer<SignalViewSettings> view_settings_;
 
     QPointF cyclic_start_;
 

@@ -45,5 +45,14 @@ void ViewSettingsDockWidget::on_decreaseYScaling_clicked ()
     helpers::animateProperty (signal_view_settings_.data(), "basicYScaling", signal_view_settings_->getBasicYScaling(), signal_view_settings_->getBasicYScaling() / 2);
 }
 
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_channelOverlappingSlider_valueChanged (int value)
+{
+    if (signal_view_settings_.isNull())
+        return;
+    signal_view_settings_->setChannelOverlapping (static_cast<float>(value) / 100.0);
+//    helpers::animateProperty (signal_view_settings_.data(), "channelOverlapping", signal_view_settings_->getChannelOverlapping(), );
+}
+
 
 } } // namespace

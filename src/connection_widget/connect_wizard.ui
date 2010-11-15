@@ -20,7 +20,7 @@
    <bool>true</bool>
   </property>
   <property name="options">
-   <set>QWizard::HaveFinishButtonOnEarlyPages|QWizard::HelpButtonOnRight</set>
+   <set>QWizard::HaveFinishButtonOnEarlyPages|QWizard::HelpButtonOnRight|QWizard::NoBackButtonOnStartPage</set>
   </property>
   <widget class="QWizardPage" name="connectionPage">
    <property name="title">
@@ -87,7 +87,7 @@
   </widget>
   <widget class="QWizardPage" name="selectionPage">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="title">
     <string>Coming Soon: Signal-/Channel-Selection</string>

@@ -26,6 +26,7 @@ public:
 private Q_SLOTS:
     void on_increaseYScaling_clicked ();
     void on_decreaseYScaling_clicked ();
+    void on_channelOverlappingSlider_valueChanged (int value);
 
 private:
     Ui::ViewSettingsDockWidget *ui;

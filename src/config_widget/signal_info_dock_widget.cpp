@@ -9,6 +9,7 @@ namespace SignalInfoDockWidgetHelper
     const int SAMPLING_RATE_COLUMN_INDEX = 1;
     const int FT_COLUMN_INDEX = 2;
     const int SIGNAL_TYPE_COLUMN_INDEX = 3;
+    const int CHANNEL_INDEX_COLUMN_INDEX = 4;
 
     //-------------------------------------------------------------------------
     /// adds the given signals as a row to the given tree
@@ -23,6 +24,7 @@ SignalInfoDockWidget::SignalInfoDockWidget (QWidget *parent) :
 {
     ui->setupUi(this);
     ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, true);
+    ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, true);
     ui->signalTree->setColumnWidth (SignalInfoDockWidgetHelper::FT_COLUMN_INDEX, 20);
 }
 
@@ -48,8 +50,14 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
         return;
     if (column == SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX)
     {
-        Q_EMIT signalVisibilityChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(),
-                                        item->checkState(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX) == Qt::Checked);
+        for (int index = 0; index < item->childCount(); index++)
+            item->child (index)->setCheckState (SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX, item->checkState(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX));
+        if (item->childCount() == 0)
+        {
+            Q_EMIT channelVisibilityChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(),
+                                            item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
+                                            item->checkState(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX) == Qt::Checked);
+        }
     }
     else if (column == SignalInfoDockWidgetHelper::FT_COLUMN_INDEX)
     {
@@ -73,15 +81,21 @@ namespace SignalInfoDockWidgetHelper
         {
             QTreeWidgetItem* signal_item = new QTreeWidgetItem (tree_widget);
             signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, TypeConverter::stdStringToSignalTypeFlag (signal_iter->first.c_str()));
-            signal_item->setText (NAME_COLUMN_INDEX, QString (signal_iter->first.c_str())/*.append (" (").append (QString::number(signal_iter->second.channels ().size ())).append(" channels)")*/);
+            signal_item->setText (NAME_COLUMN_INDEX, QString (signal_iter->first.c_str()));
             signal_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
             signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
             signal_item->setCheckState (FT_COLUMN_INDEX, Qt::Unchecked);
             signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate ()).append( " Hz"));
+            unsigned index = 0;
             Q_FOREACH (Channel channel, signal_iter->second.channels ())
             {
                 QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
+                channel_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+                channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
+                channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, TypeConverter::stdStringToSignalTypeFlag (signal_iter->first.c_str()));
+                channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, index);
                 channel_item->setText (NAME_COLUMN_INDEX, channel.id().c_str());
+                index++;
             }
         }
     }

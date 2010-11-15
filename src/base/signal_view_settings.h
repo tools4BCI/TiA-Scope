@@ -1,6 +1,9 @@
 #ifndef SIGNAL_VIEW_SETTINGS_H
 #define SIGNAL_VIEW_SETTINGS_H
 
+#include "user_types.h"
+
+#include <QMap>
 #include <QObject>
 
 namespace tobiss { namespace scope {
@@ -14,6 +17,7 @@ class SignalViewSettings : public QObject
     Q_OBJECT
     Q_PROPERTY (double signalVisualisationTime READ getSignalVisualisationTime WRITE setSignalVisualisationTime)
     Q_PROPERTY (double basicYScaling READ getBasicYScaling WRITE setBasicYScaling)
+    Q_PROPERTY (float channelOverlapping READ getChannelOverlapping WRITE setChannelOverlapping)
 
 public:
     //---------------------------------------------------------------------------------------------
@@ -28,6 +32,11 @@ public:
     //---------------------------------------------------------------------------------------------
     double getBasicYScaling () const {return basic_y_scaling_;}
 
+    //---------------------------------------------------------------------------------------------
+    bool channelVisible (SignalTypeFlag signal_type, ChannelID channel) const;
+
+    //---------------------------------------------------------------------------------------------
+    float getChannelOverlapping () const {return channel_overlapping_;}
 public Q_SLOTS:
     //---------------------------------------------------------------------------------------------
     void setSignalVisualisationTime (double seconds) {signal_visualisation_time_ = seconds; Q_EMIT signalVisualisationTimeChanged (signal_visualisation_time_);}
@@ -38,14 +47,29 @@ public Q_SLOTS:
     //---------------------------------------------------------------------------------------------
     void setCyclicMode (bool cyclic_mode) {cyclic_mode_ = cyclic_mode;}
 
+    //---------------------------------------------------------------------------------------------
+    void setChannelVisibility (SignalTypeFlag signal_type, ChannelID channel, bool visible);
+
+    //---------------------------------------------------------------------------------------------
+    void setChannelOverlapping (float channel_overlapping);
 Q_SIGNALS:
     //---------------------------------------------------------------------------------------------
     void signalVisualisationTimeChanged (double seconds);
 
+    //---------------------------------------------------------------------------------------------
+    void channelVisibilityChanged (SignalTypeFlag signal_type, ChannelID channel, bool visible);
+
+    //---------------------------------------------------------------------------------------------
+    void channelOverlappingChanged (float channel_overlapping);
+
+    //---------------------------------------------------------------------------------------------
+    void channelOverlappingChanged ();
 private:
     double signal_visualisation_time_;
     double basic_y_scaling_;
     bool cyclic_mode_;
+    float channel_overlapping_;
+    QMap<SignalTypeFlag, QMap<ChannelID, bool> > channel_visibility_;
 };
 
 } } // namespace

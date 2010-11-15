@@ -1,7 +1,9 @@
 #include "channel_graphics_object.h"
+#include "base/helpers.h"
 
 #include <QPainter>
 #include <QGraphicsSceneWheelEvent>
+#include <QMenu>
 
 #include <iostream>
 
@@ -27,12 +29,29 @@ ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel
 {
     cyclic_start_ = QPointF (0, 0);
     error_ = 0;
+    connect (view_settings_.data(), SIGNAL(channelOverlappingChanged()), SLOT(updateOverlapping()));
 }
 
 //-----------------------------------------------------------------------------
 QRectF ChannelGraphicsObject::boundingRect() const
 {
     return QRectF (0, 0, width (), height_);
+}
+
+//-----------------------------------------------------------------------------
+void ChannelGraphicsObject::setYPos (int y_pos)
+{
+    setY (y_pos);
+    Q_EMIT bottomYChanged (y_pos + height_ );
+    Q_EMIT overlappingBottomYChanged (y_pos + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
+}
+
+//-----------------------------------------------------------------------------
+void ChannelGraphicsObject::setHeight (int height)
+{
+    height_ = height;
+    Q_EMIT bottomYChanged (y() + height_);
+    Q_EMIT overlappingBottomYChanged (y() + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
 }
 
 //-----------------------------------------------------------------------------
@@ -55,12 +74,35 @@ void ChannelGraphicsObject::updateView ()
 }
 
 //-------------------------------------------------------------------------------------------------
+void ChannelGraphicsObject::hide ()
+{
+    view_settings_->setChannelVisibility (signal_, channel_, false);
+}
+
+//-------------------------------------------------------------------------------------------------
+void ChannelGraphicsObject::updateOverlapping ()
+{
+    Q_EMIT bottomYChanged (y() + height_);
+    Q_EMIT overlappingBottomYChanged (y() + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
+}
+
+//-------------------------------------------------------------------------------------------------
+void ChannelGraphicsObject::contextMenuEvent (QGraphicsSceneContextMenuEvent *event)
+{
+    QMenu context_menu;;
+    QAction* hide_action = context_menu.addAction ("Hide");
+    connect (hide_action, SIGNAL(triggered()), SLOT(hide()));
+    context_menu.exec (event->screenPos());
+}
+
+//-------------------------------------------------------------------------------------------------
 void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     painter->setPen (Qt::black);
     painter->setClipping (true);
     painter->setClipRect (boundingRect());
-    painter->drawRect (boundingRect());
+    if (view_settings_->getChannelOverlapping() == 0)
+        painter->drawRect (boundingRect());
     painter->translate (0, height_ / 2);
     bool cyclic_mode = view_settings_->getCyclicMode();
 

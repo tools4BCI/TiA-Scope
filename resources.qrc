@@ -6,5 +6,7 @@
         <file>icons/tobi.png</file>
         <file>icons/user.png</file>
         <file>icons/autoscale.png</file>
+        <file>icons/scale-in.png</file>
+        <file>icons/scale-out.png</file>
     </qresource>
 </RCC>

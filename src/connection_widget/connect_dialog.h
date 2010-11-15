@@ -35,6 +35,9 @@ public:
     //-------------------------------------------------------------------------
     bool UDPEnabled () const;
 
+private Q_SLOTS:
+    void on_ConnectWizard_currentIdChanged (int id);
+
 private:
     Ui::ConnectWizard *ui;
 

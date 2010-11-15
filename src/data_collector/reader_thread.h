@@ -3,7 +3,7 @@
 
 #include "base/data_buffer.h"
 
-#include "signalserver-client/ssclient.h"
+#include <tia/signalserver-client/ssclient.h>
 
 #include <QThread>
 #include <QSharedPointer>

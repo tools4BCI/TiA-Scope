@@ -31,6 +31,10 @@ public Q_SLOTS:
     //---------------------------------------------------------------------------------------------
     void startTimer (int milli_seconds_interval);
 
+private Q_SLOTS:
+    //---------------------------------------------------------------------------------------------
+    void setSceneRectHeight (int height);
+
 private:
     QList<SignalGraphicsObject*> signals_;
     QHash<SignalGraphicsObject*, int> signal_list_index_;

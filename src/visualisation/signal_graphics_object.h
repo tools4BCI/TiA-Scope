@@ -8,6 +8,8 @@
 
 #include "data_collector/fourier_transform_thread.h"
 
+#include "channel_graphics_object.h"
+
 #include <QGraphicsObject>
 #include <QString>
 #include <QMap>
@@ -15,7 +17,6 @@
 
 namespace tobiss { namespace scope {
 
-class ChannelGraphicsObject;
 class FrequencySpectrumGraphicsObject;
 class BaseGraphicsObject;
 class AperiodicDataGraphicsObject;
@@ -33,10 +34,14 @@ public:
                                    QGraphicsItem *parent = 0);
 
     virtual QRectF boundingRect() const;
-    int height () const {return height_;}
-    int defaultHeight () const {if (aperiodic_signal_) return 200; else return 200 * channels_.size();}
+    int height () const;
+    int defaultHeight () const {if (aperiodic_signal_) return 200; else return ChannelGraphicsObject::defaultHeight () * channels_.size();}
+
+Q_SIGNALS:
+    void bottomYChanged (int bottom_y);
 
 public Q_SLOTS:
+    void setYPos (int y_pos) {setY (y_pos); Q_EMIT bottomYChanged(y_pos + height());}
     void updateToDataBuffer ();
     void setVisibleTrue () {setVisible (true);}
     void setVisibleFalse () {setVisible (false);}
@@ -44,14 +49,13 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void ftEnabled (SignalTypeFlag signal, int channel, bool enbaled);
-
+    void setChannelVisibility (SignalTypeFlag signal, ChannelID channel, bool visible);
 
 private:
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual void wheelEvent (QGraphicsSceneWheelEvent* event);
 
 
-    int height_;
     int width_;
     SignalTypeFlag signal_type_;
     QMap<int, ChannelGraphicsObject*> channels_;
