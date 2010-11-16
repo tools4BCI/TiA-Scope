@@ -7,6 +7,7 @@
 
 #include "visualisation/signal_graphics_object.h"
 #include "visualisation/signal_graphics_scene.h"
+#include "visualisation/signal_graphics_view.h"
 
 #include "config_widget/signal_info_dock_widget.h"
 #include "config_widget/subject_info_dock_widget.h"
@@ -47,9 +48,12 @@ MainWindow::MainWindow (QWidget *parent) :
     monitor_widget_ (0),
     graphics_scene_ (0),
     reader_thread_ (0),
-    ft_thread_ (0)
+    ft_thread_ (0),
+    view_ (0)
 {
     ui->setupUi(this);
+    view_ = new SignalGraphicsView (this);
+    this->setCentralWidget (view_);
 
     view_settings_widget_ = new ViewSettingsDockWidget (this);
     addDockWidget (Qt::LeftDockWidgetArea, view_settings_widget_);
@@ -66,7 +70,7 @@ MainWindow::MainWindow (QWidget *parent) :
         qInstallMsgHandler (ApplicationMonitorDockWidget::debugMessaging);
         addDockWidget (Qt::LeftDockWidgetArea, monitor_widget_);
     }
-    ui->graphicsView->setInteractive (true);
+    view_->setInteractive (true);
 }
 
 //-----------------------------------------------------------------------------
@@ -109,6 +113,7 @@ void MainWindow::on_actionConnect_triggered ()
         MainWindowHelper::monitorObjectLife (monitor_widget_, ft_thread_);
 
         graphics_scene_ = new SignalGraphicsScene (this);
+        graphics_scene_->connect (view_, SIGNAL(widthChanged(int)), SLOT(setSceneRectWidth(int)));
         MainWindowHelper::monitorObjectLife (monitor_widget_, graphics_scene_);
         ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
@@ -117,9 +122,10 @@ void MainWindow::on_actionConnect_triggered ()
              ++signal_iter)
         {
             SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
+            signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
             graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
         }
-        ui->graphicsView->setScene (graphics_scene_);
+        view_->setScene (graphics_scene_);
         graphics_scene_->startTimer (40);
 
         reader_thread_ = new ReaderThread (data_buffer, client_, connection_dialog.UDPEnabled(), this);

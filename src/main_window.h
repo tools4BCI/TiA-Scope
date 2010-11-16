@@ -19,8 +19,10 @@ class SubjectInfoDockWidget;
 class ViewSettingsDockWidget;
 class ApplicationMonitorDockWidget;
 class SignalGraphicsScene;
+class SignalGraphicsView;
 class ReaderThread;
 class FourierTransformThread;
+
 
 class MainWindow : public QMainWindow
 {
@@ -49,6 +51,7 @@ private:
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
     SSClient* client_;
+    SignalGraphicsView* view_;
 };
 
 } } // namespace

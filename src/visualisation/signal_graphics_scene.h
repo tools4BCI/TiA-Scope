@@ -35,6 +35,8 @@ private Q_SLOTS:
     //---------------------------------------------------------------------------------------------
     void setSceneRectHeight (int height);
 
+    //---------------------------------------------------------------------------------------------
+    void setSceneRectWidth (int width);
 private:
     QList<SignalGraphicsObject*> signals_;
     QHash<SignalGraphicsObject*, int> signal_list_index_;

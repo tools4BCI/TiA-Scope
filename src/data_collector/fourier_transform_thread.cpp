@@ -1,6 +1,7 @@
 #include "fourier_transform_thread.h"
 
 #include <QDebug>
+#include <QSettings>
 
 #include <cmath>
 
@@ -37,6 +38,9 @@ void FourierTransformThread::run ()
     time_.restart ();
     int elapsed_time = 0;
     running_ = true;
+    int update_interval = 0;
+    QSettings settings;
+
 
     while (running_)
     {
@@ -54,8 +58,9 @@ void FourierTransformThread::run ()
         }
 
         elapsed_time = time_.elapsed ();
-        if (elapsed_time < 100)
-            usleep ((100 - elapsed_time) * 1000);
+        update_interval = settings.value ("fourier/update_interval_msec", 40).toInt();
+        if (elapsed_time < update_interval)
+            usleep ((update_interval - elapsed_time) * 1000);
         time_.restart ();
     }
 }

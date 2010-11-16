@@ -18,8 +18,10 @@ namespace ChannelGraphicsObjectHelper
 ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel,
                                               int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
                                               QSharedPointer<SignalViewSettings> view_settings,
+                                              ChannelGraphicsObject *previous_channel,
                                               QGraphicsItem *parent) :
     BaseGraphicsObject (parent),
+    previous_channel_ (previous_channel),
     signal_ (signal),
     channel_ (channel),
     sampling_rate_ (sampling_rate),
@@ -42,16 +44,14 @@ QRectF ChannelGraphicsObject::boundingRect() const
 void ChannelGraphicsObject::setYPos (int y_pos)
 {
     setY (y_pos);
-    Q_EMIT bottomYChanged (y_pos + height_ );
-    Q_EMIT overlappingBottomYChanged (y_pos + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
+    emitBottomChanges ();
 }
 
 //-----------------------------------------------------------------------------
 void ChannelGraphicsObject::setHeight (int height)
 {
     height_ = height;
-    Q_EMIT bottomYChanged (y() + height_);
-    Q_EMIT overlappingBottomYChanged (y() + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
+    emitBottomChanges ();
 }
 
 //-----------------------------------------------------------------------------
@@ -82,8 +82,24 @@ void ChannelGraphicsObject::hide ()
 //-------------------------------------------------------------------------------------------------
 void ChannelGraphicsObject::updateOverlapping ()
 {
-    Q_EMIT bottomYChanged (y() + height_);
+    emitBottomChanges ();
+}
+
+
+//-------------------------------------------------------------------------------------------------
+void ChannelGraphicsObject::emitBottomChanges ()
+{
+    Q_EMIT bottomYChanged (bottomY ());
     Q_EMIT overlappingBottomYChanged (y() + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
+}
+
+//-------------------------------------------------------------------------------------------------
+int ChannelGraphicsObject::bottomY ()
+{
+    if (previous_channel_)
+        return std::max<int> (height_ + y(), previous_channel_->bottomY());
+    else
+        return y() + height_;
 }
 
 //-------------------------------------------------------------------------------------------------

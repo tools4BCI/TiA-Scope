@@ -18,7 +18,8 @@ namespace tobiss { namespace scope {
 SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
                                             FourierTransformThread* ft_thread, QGraphicsItem *parent) :
     QGraphicsObject (parent),
-    width_ (900),
+    width_ (0),
+    height_ (0),
     signal_type_ (TypeConverter::stdStringToSignalTypeFlag (signal.type())),
     aperiodic_signal_ (0),
     view_settings_ (view_settings)
@@ -35,11 +36,13 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
         connect (view_settings_.data(), SIGNAL(channelVisibilityChanged (SignalTypeFlag, ChannelID, bool)), SLOT(setChannelVisibility(SignalTypeFlag,ChannelID,bool)));
         if (ft_thread)
             connect (ft_thread, SIGNAL (FTEnabledChanged (SignalTypeFlag, int, bool)), SLOT(ftEnabled(SignalTypeFlag,int,bool)));
+
+        ChannelGraphicsObject* previous_channel = 0;
         for (int channel_index = 0; channel_index < channel_amount; channel_index++)
         {
-            ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal.samplingRate(), data_buffer, view_settings, this);
-            if (channels_.size())
-                channel->connect (channels_[channel_index - 1], SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
+            ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal.samplingRate(), data_buffer, view_settings, previous_channel, this);
+            if (previous_channel)
+                channel->connect (previous_channel, SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
 
             channel->setPos (0, ChannelGraphicsObject::defaultHeight() * channels_.size());
             channel->setHeight (ChannelGraphicsObject::defaultHeight());
@@ -58,31 +61,29 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
                 fts_[channel_index] = ft_channel;
                 children_.append (ft_channel);
             }
+            previous_channel = channel;
         }
         connect (channels_[channel_amount - 1], SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
-
     }
 }
 
 //-----------------------------------------------------------------------------
 QRectF SignalGraphicsObject::boundingRect() const
 {
-    return QRectF (0, 0, width_, height ());
+    return QRectF (0, 0, width_, height_);
 }
 
 //-----------------------------------------------------------------------------
 int SignalGraphicsObject::height () const
 {
-    int height = 0;
-    if (channels_.size())
-    {
-        height = channels_[0]->height();
-        for (int index = 1; index < channels_.size(); index++)
-            height += channels_[index]->height() * (1.0 - view_settings_->getChannelOverlapping());
-    }
-    return height;
+    return height_;
 }
 
+//-----------------------------------------------------------------------------
+int SignalGraphicsObject::width () const
+{
+    return width_;
+}
 
 //-----------------------------------------------------------------------------
 void SignalGraphicsObject::updateToDataBuffer ()
@@ -97,17 +98,20 @@ void SignalGraphicsObject::updateToDataBuffer ()
 //-----------------------------------------------------------------------------
 void SignalGraphicsObject::setHeight (int height)
 {
-//    ChannelGraphicsObject* prev_channel = 0;
-//    Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
-//    {
-//        channel->setHeight (height / channels_.size());
-//        if (prev_channel)
-//            channel->setPos (0, prev_channel->pos().y() + prev_channel->height());
-//        prev_channel = channel;
-//    }
+    height_ = height;
     Q_EMIT bottomYChanged (y() + height);
 }
 
+//-----------------------------------------------------------------------------
+void SignalGraphicsObject::setWidth (int width)
+{
+    width_ = width;
+    qDebug () << "SignalGraphicsObject::setWidth " << width;
+    Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
+    {
+        channel->setWidth (width_);
+    }
+}
 
 //-------------------------------------------------------------------------------------------------
 void SignalGraphicsObject::ftEnabled (SignalTypeFlag signal, int channel, bool enbaled)

@@ -68,5 +68,12 @@ void SignalGraphicsScene::setSceneRectHeight (int height)
     setSceneRect (sceneRect().x(), sceneRect().y(), sceneRect().width(), height);
 }
 
+//---------------------------------------------------------------------------------------------
+void SignalGraphicsScene::setSceneRectWidth (int width)
+{
+    setSceneRect (sceneRect().x(), sceneRect().y(), width, sceneRect().height());
+}
+
+
 
 } } // namespace

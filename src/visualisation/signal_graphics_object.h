@@ -26,6 +26,7 @@ class SignalGraphicsObject : public QGraphicsObject
 {
     Q_OBJECT
     Q_PROPERTY (int height READ height WRITE setHeight)
+    Q_PROPERTY (int width READ width WRITE setWidth)
 public:
     explicit SignalGraphicsObject (Signal const& signal,
                                    QSharedPointer<DataBuffer const> data_buffer,
@@ -35,6 +36,7 @@ public:
 
     virtual QRectF boundingRect() const;
     int height () const;
+    int width () const;
     int defaultHeight () const {if (aperiodic_signal_) return 200; else return ChannelGraphicsObject::defaultHeight () * channels_.size();}
 
 Q_SIGNALS:
@@ -46,6 +48,7 @@ public Q_SLOTS:
     void setVisibleTrue () {setVisible (true);}
     void setVisibleFalse () {setVisible (false);}
     void setHeight (int height);
+    void setWidth (int width);
 
 private Q_SLOTS:
     void ftEnabled (SignalTypeFlag signal, int channel, bool enbaled);
@@ -57,6 +60,7 @@ private:
 
 
     int width_;
+    int height_;
     SignalTypeFlag signal_type_;
     QMap<int, ChannelGraphicsObject*> channels_;
     QMap<int, FrequencySpectrumGraphicsObject*> fts_;

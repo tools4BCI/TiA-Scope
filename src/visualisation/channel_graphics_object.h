@@ -20,6 +20,7 @@ public:
     explicit ChannelGraphicsObject (SignalTypeFlag signal, int channel,
                                     int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
                                     QSharedPointer<SignalViewSettings> view_settings,
+                                    ChannelGraphicsObject *previous_channel = 0,
                                     QGraphicsItem *parent = 0);
 
     virtual QRectF boundingRect() const;
@@ -42,10 +43,13 @@ private Q_SLOTS:
     void updateOverlapping ();
 
 private:
+    void emitBottomChanges ();
+    int bottomY ();
     virtual void contextMenuEvent (QGraphicsSceneContextMenuEvent *event);
 
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    ChannelGraphicsObject *previous_channel_;
     SignalTypeFlag const signal_;
     int channel_;
     int sampling_rate_;
