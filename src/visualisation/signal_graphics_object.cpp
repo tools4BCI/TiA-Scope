@@ -18,8 +18,8 @@ namespace tobiss { namespace scope {
 SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
                                             FourierTransformThread* ft_thread, QGraphicsItem *parent) :
     QGraphicsObject (parent),
-    width_ (0),
-    height_ (0),
+    width_ (100),
+    height_ (100),
     signal_type_ (TypeConverter::stdStringToSignalTypeFlag (signal.type())),
     aperiodic_signal_ (0),
     view_settings_ (view_settings)
@@ -154,9 +154,15 @@ void SignalGraphicsObject::wheelEvent (QGraphicsSceneWheelEvent* event)
     {
         event->accept ();
         if (event->delta() > 0)
-            view_settings_->setBasicYScaling (view_settings_->getBasicYScaling() * 2);
+        {
+            Q_FOREACH (BaseGraphicsObject* obj, children_)
+                obj->setYScalingFactor (obj->yScalingFactor() * 2);
+        }
         else if (event->delta() < 0)
-            view_settings_->setBasicYScaling (view_settings_->getBasicYScaling() / 2);
+        {
+            Q_FOREACH (BaseGraphicsObject* obj, children_)
+                obj->setYScalingFactor (obj->yScalingFactor() / 2);
+        }
     }
     else
         event->ignore();

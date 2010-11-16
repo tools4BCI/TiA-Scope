@@ -122,6 +122,7 @@ void MainWindow::on_actionConnect_triggered ()
              ++signal_iter)
         {
             SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
+            signal_object->setWidth (view_->width());
             signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
             graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
         }
