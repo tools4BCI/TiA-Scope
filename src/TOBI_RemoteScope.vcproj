@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="TOBI_RemoteScope"
+	ProjectGUID="{D777E45C-F75F-341F-BAD7-077FEAD267A4}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="release/"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;/usr/include/qt4/QtCore&quot;,&quot;/usr/include/qt4/QtGui&quot;,&quot;/usr/include/qt4&quot;,&quot;../external/include&quot;,&quot;.&quot;,&quot;release&quot;,&quot;.&quot;,/usr/share/qt4/mkspecs/win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
+				AssemblerListingLocation="release/"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="0"
+				GeneratePreprocessedFile="0"
+				ObjectFile="release/"
+				Optimization ="2"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_NO_DEBUG,QT_NO_KEYWORDS,QT_GUI_LIB,QT_CORE_LIB,NDEBUG"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="2"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="tiaclient.lib /usr/lib/libboost_system.a /usr/lib/libboost_date_time.a ticpp.lib QtGui.lib QtCore.lib"
+				AdditionalLibraryDirectories="/usr/lib,/home/eibel/TOBI/TOBI_RemoteScope/external/lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OutputFile="release/\TOBI_RemoteScope.exe"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true"/>
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_NO_DEBUG,QT_NO_KEYWORDS,QT_GUI_LIB,QT_CORE_LIB"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="1"
+			IntermediateDirectory="debug/"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;/usr/include/qt4/QtCore&quot;,&quot;/usr/include/qt4/QtGui&quot;,&quot;/usr/include/qt4&quot;,&quot;../external/include&quot;,&quot;.&quot;,&quot;debug&quot;,&quot;.&quot;,/usr/share/qt4/mkspecs/win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
+				AssemblerListingLocation="debug/"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="3"
+				GeneratePreprocessedFile="0"
+				ObjectFile="debug/"
+				Optimization ="4"
+				PreprocessorDefinitions="UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_NO_KEYWORDS,QT_GUI_LIB,QT_CORE_LIB"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="3"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="tiaclient.lib /usr/lib/libboost_system.a /usr/lib/libboost_date_time.a ticpp.lib QtGui.lib QtCore.lib"
+				AdditionalLibraryDirectories="/usr/lib,/home/eibel/TOBI/TOBI_RemoteScope/external/lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="debug/\TOBI_RemoteScope.exe"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true"/>
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_NO_KEYWORDS,QT_GUI_LIB,QT_CORE_LIB,_DEBUG"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="base/FFTReal.cpp"/>
+			<File
+				RelativePath="visualisation/aperiodic_data_graphics_object.cpp"/>
+			<File
+				RelativePath="config_widget/application_monitor_dock_widget.cpp"/>
+			<File
+				RelativePath="visualisation/button_graphics_object.cpp"/>
+			<File
+				RelativePath="visualisation/channel_graphics_object.cpp"/>
+			<File
+				RelativePath="connection_widget/connect_dialog.cpp"/>
+			<File
+				RelativePath="base/data_buffer.cpp"/>
+			<File
+				RelativePath="data_collector/fourier_transform_thread.cpp"/>
+			<File
+				RelativePath="visualisation/frequency_spectrum_graphics_object.cpp"/>
+			<File
+				RelativePath="base/helpers.cpp"/>
+			<File
+				RelativePath="visualisation/joystick_graphics_object.cpp"/>
+			<File
+				RelativePath="main.cpp"/>
+			<File
+				RelativePath="main_window.cpp"/>
+			<File
+				RelativePath="data_collector/reader_thread.cpp"/>
+			<File
+				RelativePath="visualisation/signal_graphics_object.cpp"/>
+			<File
+				RelativePath="visualisation/signal_graphics_scene.cpp"/>
+			<File
+				RelativePath="visualisation/signal_graphics_view.cpp"/>
+			<File
+				RelativePath="config_widget/signal_info_dock_widget.cpp"/>
+			<File
+				RelativePath="base/signal_view_settings.cpp"/>
+			<File
+				RelativePath="config_widget/subject_info_dock_widget.cpp"/>
+			<File
+				RelativePath="base/user_types.cpp"/>
+			<File
+				RelativePath="config_widget/view_settings_dock_widget.cpp"/>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="base/FFTReal.h"/>
+			<File
+				RelativePath="visualisation/aperiodic_data_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/aperiodic_data_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/aperiodic_data_graphics_object.h -o release/moc_aperiodic_data_graphics_object.cpp"
+						Description="MOC visualisation/aperiodic_data_graphics_object.h"
+						Outputs="release/moc_aperiodic_data_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/aperiodic_data_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/aperiodic_data_graphics_object.h -o debug/moc_aperiodic_data_graphics_object.cpp"
+						Description="MOC visualisation/aperiodic_data_graphics_object.h"
+						Outputs="debug/moc_aperiodic_data_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="config_widget/application_monitor_dock_widget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/application_monitor_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/application_monitor_dock_widget.h -o release/moc_application_monitor_dock_widget.cpp"
+						Description="MOC config_widget/application_monitor_dock_widget.h"
+						Outputs="release/moc_application_monitor_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/application_monitor_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/application_monitor_dock_widget.h -o debug/moc_application_monitor_dock_widget.cpp"
+						Description="MOC config_widget/application_monitor_dock_widget.h"
+						Outputs="debug/moc_application_monitor_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/base_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/base_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/base_graphics_object.h -o release/moc_base_graphics_object.cpp"
+						Description="MOC visualisation/base_graphics_object.h"
+						Outputs="release/moc_base_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/base_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/base_graphics_object.h -o debug/moc_base_graphics_object.cpp"
+						Description="MOC visualisation/base_graphics_object.h"
+						Outputs="debug/moc_base_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/base_signal_graphics_object.h"/>
+			<File
+				RelativePath="visualisation/button_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/button_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/button_graphics_object.h -o release/moc_button_graphics_object.cpp"
+						Description="MOC visualisation/button_graphics_object.h"
+						Outputs="release/moc_button_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/button_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/button_graphics_object.h -o debug/moc_button_graphics_object.cpp"
+						Description="MOC visualisation/button_graphics_object.h"
+						Outputs="debug/moc_button_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/channel_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/channel_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/channel_graphics_object.h -o release/moc_channel_graphics_object.cpp"
+						Description="MOC visualisation/channel_graphics_object.h"
+						Outputs="release/moc_channel_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/channel_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/channel_graphics_object.h -o debug/moc_channel_graphics_object.cpp"
+						Description="MOC visualisation/channel_graphics_object.h"
+						Outputs="debug/moc_channel_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="connection_widget/connect_dialog.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;connection_widget/connect_dialog.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 connection_widget/connect_dialog.h -o release/moc_connect_dialog.cpp"
+						Description="MOC connection_widget/connect_dialog.h"
+						Outputs="release/moc_connect_dialog.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;connection_widget/connect_dialog.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 connection_widget/connect_dialog.h -o debug/moc_connect_dialog.cpp"
+						Description="MOC connection_widget/connect_dialog.h"
+						Outputs="debug/moc_connect_dialog.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="base/data_buffer.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;base/data_buffer.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 base/data_buffer.h -o release/moc_data_buffer.cpp"
+						Description="MOC base/data_buffer.h"
+						Outputs="release/moc_data_buffer.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;base/data_buffer.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 base/data_buffer.h -o debug/moc_data_buffer.cpp"
+						Description="MOC base/data_buffer.h"
+						Outputs="debug/moc_data_buffer.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="data_collector/fourier_transform_thread.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;data_collector/fourier_transform_thread.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 data_collector/fourier_transform_thread.h -o release/moc_fourier_transform_thread.cpp"
+						Description="MOC data_collector/fourier_transform_thread.h"
+						Outputs="release/moc_fourier_transform_thread.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;data_collector/fourier_transform_thread.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 data_collector/fourier_transform_thread.h -o debug/moc_fourier_transform_thread.cpp"
+						Description="MOC data_collector/fourier_transform_thread.h"
+						Outputs="debug/moc_fourier_transform_thread.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/frequency_spectrum_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/frequency_spectrum_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/frequency_spectrum_graphics_object.h -o release/moc_frequency_spectrum_graphics_object.cpp"
+						Description="MOC visualisation/frequency_spectrum_graphics_object.h"
+						Outputs="release/moc_frequency_spectrum_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/frequency_spectrum_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/frequency_spectrum_graphics_object.h -o debug/moc_frequency_spectrum_graphics_object.cpp"
+						Description="MOC visualisation/frequency_spectrum_graphics_object.h"
+						Outputs="debug/moc_frequency_spectrum_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="base/helpers.h"/>
+			<File
+				RelativePath="visualisation/joystick_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/joystick_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/joystick_graphics_object.h -o release/moc_joystick_graphics_object.cpp"
+						Description="MOC visualisation/joystick_graphics_object.h"
+						Outputs="release/moc_joystick_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/joystick_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/joystick_graphics_object.h -o debug/moc_joystick_graphics_object.cpp"
+						Description="MOC visualisation/joystick_graphics_object.h"
+						Outputs="debug/moc_joystick_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="main_window.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;main_window.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 main_window.h -o release/moc_main_window.cpp"
+						Description="MOC main_window.h"
+						Outputs="release/moc_main_window.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;main_window.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 main_window.h -o debug/moc_main_window.cpp"
+						Description="MOC main_window.h"
+						Outputs="debug/moc_main_window.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="data_collector/reader_thread.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;data_collector/reader_thread.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 data_collector/reader_thread.h -o release/moc_reader_thread.cpp"
+						Description="MOC data_collector/reader_thread.h"
+						Outputs="release/moc_reader_thread.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;data_collector/reader_thread.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 data_collector/reader_thread.h -o debug/moc_reader_thread.cpp"
+						Description="MOC data_collector/reader_thread.h"
+						Outputs="debug/moc_reader_thread.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/signal_graphics_object.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/signal_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/signal_graphics_object.h -o release/moc_signal_graphics_object.cpp"
+						Description="MOC visualisation/signal_graphics_object.h"
+						Outputs="release/moc_signal_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/signal_graphics_object.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/signal_graphics_object.h -o debug/moc_signal_graphics_object.cpp"
+						Description="MOC visualisation/signal_graphics_object.h"
+						Outputs="debug/moc_signal_graphics_object.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/signal_graphics_scene.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/signal_graphics_scene.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/signal_graphics_scene.h -o release/moc_signal_graphics_scene.cpp"
+						Description="MOC visualisation/signal_graphics_scene.h"
+						Outputs="release/moc_signal_graphics_scene.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/signal_graphics_scene.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/signal_graphics_scene.h -o debug/moc_signal_graphics_scene.cpp"
+						Description="MOC visualisation/signal_graphics_scene.h"
+						Outputs="debug/moc_signal_graphics_scene.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="visualisation/signal_graphics_view.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/signal_graphics_view.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/signal_graphics_view.h -o release/moc_signal_graphics_view.cpp"
+						Description="MOC visualisation/signal_graphics_view.h"
+						Outputs="release/moc_signal_graphics_view.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;visualisation/signal_graphics_view.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 visualisation/signal_graphics_view.h -o debug/moc_signal_graphics_view.cpp"
+						Description="MOC visualisation/signal_graphics_view.h"
+						Outputs="debug/moc_signal_graphics_view.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="config_widget/signal_info_dock_widget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/signal_info_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/signal_info_dock_widget.h -o release/moc_signal_info_dock_widget.cpp"
+						Description="MOC config_widget/signal_info_dock_widget.h"
+						Outputs="release/moc_signal_info_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/signal_info_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/signal_info_dock_widget.h -o debug/moc_signal_info_dock_widget.cpp"
+						Description="MOC config_widget/signal_info_dock_widget.h"
+						Outputs="debug/moc_signal_info_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="base/signal_view_settings.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;base/signal_view_settings.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 base/signal_view_settings.h -o release/moc_signal_view_settings.cpp"
+						Description="MOC base/signal_view_settings.h"
+						Outputs="release/moc_signal_view_settings.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;base/signal_view_settings.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 base/signal_view_settings.h -o debug/moc_signal_view_settings.cpp"
+						Description="MOC base/signal_view_settings.h"
+						Outputs="debug/moc_signal_view_settings.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="config_widget/subject_info_dock_widget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/subject_info_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/subject_info_dock_widget.h -o release/moc_subject_info_dock_widget.cpp"
+						Description="MOC config_widget/subject_info_dock_widget.h"
+						Outputs="release/moc_subject_info_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/subject_info_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/subject_info_dock_widget.h -o debug/moc_subject_info_dock_widget.cpp"
+						Description="MOC config_widget/subject_info_dock_widget.h"
+						Outputs="debug/moc_subject_info_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="base/user_types.h"/>
+			<File
+				RelativePath="config_widget/view_settings_dock_widget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/view_settings_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;release&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/view_settings_dock_widget.h -o release/moc_view_settings_dock_widget.cpp"
+						Description="MOC config_widget/view_settings_dock_widget.h"
+						Outputs="release/moc_view_settings_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\moc.exe;config_widget/view_settings_dock_widget.h"
+						CommandLine="/usr/bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_KEYWORDS -DQT_GUI_LIB -DQT_CORE_LIB -I&quot;/usr/include/qt4/QtCore&quot; -I&quot;/usr/include/qt4/QtGui&quot; -I&quot;/usr/include/qt4&quot; -I&quot;../external/include&quot; -I&quot;.&quot; -I&quot;debug&quot; -I&quot;.&quot; -I/usr/share/qt4/mkspecs/win32-msvc2008 -D_MSC_VER=1500 -DWIN32 config_widget/view_settings_dock_widget.h -o debug/moc_view_settings_dock_widget.cpp"
+						Description="MOC config_widget/view_settings_dock_widget.h"
+						Outputs="debug/moc_view_settings_dock_widget.cpp"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="debug/moc_aperiodic_data_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_aperiodic_data_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_application_monitor_dock_widget.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_application_monitor_dock_widget.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_base_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_base_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_button_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_button_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_channel_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_channel_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_connect_dialog.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_connect_dialog.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_data_buffer.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_data_buffer.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_fourier_transform_thread.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_fourier_transform_thread.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_frequency_spectrum_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_frequency_spectrum_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_joystick_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_joystick_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_main_window.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_main_window.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_reader_thread.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_reader_thread.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_signal_graphics_object.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_signal_graphics_object.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_signal_graphics_scene.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_signal_graphics_scene.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_signal_graphics_view.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_signal_graphics_view.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_signal_info_dock_widget.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_signal_info_dock_widget.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_signal_view_settings.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_signal_view_settings.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_subject_info_dock_widget.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_subject_info_dock_widget.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/moc_view_settings_dock_widget.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/moc_view_settings_dock_widget.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="debug/qrc_resources.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="release/qrc_resources.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"/>
+			</File>
+			<File
+				RelativePath="ui_application_monitor_dock_widget.h"/>
+			<File
+				RelativePath="ui_connect_dialog.h"/>
+			<File
+				RelativePath="ui_connect_wizard.h"/>
+			<File
+				RelativePath="ui_main_window.h"/>
+			<File
+				RelativePath="ui_signal_info_dock_widget.h"/>
+			<File
+				RelativePath="ui_subject_info_dock_widget.h"/>
+			<File
+				RelativePath="ui_view_settings_dock_widget.h"/>
+		</Filter>
+		<Filter
+			Name="Form Files"
+			Filter="ui"
+			UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}"
+			ParseFiles="false">
+			<File
+				RelativePath="config_widget/application_monitor_dock_widget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/application_monitor_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/application_monitor_dock_widget.ui -o ui_application_monitor_dock_widget.h"
+						Description="UIC config_widget/application_monitor_dock_widget.ui"
+						Outputs="ui_application_monitor_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/application_monitor_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/application_monitor_dock_widget.ui -o ui_application_monitor_dock_widget.h"
+						Description="UIC config_widget/application_monitor_dock_widget.ui"
+						Outputs="ui_application_monitor_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="connection_widget/connect_dialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;connection_widget/connect_dialog.ui"
+						CommandLine="/usr/bin\uic.exe connection_widget/connect_dialog.ui -o ui_connect_dialog.h"
+						Description="UIC connection_widget/connect_dialog.ui"
+						Outputs="ui_connect_dialog.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;connection_widget/connect_dialog.ui"
+						CommandLine="/usr/bin\uic.exe connection_widget/connect_dialog.ui -o ui_connect_dialog.h"
+						Description="UIC connection_widget/connect_dialog.ui"
+						Outputs="ui_connect_dialog.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="connection_widget/connect_wizard.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;connection_widget/connect_wizard.ui"
+						CommandLine="/usr/bin\uic.exe connection_widget/connect_wizard.ui -o ui_connect_wizard.h"
+						Description="UIC connection_widget/connect_wizard.ui"
+						Outputs="ui_connect_wizard.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;connection_widget/connect_wizard.ui"
+						CommandLine="/usr/bin\uic.exe connection_widget/connect_wizard.ui -o ui_connect_wizard.h"
+						Description="UIC connection_widget/connect_wizard.ui"
+						Outputs="ui_connect_wizard.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="main_window.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;main_window.ui"
+						CommandLine="/usr/bin\uic.exe main_window.ui -o ui_main_window.h"
+						Description="UIC main_window.ui"
+						Outputs="ui_main_window.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;main_window.ui"
+						CommandLine="/usr/bin\uic.exe main_window.ui -o ui_main_window.h"
+						Description="UIC main_window.ui"
+						Outputs="ui_main_window.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="config_widget/signal_info_dock_widget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/signal_info_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/signal_info_dock_widget.ui -o ui_signal_info_dock_widget.h"
+						Description="UIC config_widget/signal_info_dock_widget.ui"
+						Outputs="ui_signal_info_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/signal_info_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/signal_info_dock_widget.ui -o ui_signal_info_dock_widget.h"
+						Description="UIC config_widget/signal_info_dock_widget.ui"
+						Outputs="ui_signal_info_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="config_widget/subject_info_dock_widget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/subject_info_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/subject_info_dock_widget.ui -o ui_subject_info_dock_widget.h"
+						Description="UIC config_widget/subject_info_dock_widget.ui"
+						Outputs="ui_subject_info_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/subject_info_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/subject_info_dock_widget.ui -o ui_subject_info_dock_widget.h"
+						Description="UIC config_widget/subject_info_dock_widget.ui"
+						Outputs="ui_subject_info_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="config_widget/view_settings_dock_widget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/view_settings_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/view_settings_dock_widget.ui -o ui_view_settings_dock_widget.h"
+						Description="UIC config_widget/view_settings_dock_widget.ui"
+						Outputs="ui_view_settings_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="/usr/bin\uic.exe;config_widget/view_settings_dock_widget.ui"
+						CommandLine="/usr/bin\uic.exe config_widget/view_settings_dock_widget.ui -o ui_view_settings_dock_widget.h"
+						Description="UIC config_widget/view_settings_dock_widget.ui"
+						Outputs="ui_view_settings_dock_widget.h"
+						Path="/usr"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="qrc;*"
+			UniqueIdentifier="{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}"
+			ParseFiles="false">
+			<File
+				RelativePath="../icons/autoscale.png"/>
+			<File
+				RelativePath="../icons/cancel.png"/>
+			<File
+				RelativePath="../icons/connect.png"/>
+			<File
+				RelativePath="../icons/player_play.png"/>
+			<File
+				RelativePath="../resources.qrc">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="../icons/autoscale.png;../icons/cancel.png;../icons/connect.png;../icons/player_play.png;../icons/scale-in.png;../icons/scale-out.png;../icons/tobi.png;../icons/user.png;../resources.qrc;/usr/bin/rcc"
+						CommandLine="/usr/bin/rcc -name resources ../resources.qrc -o release/qrc_resources.cpp"
+						Description="RCC ../resources.qrc"
+						Outputs="release/qrc_resources.cpp"
+						Path="/usr/bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="../icons/autoscale.png;../icons/cancel.png;../icons/connect.png;../icons/player_play.png;../icons/scale-in.png;../icons/scale-out.png;../icons/tobi.png;../icons/user.png;../resources.qrc;/usr/bin/rcc"
+						CommandLine="/usr/bin/rcc -name resources ../resources.qrc -o debug/qrc_resources.cpp"
+						Description="RCC ../resources.qrc"
+						Outputs="debug/qrc_resources.cpp"
+						Path="/usr/bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="../icons/scale-in.png"/>
+			<File
+				RelativePath="../icons/scale-out.png"/>
+			<File
+				RelativePath="../icons/tobi.png"/>
+			<File
+				RelativePath="../icons/user.png"/>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
