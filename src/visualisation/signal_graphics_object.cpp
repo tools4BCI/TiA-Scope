@@ -5,7 +5,7 @@
 #include "base/helpers.h"
 
 
-#include "definitions/constants.h"
+#include "tia/constants.h"
 
 #include <QPainter>
 #include <QGraphicsSimpleTextItem>

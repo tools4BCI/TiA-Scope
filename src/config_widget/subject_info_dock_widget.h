@@ -1,7 +1,7 @@
 #ifndef SUBJECT_INFO_DOCKWIDGET_H
 #define SUBJECT_INFO_DOCKWIDGET_H
 
-#include "config/ss_meta_info.h"
+#include "tia/ss_meta_info.h"
 
 #include <QDockWidget>
 

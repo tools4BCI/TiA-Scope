@@ -4,7 +4,7 @@
 #include "base/data_buffer.h"
 #include "base/signal_view_settings.h"
 
-#include "config/ss_meta_info.h"
+#include "tia/ss_meta_info.h"
 
 #include "data_collector/fourier_transform_thread.h"
 

@@ -19,9 +19,9 @@
 #include "data_collector/reader_thread.h"
 #include "data_collector/fourier_transform_thread.h"
 
-#include <tia/signalserver-client/ssclient.h>
-#include <tia/signalserver-client/ssconfig.h>
-#include <tia/config/ss_meta_info.h>
+#include "tia/ssclient.h"
+#include "tia/ssconfig.h"
+#include "tia/ss_meta_info.h"
 
 #include <QCoreApplication>
 #include <QSharedPointer>

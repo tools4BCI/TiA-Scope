@@ -2,7 +2,7 @@
 #include "button_graphics_object.h"
 #include "joystick_graphics_object.h"
 
-#include "definitions/defines.h"
+#include "tia/defines.h"
 
 
 namespace tobiss { namespace scope {

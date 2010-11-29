@@ -3,7 +3,7 @@
 
 #include "base/user_types.h"
 
-#include "config/ss_meta_info.h"
+#include "tia/ss_meta_info.h"
 
 #include <QDockWidget>
 #include <QTreeWidgetItem>

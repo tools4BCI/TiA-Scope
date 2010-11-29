@@ -1,9 +1,9 @@
 #include "connect_dialog.h"
 #include "ui_connect_wizard.h"
 
-#include <tia/signalserver-client/ssconfig.h>
-#include <tia/signalserver-client/ssclient.h>
-#include <tia/config/ss_meta_info.h>
+#include "tia/ssconfig.h"
+#include "tia/ssclient.h""
+#include "tia/ss_meta_info.h"
 
 #include <QSettings>
 #include <QMessageBox>

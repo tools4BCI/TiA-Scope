@@ -1,13 +1,21 @@
 CONFIG += no_keywords
 
-INCLUDEPATH += $$PWD/external/include \
-               $$PWD/src
+INCLUDEPATH += $$PWD/external/include
 
-LIBS += -L$$PWD/external/lib \
-        -ltiaclient \
-        /usr/lib/libboost_system.a \
-        /usr/lib/libboost_date_time.a \
-        -lticpp
+unix {
+    LIBS += -lboost_thread \
+            -lboost_system
+
+    HARDWARE_PLATFORM = $$system(uname -m)
+
+    contains( HARDWARE_PLATFORM, x86_64 ) {
+        LIBS += -L$$PWD/external/lib/linux64
+    } else {
+        LIBS += -L$$PWD/external/lib/linux32
+    }
+}
+
+LIBS += -ltiaclient -lticpp
 
 RESOURCES += \
     ../resources.qrc

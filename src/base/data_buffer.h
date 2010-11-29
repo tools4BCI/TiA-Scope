@@ -3,7 +3,7 @@
 
 #include "user_types.h"
 
-#include "config/ss_meta_info.h"
+#include "tia/ss_meta_info.h"
 
 #include <QObject>
 #include <QMap>

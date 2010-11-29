@@ -1,9 +1,9 @@
 #include "reader_thread.h"
 #include "base/user_types.h"
 
-#include <tia/datapacket/data_packet.h>
-#include <tia/signalserver-client/ssconfig.h>
-#include <tia/config/ss_meta_info.h>
+#include "tia/data_packet.h"
+#include "tia/ssconfig.h"
+#include "tia/ss_meta_info.h"
 
 #include <QDebug>
 #include <iostream>
