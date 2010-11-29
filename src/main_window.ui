@@ -51,7 +51,6 @@
    <addaction name="actionDisconnect"/>
    <addaction name="actionReceiveData"/>
    <addaction name="separator"/>
-   <addaction name="actionSettings"/>
   </widget>
   <action name="actionConnect">
    <property name="icon">
@@ -93,14 +92,6 @@
    </property>
    <property name="toolTip">
     <string>Receive Data from connected Server.</string>
-   </property>
-  </action>
-  <action name="actionSettings">
-   <property name="text">
-    <string>Settings</string>
-   </property>
-   <property name="toolTip">
-    <string>Settings</string>
    </property>
   </action>
  </widget>

@@ -64,6 +64,7 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
             previous_channel = channel;
         }
         connect (channels_[channel_amount - 1], SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
+        channels_[0]->updateOverlapping();
     }
 }
 

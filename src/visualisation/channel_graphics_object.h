@@ -37,10 +37,10 @@ public Q_SLOTS:
     void setYPos (int y_pos);
     void setHeight (int height);
     void updateView ();
+    void updateOverlapping ();
 
 private Q_SLOTS:
     void hide ();
-    void updateOverlapping ();
 
 private:
     void emitBottomChanges ();

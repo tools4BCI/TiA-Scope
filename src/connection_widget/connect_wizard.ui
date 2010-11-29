@@ -87,7 +87,7 @@
   </widget>
   <widget class="QWizardPage" name="selectionPage">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="title">
     <string>Coming Soon: Signal-/Channel-Selection</string>
