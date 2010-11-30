@@ -21,6 +21,9 @@ public:
 
     void setSubjectInfo (SubjectInfo const& subject_info);
 
+public Q_SLOTS:
+    void clear ();
+
 private:
     Ui::SubjectInfoDockWidget *ui;
 };

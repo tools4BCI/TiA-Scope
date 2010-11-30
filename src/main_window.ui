@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TOBI Remote Scope</string>
+   <string>TiA Scope</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">

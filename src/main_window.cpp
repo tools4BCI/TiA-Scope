@@ -54,10 +54,10 @@ MainWindow::MainWindow (QWidget *parent) :
 {
     ui->setupUi(this);
     view_ = new SignalGraphicsView (this);
-    fft_view_ = new SignalGraphicsView (this);
+    //fft_view_ = new SignalGraphicsView (this);
     this->setCentralWidget (splitter_);
     splitter_->addWidget (view_);
-    splitter_->addWidget (fft_view_);
+    //splitter_->addWidget (fft_view_);
 
     view_settings_widget_ = new ViewSettingsDockWidget (this);
     addDockWidget (Qt::LeftDockWidgetArea, view_settings_widget_);
@@ -110,7 +110,7 @@ void MainWindow::on_actionConnect_triggered ()
 
         subject_info_widget_->setSubjectInfo (config.subject_info);
         view_settings_widget_->setSignalViewSettings (signal_view_settings);
-        QSharedPointer<DataBuffer> data_buffer (new DataBuffer (config.signal_info.signals (), 5));
+        QSharedPointer<DataBuffer> data_buffer (new DataBuffer (config.signal_info.signals (), 30));
         MainWindowHelper::monitorObjectLife (monitor_widget_, data_buffer.data());
 
         ft_thread_ =  new FourierTransformThread (data_buffer, this);
@@ -163,6 +163,8 @@ void MainWindow::on_actionDisconnect_triggered ()
     ui->actionReceiveData->setEnabled (false);
     delete graphics_scene_;
     graphics_scene_ = 0;
+    subject_info_widget_->clear ();
+    signal_info_widget_->clear ();
 }
 
 //-------------------------------------------------------------------------------------------------

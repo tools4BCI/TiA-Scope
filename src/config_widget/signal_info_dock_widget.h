@@ -29,6 +29,9 @@ public:
 
     void setSignalInfo (SignalInfo const& signal_info);
 
+public Q_SLOTS:
+    void clear ();
+
 Q_SIGNALS:
     void channelVisibilityChanged (SignalTypeFlag signal, ChannelID channel, bool visibility);
     void signalChannelFTEnabledChanged (SignalTypeFlag signal, int channel, bool enabled);

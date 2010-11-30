@@ -44,6 +44,13 @@ void SignalInfoDockWidget::setSignalInfo (SignalInfo const& signal_info)
 }
 
 //-----------------------------------------------------------------------------
+void SignalInfoDockWidget::clear ()
+{
+    ui->signalTree->clear();
+}
+
+
+//-----------------------------------------------------------------------------
 void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int column)
 {
     if (initializing_)

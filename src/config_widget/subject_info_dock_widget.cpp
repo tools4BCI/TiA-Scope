@@ -31,8 +31,17 @@ void SubjectInfoDockWidget::setSubjectInfo (SubjectInfo const& subject_info)
     SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "Last Name", subject_info.surname().c_str());
 }
 
+//-----------------------------------------------------------------------------
+void SubjectInfoDockWidget::clear ()
+{
+    ui->table->setRowCount (0);
+}
+
+
+//-----------------------------------------------------------------------------
 namespace SubjectInfoDockWidgetHelper
 {
+    //-------------------------------------------------------------------------
     void addKeyAndValueToTable (QTableWidget* table, QString const& key, QString const& value)
     {
         QTableWidgetItem* key_item = new QTableWidgetItem ();
