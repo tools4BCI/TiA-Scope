@@ -11,7 +11,7 @@
 namespace tobiss { namespace scope {
 
 //-----------------------------------------------------------------------------
-ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, SSClient* client, bool udp,
+ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, TiAClient* client, bool udp,
                             QObject *parent) :
     QThread(parent),
     data_buffer_ (data_buffer),

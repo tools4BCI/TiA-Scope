@@ -19,7 +19,7 @@
 #include "data_collector/reader_thread.h"
 #include "data_collector/fourier_transform_thread.h"
 
-#include "tia/ssclient.h"
+#include "tia/tia_client.h"
 #include "tia/ssconfig.h"
 #include "tia/ss_meta_info.h"
 
@@ -43,6 +43,7 @@ namespace MainWindowHelper
 MainWindow::MainWindow (QWidget *parent) :
     QMainWindow (parent),
     ui (new Ui::MainWindow),
+    splitter_ (new QSplitter (Qt::Vertical, this)),
     signal_info_widget_ (0),
     subject_info_widget_ (0),
     monitor_widget_ (0),
@@ -53,7 +54,10 @@ MainWindow::MainWindow (QWidget *parent) :
 {
     ui->setupUi(this);
     view_ = new SignalGraphicsView (this);
-    this->setCentralWidget (view_);
+    fft_view_ = new SignalGraphicsView (this);
+    this->setCentralWidget (splitter_);
+    splitter_->addWidget (view_);
+    splitter_->addWidget (fft_view_);
 
     view_settings_widget_ = new ViewSettingsDockWidget (this);
     addDockWidget (Qt::LeftDockWidgetArea, view_settings_widget_);
@@ -95,7 +99,7 @@ void MainWindow::on_actionConnect_triggered ()
 
     QSharedPointer<SignalViewSettings> signal_view_settings (new SignalViewSettings);
 
-    client_ = new tobiss::SSClient ();
+    client_ = new tobiss::TiAClient ();
     try
     {
         client_->connect (connection_dialog.getIPAddress().toStdString(), connection_dialog.getPort());

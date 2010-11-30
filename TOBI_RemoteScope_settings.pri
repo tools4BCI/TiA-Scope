@@ -2,11 +2,11 @@ CONFIG += no_keywords
 
 INCLUDEPATH += $$PWD/external/include
 
-LIBS += -ltiaclient -lticpp
+LIBS += -ltia -lticpp
 
 unix {
-    LIBS += -lboost_thread \
-            -lboost_system
+    LIBS += /usr/lib/libboost_thread.a \
+            /usr/lib/libboost_system.a
 
     HARDWARE_PLATFORM = $$system(uname -m)
 

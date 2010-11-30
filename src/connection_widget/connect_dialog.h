@@ -9,7 +9,7 @@ namespace Ui {
 
 namespace tobiss {
 
-class SSClient;
+class TiAClient;
 
 namespace scope {
 
@@ -41,7 +41,7 @@ private Q_SLOTS:
 private:
     Ui::ConnectWizard *ui;
 
-    SSClient* client_;
+    TiAClient* client_;
 };
 
 } } // namespace

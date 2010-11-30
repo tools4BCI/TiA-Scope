@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QSplitter>
 
 namespace Ui {
     class MainWindow;
@@ -10,7 +11,7 @@ namespace Ui {
 
 namespace tobiss {
 
-class SSClient;
+class TiAClient;
 
 namespace scope {
 
@@ -43,6 +44,7 @@ private Q_SLOTS:
 
 private:
     Ui::MainWindow *ui;
+    QSplitter* splitter_;
     SignalInfoDockWidget* signal_info_widget_;
     SubjectInfoDockWidget* subject_info_widget_;
     ViewSettingsDockWidget* view_settings_widget_;
@@ -50,8 +52,9 @@ private:
     SignalGraphicsScene* graphics_scene_;
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
-    SSClient* client_;
+    TiAClient* client_;
     SignalGraphicsView* view_;
+    SignalGraphicsView* fft_view_;
 };
 
 } } // namespace

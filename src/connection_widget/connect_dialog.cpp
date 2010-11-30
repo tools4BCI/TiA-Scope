@@ -2,7 +2,7 @@
 #include "ui_connect_wizard.h"
 
 #include "tia/ssconfig.h"
-#include "tia/ssclient.h""
+#include "tia/tia_client.h""
 #include "tia/ss_meta_info.h"
 
 #include <QSettings>
@@ -14,7 +14,7 @@ namespace tobiss { namespace scope {
 ConnectWizard::ConnectWizard(QWidget *parent) :
     QWizard (parent),
     ui (new Ui::ConnectWizard),
-    client_ (new SSClient)
+    client_ (new TiAClient)
 {
     ui->setupUi(this);
     ui->portLineEdit->setValidator (new QIntValidator (0, 0xffff, this));

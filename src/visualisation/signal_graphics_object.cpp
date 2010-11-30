@@ -107,7 +107,6 @@ void SignalGraphicsObject::setHeight (int height)
 void SignalGraphicsObject::setWidth (int width)
 {
     width_ = width;
-    qDebug () << "SignalGraphicsObject::setWidth " << width;
     Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
     {
         channel->setWidth (width_);
