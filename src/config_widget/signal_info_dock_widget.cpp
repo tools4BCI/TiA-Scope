@@ -68,11 +68,8 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
     }
     else if (column == SignalInfoDockWidgetHelper::FT_COLUMN_INDEX)
     {
-        for (int child_index = 0; child_index < item->childCount(); child_index++)
-        {
-            Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), child_index,
-                                                  item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
-        }
+        Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
+                                              item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
     }
 }
 
@@ -91,7 +88,6 @@ namespace SignalInfoDockWidgetHelper
             signal_item->setText (NAME_COLUMN_INDEX, QString (signal_iter->first.c_str()));
             signal_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
             signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
-            signal_item->setCheckState (FT_COLUMN_INDEX, Qt::Unchecked);
             signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate ()).append( " Hz"));
             unsigned index = 0;
             Q_FOREACH (Channel channel, signal_iter->second.channels ())
@@ -102,6 +98,7 @@ namespace SignalInfoDockWidgetHelper
                 channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, TypeConverter::stdStringToSignalTypeFlag (signal_iter->first.c_str()));
                 channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, index);
                 channel_item->setText (NAME_COLUMN_INDEX, channel.id().c_str());
+                channel_item->setCheckState (FT_COLUMN_INDEX, Qt::Unchecked);
                 index++;
             }
         }

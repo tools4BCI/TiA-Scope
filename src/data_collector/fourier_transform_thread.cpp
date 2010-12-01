@@ -20,7 +20,9 @@ FourierTransformThread::FourierTransformThread (QSharedPointer<DataBuffer const>
     in_buffer_ (0),
     out_buffer_ (0),
     buffers_size_ (0),
-    running_ (false)
+    running_ (false),
+    ln_ (false),
+    window_size_in_secs_ (1)
 {
     setObjectName (QString("FourierTransformThread - 0x").append(QString::number(reinterpret_cast<int const>(this), 16)));
 }
@@ -41,9 +43,10 @@ void FourierTransformThread::run ()
     int update_interval = 0;
     QSettings settings;
 
-
     while (running_)
     {
+        ln_ = settings.value ("fourier/ln", ln_).toBool();
+        window_size_in_secs_ = settings.value ("fourier/window_size_s", window_size_in_secs_).toDouble();
         Q_FOREACH (SignalTypeFlag signal, ft_enabled_.keys())
         {
             Q_FOREACH (int channel, ft_enabled_[signal].keys())
@@ -58,7 +61,7 @@ void FourierTransformThread::run ()
         }
 
         elapsed_time = time_.elapsed ();
-        update_interval = settings.value ("fourier/update_interval_msec", 40).toInt();
+        update_interval = settings.value ("fourier/update_interval_msec", 160).toInt();
         if (elapsed_time < update_interval)
             usleep ((update_interval - elapsed_time) * 1000);
         time_.restart ();
@@ -72,8 +75,8 @@ void FourierTransformThread::calculateAndEmitFT (SignalTypeFlag signal, int chan
     int sample_rate = data_buffer_->sampleRate (signal);
     int buffer_limit = data_buffer_->getSampleLimit (signal);
 
-    int num_samples = 1; // has to a power of 2
-    while (num_samples < (sample_rate * 2))
+    int num_samples = 1; // has to become a power of 2
+    while (num_samples < (sample_rate * window_size_in_secs_))
         num_samples *= 2;
 
     FourierTransformThreadHelper::allocateBuffers (in_buffer_, out_buffer_, buffers_size_, num_samples);
@@ -96,6 +99,14 @@ void FourierTransformThread::calculateAndEmitFT (SignalTypeFlag signal, int chan
     ft_data_->resize (num_samples / 2);
     for (int index = 0; index < (num_samples / 2) ; index++)
         ft_data_->operator [](index) = pow(out_buffer_[index], 2) + pow(out_buffer_[(num_samples/2)+index], 2);
+    if (ln_)
+    {
+        for (int index = 0; index < ft_data_->size(); index++)
+        {
+            if (ft_data_->operator [](index) > 0)
+                ft_data_->operator [](index) = log (ft_data_->operator [](index));
+        }
+    }
 
     Q_EMIT FTFinished (*ft_data_, signal, channel, sample_rate / 2);
 }

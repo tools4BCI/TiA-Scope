@@ -50,6 +50,7 @@ private:
     ViewSettingsDockWidget* view_settings_widget_;
     ApplicationMonitorDockWidget* monitor_widget_;
     SignalGraphicsScene* graphics_scene_;
+    SignalGraphicsScene* fft_graphics_scene_;
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
     TiAClient* client_;

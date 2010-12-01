@@ -2,6 +2,8 @@
 #include "ui_view_settings_dock_widget.h"
 #include "base/helpers.h"
 
+#include <QSettings>
+
 namespace tobiss { namespace scope {
 
 //-------------------------------------------------------------------------------------------------
@@ -53,6 +55,29 @@ void ViewSettingsDockWidget::on_channelOverlappingSlider_valueChanged (int value
     signal_view_settings_->setChannelOverlapping (static_cast<float>(value) / 100.0);
 //    helpers::animateProperty (signal_view_settings_.data(), "channelOverlapping", signal_view_settings_->getChannelOverlapping(), );
 }
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_fftLogCheckbox_toggled (bool enabled)
+{
+    QSettings settings;
+    settings.setValue ("fourier/ln", enabled);
+}
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_fftUpdateIntervalSpinbox_valueChanged (int value)
+{
+    QSettings settings;
+    settings.setValue ("fourier/update_interval_msec", value);
+}
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_fftWindowSizeSpinbox_valueChanged (double value)
+{
+    QSettings settings;
+    settings.setValue ("fourier/window_size_s", value);
+}
+
+
 
 
 } } // namespace

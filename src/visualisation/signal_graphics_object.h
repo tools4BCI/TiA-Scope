@@ -51,7 +51,6 @@ public Q_SLOTS:
     void setWidth (int width);
 
 private Q_SLOTS:
-    void ftEnabled (SignalTypeFlag signal, int channel, bool enbaled);
     void setChannelVisibility (SignalTypeFlag signal, ChannelID channel, bool visible);
 
 private:

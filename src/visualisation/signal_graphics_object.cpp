@@ -35,36 +35,47 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
     {
         connect (view_settings_.data(), SIGNAL(channelVisibilityChanged (SignalTypeFlag, ChannelID, bool)), SLOT(setChannelVisibility(SignalTypeFlag,ChannelID,bool)));
         if (ft_thread)
-            connect (ft_thread, SIGNAL (FTEnabledChanged (SignalTypeFlag, int, bool)), SLOT(ftEnabled(SignalTypeFlag,int,bool)));
-
-        ChannelGraphicsObject* previous_channel = 0;
-        for (int channel_index = 0; channel_index < channel_amount; channel_index++)
         {
-            ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal.samplingRate(), data_buffer, view_settings, previous_channel, this);
-            if (previous_channel)
-                channel->connect (previous_channel, SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
-
-            channel->setPos (0, ChannelGraphicsObject::defaultHeight() * channels_.size());
-            channel->setHeight (ChannelGraphicsObject::defaultHeight());
-            channel->setWidth (width_ - 50);
-            channels_[channel_index] = channel;
-            children_.append (channel);
-            QGraphicsSimpleTextItem* channel_label = new QGraphicsSimpleTextItem (signal.channels()[channel_index].id().c_str (), channel);
-            channel_label->setPos (400, channel->height() / 2);
-            if (ft_thread)
+            FrequencySpectrumGraphicsObject* previous_channel = 0;
+            for (int channel_index = 0; channel_index < channel_amount; channel_index++)
             {
                 FrequencySpectrumGraphicsObject* ft_channel = new FrequencySpectrumGraphicsObject (signal_type_, channel_index, this);
-                ft_channel->setPos (450, ChannelGraphicsObject::defaultHeight() * (channels_.size() - 1));
-                ft_channel->setHeight (ChannelGraphicsObject::defaultHeight());
+                if (previous_channel)
+                {
+                    ft_channel->connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setYPos(int)));
+                    ft_channel->setPos (0, previous_channel->height() + previous_channel->y());
+                }
+                ft_channel->setHeight (BaseGraphicsObject::defaultHeight());
                 ft_channel->setWidth (400);
                 ft_channel->connect (ft_thread, SIGNAL(FTFinished(QVector<double>, SignalTypeFlag, int, int)), SLOT(updateData (QVector<double>, SignalTypeFlag, int, int)), Qt::BlockingQueuedConnection);
                 fts_[channel_index] = ft_channel;
                 children_.append (ft_channel);
+                previous_channel = ft_channel;
             }
-            previous_channel = channel;
+            connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
+            fts_[0]->setYPos (0);
         }
-        connect (channels_[channel_amount - 1], SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
-        channels_[0]->updateOverlapping();
+        else
+        {
+            ChannelGraphicsObject* previous_channel = 0;
+            for (int channel_index = 0; channel_index < channel_amount; channel_index++)
+            {
+                ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal.samplingRate(), data_buffer, view_settings, previous_channel, this);
+                if (previous_channel)
+                    channel->connect (previous_channel, SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
+
+                channel->setPos (0, ChannelGraphicsObject::defaultHeight() * channels_.size());
+                channel->setHeight (ChannelGraphicsObject::defaultHeight());
+                channel->setWidth (width_);
+                channels_[channel_index] = channel;
+                children_.append (channel);
+                QGraphicsSimpleTextItem* channel_label = new QGraphicsSimpleTextItem (signal.channels()[channel_index].id().c_str (), channel);
+                channel_label->setPos (400, channel->height() / 2);
+                previous_channel = channel;
+            }
+            connect (channels_[channel_amount - 1], SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
+            channels_[0]->updateOverlapping();
+        }
     }
 }
 
@@ -110,18 +121,6 @@ void SignalGraphicsObject::setWidth (int width)
     Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
     {
         channel->setWidth (width_);
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-void SignalGraphicsObject::ftEnabled (SignalTypeFlag signal, int channel, bool enbaled)
-{
-    if (signal == signal_type_)
-    {
-        if (enbaled)
-            helpers::animateProperty (channels_[channel], "width", channels_[channel]->width(), (width_ / 2) - 50);
-        else
-            helpers::animateProperty (channels_[channel], "width", channels_[channel]->width(), width_ - 50);
     }
 }
 

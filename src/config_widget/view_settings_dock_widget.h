@@ -27,6 +27,9 @@ private Q_SLOTS:
     void on_increaseYScaling_clicked ();
     void on_decreaseYScaling_clicked ();
     void on_channelOverlappingSlider_valueChanged (int value);
+    void on_fftLogCheckbox_toggled (bool enabled);
+    void on_fftUpdateIntervalSpinbox_valueChanged (int value);
+    void on_fftWindowSizeSpinbox_valueChanged (double value);
 
 private:
     Ui::ViewSettingsDockWidget *ui;

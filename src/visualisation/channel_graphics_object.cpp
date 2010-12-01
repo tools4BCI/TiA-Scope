@@ -26,32 +26,18 @@ ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel
     channel_ (channel),
     sampling_rate_ (sampling_rate),
     data_buffer_ (data_buffer),
-    height_ (0),
     view_settings_ (view_settings)
 {
     cyclic_start_ = QPointF (0, 0);
     error_ = 0;
+    connect (this, SIGNAL(bottomYChanged(int)), SLOT(emitOverlappingBottomChanges(int)));
     connect (view_settings_.data(), SIGNAL(channelOverlappingChanged()), SLOT(updateOverlapping()));
 }
 
 //-----------------------------------------------------------------------------
 QRectF ChannelGraphicsObject::boundingRect() const
 {
-    return QRectF (0, 0, width (), height_);
-}
-
-//-----------------------------------------------------------------------------
-void ChannelGraphicsObject::setYPos (int y_pos)
-{
-    setY (y_pos);
-    emitBottomChanges ();
-}
-
-//-----------------------------------------------------------------------------
-void ChannelGraphicsObject::setHeight (int height)
-{
-    height_ = height;
-    emitBottomChanges ();
+    return QRectF (0, 0, width (), height ());
 }
 
 //-----------------------------------------------------------------------------
@@ -82,24 +68,22 @@ void ChannelGraphicsObject::hide ()
 //-------------------------------------------------------------------------------------------------
 void ChannelGraphicsObject::updateOverlapping ()
 {
-    emitBottomChanges ();
+    Q_EMIT bottomYChanged (bottomY ());
 }
 
-
 //-------------------------------------------------------------------------------------------------
-void ChannelGraphicsObject::emitBottomChanges ()
+void ChannelGraphicsObject::emitOverlappingBottomChanges (int)
 {
-    Q_EMIT bottomYChanged (bottomY ());
-    Q_EMIT overlappingBottomYChanged (y() + ((1.0 - view_settings_->getChannelOverlapping()) * height_ ));
+    Q_EMIT overlappingBottomYChanged (y() + ((1.0 - view_settings_->getChannelOverlapping()) * height ()));
 }
 
 //-------------------------------------------------------------------------------------------------
 int ChannelGraphicsObject::bottomY ()
 {
     if (previous_channel_)
-        return std::max<int> (height_ + y(), previous_channel_->bottomY());
+        return std::max<int> (height () + y(), previous_channel_->bottomY());
     else
-        return y() + height_;
+        return y() + height ();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -115,11 +99,11 @@ void ChannelGraphicsObject::contextMenuEvent (QGraphicsSceneContextMenuEvent *ev
 void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     painter->setPen (Qt::black);
-    painter->setClipping (true);
-    painter->setClipRect (boundingRect());
+    //painter->setClipping (false);
+    //painter->setClipRect (boundingRect());
     if (view_settings_->getChannelOverlapping() == 0)
         painter->drawRect (boundingRect());
-    painter->translate (0, height_ / 2);
+    painter->translate (0, height() / 2);
     bool cyclic_mode = view_settings_->getCyclicMode();
 
     QPointF first (width (), 0);
@@ -132,7 +116,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
 
     painter->setPen (Qt::red);
     if (cyclic_mode)
-        painter->drawLine (cyclic_start_.x(), -height_ / 2, cyclic_start_.x(), height_ / 2);
+        painter->drawLine (cyclic_start_.x(), -height() / 2, cyclic_start_.x(), height() / 2);
     painter->setPen (Qt::darkBlue);
     if (cyclic_mode)
         first = cyclic_start_;

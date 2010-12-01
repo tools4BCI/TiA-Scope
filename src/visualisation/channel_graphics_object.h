@@ -15,7 +15,6 @@ namespace tobiss { namespace scope {
 class ChannelGraphicsObject : public BaseGraphicsObject
 {
     Q_OBJECT
-    Q_PROPERTY (int height READ height WRITE setHeight)
 public:
     explicit ChannelGraphicsObject (SignalTypeFlag signal, int channel,
                                     int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
@@ -25,25 +24,18 @@ public:
 
     virtual QRectF boundingRect() const;
 
-    int height () const {return height_;}
-
-    static int defaultHeight () {return 200;}
-
 Q_SIGNALS:
-    void bottomYChanged (int bottom_y);
     void overlappingBottomYChanged (int overlapped_bottom_y);
 
 public Q_SLOTS:
-    void setYPos (int y_pos);
-    void setHeight (int height);
     void updateView ();
     void updateOverlapping ();
 
 private Q_SLOTS:
     void hide ();
+    void emitOverlappingBottomChanges (int bottom_y);
 
 private:
-    void emitBottomChanges ();
     int bottomY ();
     virtual void contextMenuEvent (QGraphicsSceneContextMenuEvent *event);
 
@@ -54,7 +46,6 @@ private:
     int channel_;
     int sampling_rate_;
     QSharedPointer<DataBuffer const> data_buffer_;
-    int height_;
     QSharedPointer<SignalViewSettings> view_settings_;
 
     QPointF cyclic_start_;

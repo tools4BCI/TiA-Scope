@@ -20,4 +20,5 @@ SOURCES += \
     $$PWD/button_graphics_object.cpp \
     $$PWD/aperiodic_data_graphics_object.cpp \
     $$PWD/joystick_graphics_object.cpp \
-    visualisation/signal_graphics_view.cpp
+    visualisation/signal_graphics_view.cpp \
+    visualisation/base_graphics_object.cpp

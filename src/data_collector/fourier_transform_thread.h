@@ -44,6 +44,8 @@ private:
     QMutex ft_enabled_mutex_;
     QMap<SignalTypeFlag, QHash<int, bool> > ft_enabled_;
     bool running_;
+    bool ln_;
+    double window_size_in_secs_;
 };
 
 } } // namespace

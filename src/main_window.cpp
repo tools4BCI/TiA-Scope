@@ -54,10 +54,10 @@ MainWindow::MainWindow (QWidget *parent) :
 {
     ui->setupUi(this);
     view_ = new SignalGraphicsView (this);
-    //fft_view_ = new SignalGraphicsView (this);
+    fft_view_ = new SignalGraphicsView (this);
     this->setCentralWidget (splitter_);
     splitter_->addWidget (view_);
-    //splitter_->addWidget (fft_view_);
+    splitter_->addWidget (fft_view_);
 
     view_settings_widget_ = new ViewSettingsDockWidget (this);
     addDockWidget (Qt::LeftDockWidgetArea, view_settings_widget_);
@@ -117,7 +117,10 @@ void MainWindow::on_actionConnect_triggered ()
         MainWindowHelper::monitorObjectLife (monitor_widget_, ft_thread_);
 
         graphics_scene_ = new SignalGraphicsScene (this);
+        fft_graphics_scene_ = new SignalGraphicsScene (this);
         graphics_scene_->connect (view_, SIGNAL(widthChanged(int)), SLOT(setSceneRectWidth(int)));
+        fft_graphics_scene_->connect (fft_view_, SIGNAL(widthChanged(int)), SLOT(setSeneRectWidth(int)));
+
         MainWindowHelper::monitorObjectLife (monitor_widget_, graphics_scene_);
         ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
@@ -125,13 +128,20 @@ void MainWindow::on_actionConnect_triggered ()
              signal_iter != config.signal_info.signals().end ();
              ++signal_iter)
         {
-            SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
+            SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings);
             signal_object->setWidth (view_->width());
             signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
             graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
+
+            SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
+            ft_signal_object->setWidth (view_->width());
+            ft_signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
+            fft_graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), ft_signal_object);
         }
         view_->setScene (graphics_scene_);
         graphics_scene_->startTimer (40);
+
+        fft_view_->setScene (fft_graphics_scene_);
 
         reader_thread_ = new ReaderThread (data_buffer, client_, connection_dialog.UDPEnabled(), this);
         MainWindowHelper::monitorObjectLife (monitor_widget_, reader_thread_);
