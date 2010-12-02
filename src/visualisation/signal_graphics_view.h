@@ -18,7 +18,7 @@ Q_SIGNALS:
 public Q_SLOTS:
 
 private:
-    void resizeEvent (QResizeEvent * event) {Q_EMIT widthChanged (event->size().width());}
+    void resizeEvent (QResizeEvent* event) {Q_EMIT widthChanged (event->size().width());}
 
 };
 

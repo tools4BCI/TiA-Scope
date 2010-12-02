@@ -40,13 +40,14 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
             for (int channel_index = 0; channel_index < channel_amount; channel_index++)
             {
                 FrequencySpectrumGraphicsObject* ft_channel = new FrequencySpectrumGraphicsObject (signal_type_, channel_index, this);
+                ft_channel->connect (ft_thread, SIGNAL(FTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableDrawing(SignalTypeFlag,int,bool)));
                 if (previous_channel)
                 {
                     ft_channel->connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setYPos(int)));
-                    ft_channel->setPos (0, previous_channel->height() + previous_channel->y());
+                    ft_channel->setPos (0, 0);
                 }
-                ft_channel->setHeight (BaseGraphicsObject::defaultHeight());
-                ft_channel->setWidth (400);
+                ft_channel->setHeight (0);
+                ft_channel->setWidth (width_);
                 ft_channel->connect (ft_thread, SIGNAL(FTFinished(QVector<double>, SignalTypeFlag, int, int)), SLOT(updateData (QVector<double>, SignalTypeFlag, int, int)), Qt::BlockingQueuedConnection);
                 fts_[channel_index] = ft_channel;
                 children_.append (ft_channel);
@@ -73,7 +74,7 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
                 channel_label->setPos (400, channel->height() / 2);
                 previous_channel = channel;
             }
-            connect (channels_[channel_amount - 1], SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
+            connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
             channels_[0]->updateOverlapping();
         }
     }
@@ -118,16 +119,16 @@ void SignalGraphicsObject::setHeight (int height)
 void SignalGraphicsObject::setWidth (int width)
 {
     width_ = width;
-    Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
+    Q_FOREACH (BaseGraphicsObject* child, children_)
     {
-        channel->setWidth (width_);
+        child->setWidth (width_);
     }
 }
 
 //-------------------------------------------------------------------------------------------------
 void SignalGraphicsObject::setChannelVisibility (SignalTypeFlag signal, ChannelID channel, bool visible)
 {
-    if (signal == signal_type_)
+    if (signal == signal_type_ && fts_.size() == 0)
     {
         if (visible)
             helpers::animateProperty (channels_[channel], "height", channels_[channel]->height(), ChannelGraphicsObject::defaultHeight());

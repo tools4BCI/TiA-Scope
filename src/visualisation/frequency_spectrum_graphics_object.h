@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QLinkedList>
 #include <QSharedPointer>
+#include <QPixmap>
 
 namespace tobiss { namespace scope {
 
@@ -19,6 +20,7 @@ public:
     virtual QRectF boundingRect() const;
 public Q_SLOTS:
     void updateData (QVector<double> data, SignalTypeFlag signal, int channel, int frequency_range);
+    void enableDrawing (SignalTypeFlag signal, int channel, bool enabled);
 
 private:
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -35,6 +37,12 @@ private:
     int frequency_range_;
     //QVector<double> data_;
     QLinkedList<QVector<double> > history_;
+    QPixmap buffer_;
+    int buffer_current_pos_;
+    bool enabled_;
+    int lower_index_;
+    int upper_index_;
+    int max_index_;
 };
 
 } } // namespace

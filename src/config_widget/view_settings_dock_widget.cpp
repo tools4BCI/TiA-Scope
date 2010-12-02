@@ -77,6 +77,22 @@ void ViewSettingsDockWidget::on_fftWindowSizeSpinbox_valueChanged (double value)
     settings.setValue ("fourier/window_size_s", value);
 }
 
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_lowerFrequencyBound_valueChanged (int value)
+{
+    QSettings settings;
+    settings.setValue ("fourier/lower_bound", value);
+}
+
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_upperFrequencyBound_valueChanged (int value)
+{
+    QSettings settings;
+    settings.setValue ("fourier/upper_bound", value);
+}
+
+
 
 
 

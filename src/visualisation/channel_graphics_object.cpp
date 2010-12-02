@@ -99,8 +99,8 @@ void ChannelGraphicsObject::contextMenuEvent (QGraphicsSceneContextMenuEvent *ev
 void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     painter->setPen (Qt::black);
-    //painter->setClipping (false);
-    //painter->setClipRect (boundingRect());
+    painter->setClipping (false);
+    painter->setClipRect (boundingRect());
     if (view_settings_->getChannelOverlapping() == 0)
         painter->drawRect (boundingRect());
     painter->translate (0, height() / 2);

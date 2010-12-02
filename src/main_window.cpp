@@ -134,8 +134,8 @@ void MainWindow::on_actionConnect_triggered ()
             graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
 
             SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
-            ft_signal_object->setWidth (view_->width());
-            ft_signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
+            ft_signal_object->setWidth (fft_view_->width());
+            ft_signal_object->connect (fft_view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
             fft_graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), ft_signal_object);
         }
         view_->setScene (graphics_scene_);
