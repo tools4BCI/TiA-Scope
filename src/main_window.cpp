@@ -3,6 +3,7 @@
 
 #include "base/data_buffer.h"
 #include "base/signal_view_settings.h"
+#include "base/ft_view_settings.h"
 #include "base/helpers.h"
 
 #include "visualisation/signal_graphics_object.h"
@@ -91,13 +92,10 @@ void MainWindow::on_actionConnect_triggered ()
     ConnectWizard connection_dialog;
     if (connection_dialog.exec() != QDialog::Accepted)
         return;
-
-    QSettings settings;
-    settings.setValue ("connection/ip", connection_dialog.getIPAddress());
-    settings.setValue ("connection/port", connection_dialog.getPort());
-    settings.setValue ("connection/udp_enabled", connection_dialog.UDPEnabled());
+    ConnectWizard::saveSettings (connection_dialog);
 
     QSharedPointer<SignalViewSettings> signal_view_settings (new SignalViewSettings);
+    QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings);
 
     client_ = new tobiss::TiAClient ();
     try
@@ -110,6 +108,7 @@ void MainWindow::on_actionConnect_triggered ()
 
         subject_info_widget_->setSubjectInfo (config.subject_info);
         view_settings_widget_->setSignalViewSettings (signal_view_settings);
+        view_settings_widget_->setFTViewSettings (ft_view_settings);
         QSharedPointer<DataBuffer> data_buffer (new DataBuffer (config.signal_info.signals (), 30));
         MainWindowHelper::monitorObjectLife (monitor_widget_, data_buffer.data());
 
@@ -133,7 +132,7 @@ void MainWindow::on_actionConnect_triggered ()
             signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
             graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
 
-            SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_thread_);
+            SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_view_settings, ft_thread_);
             ft_signal_object->setWidth (fft_view_->width());
             ft_signal_object->connect (fft_view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
             fft_graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), ft_signal_object);

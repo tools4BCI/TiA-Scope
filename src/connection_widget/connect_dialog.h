@@ -21,6 +21,9 @@ class ConnectWizard : public QWizard
 
 public:
     //-------------------------------------------------------------------------
+    static void saveSettings (ConnectWizard const& connect_wizard);
+
+    //-------------------------------------------------------------------------
     explicit ConnectWizard (QWidget *parent = 0);
 
     //-------------------------------------------------------------------------

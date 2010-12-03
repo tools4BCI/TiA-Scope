@@ -2,6 +2,7 @@
 #define VIEW_SETTINGS_DOCK_WIDGET_H
 
 #include "base/signal_view_settings.h"
+#include "base/ft_view_settings.h"
 
 #include <QDockWidget>
 
@@ -22,6 +23,7 @@ public:
     ~ViewSettingsDockWidget();
 
     void setSignalViewSettings (QSharedPointer<SignalViewSettings> settings);
+    void setFTViewSettings (QSharedPointer<FTViewSettings> settings);
 
 private Q_SLOTS:
     void on_increaseYScaling_clicked ();
@@ -36,6 +38,7 @@ private Q_SLOTS:
 private:
     Ui::ViewSettingsDockWidget *ui;
     QSharedPointer<SignalViewSettings> signal_view_settings_;
+    QSharedPointer<FTViewSettings> ft_view_settings_;
 };
 
 } } // namespace

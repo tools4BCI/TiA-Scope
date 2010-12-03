@@ -9,13 +9,15 @@
 namespace tobiss { namespace scope {
 
 //-------------------------------------------------------------------------------------------------
-FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel, QGraphicsItem *parent) :
+FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel,
+                                                                  QSharedPointer<FTViewSettings> view_settings, QGraphicsItem *parent) :
     BaseGraphicsObject (parent),
     SIGNAL_ (signal),
     CHANNEL_ (channel),
     buffer_ (100, 100),
     buffer_current_pos_ (0),
-    enabled_ (false)
+    enabled_ (false),
+    view_settings_ (view_settings)
 {
     buffer_ = QPixmap (100, 200);
 }
@@ -46,10 +48,8 @@ void FrequencySpectrumGraphicsObject::updateData (QVector<double> data, SignalTy
 
     int hsv_value = 240;
 
-
-    QSettings settings;
-    lower_index_ = settings.value ("fourier/lower_bound", 0).toInt();
-    upper_index_ = settings.value ("fourier/upper_bound", 100).toInt();
+    lower_index_ = view_settings_->lowerFrequenceBound ();
+    upper_index_ = view_settings_->upperFrequenceBound ();
     lower_index_ *= data.size ();
     upper_index_ *= data.size ();
     lower_index_ /= frequency_range_;
@@ -142,10 +142,10 @@ void FrequencySpectrumGraphicsObject::colouredVisualisation (QPainter *painter)
     painter->drawPixmap (QRectF (drawing_width - adapted_pos, 0, adapted_pos, height()), buffer_, QRectF (0, 0, buffer_current_pos_, upper_index_ - lower_index_));
     painter->drawPixmap (QRectF (0, 0, drawing_width - adapted_pos, height()), buffer_, QRectF (buffer_current_pos_, 0, buffer_.width() - buffer_current_pos_, upper_index_ - lower_index_));
 
-    painter->drawText (drawing_width + 5, height() - 5, QString::number (lower_index_ * frequency_range_ / max_index_).append("Hz"));
+    painter->drawText (drawing_width + 5, height() - 5, QString::number (view_settings_->lowerFrequenceBound ()).append("Hz"));
     painter->drawText (drawing_width + 5, height() / 2, QString::number (((lower_index_ + upper_index_) / 2) * frequency_range_ / max_index_).append("Hz"));
     painter->drawLine (drawing_width, height() / 2, drawing_width + 5, height() / 2);
-    painter->drawText (drawing_width + 5, 12, QString::number (upper_index_ * frequency_range_ / max_index_).append("Hz"));
+    painter->drawText (drawing_width + 5, 12, QString::number (view_settings_->upperFrequenceBound ()).append("Hz"));
 }
 
 

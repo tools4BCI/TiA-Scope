@@ -3,6 +3,7 @@
 
 #include "base_graphics_object.h"
 #include "base/user_types.h"
+#include "base/ft_view_settings.h"
 
 #include <QVector>
 #include <QLinkedList>
@@ -15,7 +16,8 @@ class FrequencySpectrumGraphicsObject : public BaseGraphicsObject
 {
     Q_OBJECT
 public:
-    explicit FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel, QGraphicsItem *parent = 0);
+    explicit FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel, QSharedPointer<FTViewSettings> view_settings,
+                                              QGraphicsItem *parent = 0);
 
     virtual QRectF boundingRect() const;
 public Q_SLOTS:
@@ -43,6 +45,7 @@ private:
     int lower_index_;
     int upper_index_;
     int max_index_;
+    QSharedPointer<FTViewSettings> view_settings_;
 };
 
 } } // namespace

@@ -10,6 +10,15 @@
 
 namespace tobiss { namespace scope {
 
+//-------------------------------------------------------------------------
+void ConnectWizard::saveSettings (ConnectWizard const& connect_wizard)
+{
+    QSettings settings;
+    settings.setValue ("connection/ip", connect_wizard.getIPAddress());
+    settings.setValue ("connection/port", connect_wizard.getPort());
+    settings.setValue ("connection/udp_enabled", connect_wizard.UDPEnabled());
+}
+
 //-----------------------------------------------------------------------------
 ConnectWizard::ConnectWizard(QWidget *parent) :
     QWizard (parent),

@@ -16,13 +16,14 @@ namespace tobiss { namespace scope {
 
 //-----------------------------------------------------------------------------
 SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
-                                            FourierTransformThread* ft_thread, QGraphicsItem *parent) :
+                                            QSharedPointer<FTViewSettings> ft_view_settings, FourierTransformThread* ft_thread, QGraphicsItem *parent) :
     QGraphicsObject (parent),
     width_ (100),
     height_ (100),
     signal_type_ (TypeConverter::stdStringToSignalTypeFlag (signal.type())),
     aperiodic_signal_ (0),
-    view_settings_ (view_settings)
+    view_settings_ (view_settings),
+    ft_view_settings_ (ft_view_settings)
 {
     QGraphicsSimpleTextItem* signal_label = new QGraphicsSimpleTextItem (signal.type().c_str(), this);
 
@@ -39,7 +40,7 @@ SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer
             FrequencySpectrumGraphicsObject* previous_channel = 0;
             for (int channel_index = 0; channel_index < channel_amount; channel_index++)
             {
-                FrequencySpectrumGraphicsObject* ft_channel = new FrequencySpectrumGraphicsObject (signal_type_, channel_index, this);
+                FrequencySpectrumGraphicsObject* ft_channel = new FrequencySpectrumGraphicsObject (signal_type_, channel_index, ft_view_settings_, this);
                 ft_channel->connect (ft_thread, SIGNAL(FTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableDrawing(SignalTypeFlag,int,bool)));
                 if (previous_channel)
                 {

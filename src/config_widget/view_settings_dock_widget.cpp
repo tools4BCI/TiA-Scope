@@ -32,6 +32,18 @@ void ViewSettingsDockWidget::setSignalViewSettings (QSharedPointer<SignalViewSet
 }
 
 //-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::setFTViewSettings (QSharedPointer<FTViewSettings> settings)
+{
+    ft_view_settings_ = settings;
+    ui->lowerFrequencyBound->setValue (ft_view_settings_->lowerFrequenceBound());
+    ui->upperFrequencyBound->setValue (ft_view_settings_->upperFrequenceBound());
+
+    ft_view_settings_->connect (ui->lowerFrequencyBound, SIGNAL(valueChanged(int)), SLOT(setLowerFrequenceBound(int)));
+    ft_view_settings_->connect (ui->upperFrequencyBound, SIGNAL(valueChanged(int)), SLOT(setUpperFrequenceBound(int)));
+}
+
+
+//-------------------------------------------------------------------------------------------------
 void ViewSettingsDockWidget::on_increaseYScaling_clicked ()
 {
     if (signal_view_settings_.isNull())

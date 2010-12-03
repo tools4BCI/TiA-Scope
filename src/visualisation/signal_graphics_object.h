@@ -3,6 +3,7 @@
 
 #include "base/data_buffer.h"
 #include "base/signal_view_settings.h"
+#include "base/ft_view_settings.h"
 
 #include "tia/ss_meta_info.h"
 
@@ -31,6 +32,7 @@ public:
     explicit SignalGraphicsObject (Signal const& signal,
                                    QSharedPointer<DataBuffer const> data_buffer,
                                    QSharedPointer<SignalViewSettings> view_settings,
+                                   QSharedPointer<FTViewSettings> ft_view_settings = QSharedPointer<FTViewSettings>(0),
                                    FourierTransformThread* ft_thread = 0,
                                    QGraphicsItem *parent = 0);
 
@@ -66,6 +68,7 @@ private:
     QList<BaseGraphicsObject*> children_;
     AperiodicDataGraphicsObject* aperiodic_signal_;
     QSharedPointer<SignalViewSettings> view_settings_;
+    QSharedPointer<FTViewSettings> ft_view_settings_;
 };
 
 } } // namespace
