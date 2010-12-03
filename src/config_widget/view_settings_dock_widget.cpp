@@ -37,6 +37,8 @@ void ViewSettingsDockWidget::setFTViewSettings (QSharedPointer<FTViewSettings> s
     ft_view_settings_ = settings;
     ui->lowerFrequencyBound->setValue (ft_view_settings_->lowerFrequenceBound());
     ui->upperFrequencyBound->setValue (ft_view_settings_->upperFrequenceBound());
+    ui->lowerFrequencyBound->setMaximum (ft_view_settings_->maxSamplingRate() / 2);
+    ui->upperFrequencyBound->setMaximum (ft_view_settings_->maxSamplingRate() / 2);
 
     ft_view_settings_->connect (ui->lowerFrequencyBound, SIGNAL(valueChanged(int)), SLOT(setLowerFrequenceBound(int)));
     ft_view_settings_->connect (ui->upperFrequencyBound, SIGNAL(valueChanged(int)), SLOT(setUpperFrequenceBound(int)));
@@ -87,21 +89,6 @@ void ViewSettingsDockWidget::on_fftWindowSizeSpinbox_valueChanged (double value)
 {
     QSettings settings;
     settings.setValue ("fourier/window_size_s", value);
-}
-
-//-------------------------------------------------------------------------------------------------
-void ViewSettingsDockWidget::on_lowerFrequencyBound_valueChanged (int value)
-{
-    QSettings settings;
-    settings.setValue ("fourier/lower_bound", value);
-}
-
-
-//-------------------------------------------------------------------------------------------------
-void ViewSettingsDockWidget::on_upperFrequencyBound_valueChanged (int value)
-{
-    QSettings settings;
-    settings.setValue ("fourier/upper_bound", value);
 }
 
 

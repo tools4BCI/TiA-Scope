@@ -9,6 +9,7 @@
 #include <QLinkedList>
 #include <QSharedPointer>
 #include <QPixmap>
+#include <QMutex>
 
 namespace tobiss { namespace scope {
 
@@ -23,10 +24,12 @@ public:
 public Q_SLOTS:
     void updateData (QVector<double> data, SignalTypeFlag signal, int channel, int frequency_range);
     void enableDrawing (SignalTypeFlag signal, int channel, bool enabled);
+    void updateWholeHistory ();
 
 private:
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    void updateBuffer (bool whole_history);
     void colouredVisualisation (QPainter *painter);
 
     inline void drawXLabelInTheMiddle (QPainter *painter, qreal left, qreal right);
@@ -46,6 +49,10 @@ private:
     int upper_index_;
     int max_index_;
     QSharedPointer<FTViewSettings> view_settings_;
+
+    static int MAX_HISTORY_SIZE_;
+
+    QMutex update_buffer_lock_;
 };
 
 } } // namespace

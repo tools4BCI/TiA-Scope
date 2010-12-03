@@ -32,8 +32,6 @@ private Q_SLOTS:
     void on_fftLogCheckbox_toggled (bool enabled);
     void on_fftUpdateIntervalSpinbox_valueChanged (int value);
     void on_fftWindowSizeSpinbox_valueChanged (double value);
-    void on_lowerFrequencyBound_valueChanged (int value);
-    void on_upperFrequencyBound_valueChanged (int value);
 
 private:
     Ui::ViewSettingsDockWidget *ui;

@@ -95,7 +95,6 @@ void MainWindow::on_actionConnect_triggered ()
     ConnectWizard::saveSettings (connection_dialog);
 
     QSharedPointer<SignalViewSettings> signal_view_settings (new SignalViewSettings);
-    QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings);
 
     client_ = new tobiss::TiAClient ();
     try
@@ -103,6 +102,8 @@ void MainWindow::on_actionConnect_triggered ()
         client_->connect (connection_dialog.getIPAddress().toStdString(), connection_dialog.getPort());
         client_->requestConfig ();
         SSConfig config = client_->config();
+
+        QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (config));
         signal_info_widget_->setSignalInfo (config.signal_info);
         signal_view_settings->connect (signal_info_widget_, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)), SLOT(setChannelVisibility(SignalTypeFlag,ChannelID,bool)));
 

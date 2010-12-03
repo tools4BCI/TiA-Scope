@@ -4,17 +4,24 @@
 #include "user_types.h"
 
 #include <QObject>
+#include <QMap>
 
-namespace tobiss { namespace scope {
+namespace tobiss {
+
+class SSConfig;
+
+namespace scope {
 
 class FTViewSettings : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit FTViewSettings (QObject *parent = 0);
+    explicit FTViewSettings (SSConfig const& ss_config, QObject *parent = 0);
 
-    //int samplingRate (SignalTypeFlag signal, ChannelID channel) const;
+    int maxSamplingRate () const;
+
+    int samplingRate (SignalTypeFlag signal) const;
 
     int lowerFrequenceBound () const {return lower_frequence_bound_;}
 
@@ -33,7 +40,8 @@ public Q_SLOTS:
 private:
     int lower_frequence_bound_;
     int upper_frequence_bound_;
-
+    QMap<SignalTypeFlag, int> samping_rates_;
+    int max_sampling_rate_;
 };
 
 } } // namespace tobiss scope

@@ -5,8 +5,13 @@
 #include <QPainter>
 #include <QDebug>
 #include <QSettings>
+#include <QMutexLocker>
+
+#include <algorithm>
 
 namespace tobiss { namespace scope {
+
+int FrequencySpectrumGraphicsObject::MAX_HISTORY_SIZE_ = 100;
 
 //-------------------------------------------------------------------------------------------------
 FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel,
@@ -20,6 +25,8 @@ FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag
     view_settings_ (view_settings)
 {
     buffer_ = QPixmap (100, 200);
+    connect (view_settings_.data(), SIGNAL(lowerFrequenceBoundChanged ()), SLOT(updateWholeHistory()));
+    connect (view_settings_.data(), SIGNAL(upperFrequenceBoundChanged ()), SLOT(updateWholeHistory()));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -34,43 +41,17 @@ void FrequencySpectrumGraphicsObject::updateData (QVector<double> data, SignalTy
     if ((channel != CHANNEL_) || (signal != SIGNAL_) || !enabled_)
         return;
 
+    history_.append (data);
+    if (history_.size () > MAX_HISTORY_SIZE_)
+        history_.pop_front ();
+
     frequency_range_ = frequency_range;
 
-    // FIXME: put following into a method!!
-    // updating pixmap buffer here
-    QPainter painter (&buffer_);
-    QColor color;
-
-    int x_pos = buffer_current_pos_;
-    int y_pos = 0;
-    int y_step = 1;
-    int x_step = 1;
-
-    int hsv_value = 240;
-
-    lower_index_ = view_settings_->lowerFrequenceBound ();
-    upper_index_ = view_settings_->upperFrequenceBound ();
-    lower_index_ *= data.size ();
-    upper_index_ *= data.size ();
-    lower_index_ /= frequency_range_;
-    upper_index_ /= frequency_range_;
-    max_index_ = data.size ();
-
-    for (int index = upper_index_; index > lower_index_; index--)
-    {
-        hsv_value = 240 - (data[index] * yScalingFactor() *  240);
-        if (hsv_value < 0)
-            hsv_value = 0;
-        color.setHsv (hsv_value, 255, 255);
-        painter.fillRect (QRectF (QPointF(x_pos, y_pos), QPointF (x_pos + x_step, y_pos + y_step)), color);
-        y_pos += y_step;
-    }
+    updateBuffer (false);
 
     buffer_current_pos_++;
-    if (buffer_current_pos_ > buffer_.width())
+    if (buffer_current_pos_ >= buffer_.width())
         buffer_current_pos_ = 0;
-
-    update ();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -91,17 +72,19 @@ void FrequencySpectrumGraphicsObject::enableDrawing (SignalTypeFlag signal, int 
 }
 
 //-------------------------------------------------------------------------------------------------
+void FrequencySpectrumGraphicsObject::updateWholeHistory ()
+{
+    // updateBuffer (false);
+}
+
+//-------------------------------------------------------------------------------------------------
 void FrequencySpectrumGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if (!enabled_)
         return;
 
-    //painter->setClipping (true);
-    //painter->setClipRect (boundingRect());
-//    if (history_.size() == 0)
-//        return;
-
     colouredVisualisation (painter);
+
     return;
 
 //    painter->translate (0, height () * 3 / 4);
@@ -130,10 +113,67 @@ void FrequencySpectrumGraphicsObject::paint (QPainter *painter, const QStyleOpti
 //    drawXLabelInTheMiddle (painter, 0, width ());
 }
 
+//-------------------------------------------------------------------------------------------------
+void FrequencySpectrumGraphicsObject::updateBuffer (bool whole_history)
+{
+    QMutexLocker locker (&update_buffer_lock_);
+
+    if (history_.size () == 0)
+        return;
+
+    QLinkedList<QVector<double> >::const_iterator data_iter = history_.end ();
+    if (whole_history)
+        data_iter = history_.begin ();
+    else
+        data_iter--;
+
+    QColor color;
+
+    int x_pos = buffer_current_pos_;
+    int y_pos = 0;
+    int y_step = 1;
+    int x_step = 1;
+
+    int hsv_value = 240;
+
+    lower_index_ = view_settings_->lowerFrequenceBound ();
+    upper_index_ = std::min<int>(view_settings_->upperFrequenceBound (), view_settings_->samplingRate (SIGNAL_));
+    lower_index_ *= data_iter->size ();
+    upper_index_ *= data_iter->size ();
+    lower_index_ /= frequency_range_;
+    upper_index_ /= frequency_range_;
+    max_index_ = data_iter->size ();
+
+    if (buffer_.height() < upper_index_ - lower_index_)
+    {
+        buffer_ = QPixmap (100, upper_index_ - lower_index_);
+        //buffer_.fill ();
+    }
+
+    QPainter painter (&buffer_);
+
+    while (data_iter != history_.end ())
+    {
+        for (int index = upper_index_; index > lower_index_; index--)
+        {
+            hsv_value = 240 - (data_iter->operator[](index) * yScalingFactor() *  240);
+            if (hsv_value < 0)
+                hsv_value = 0;
+            color.setHsv (hsv_value, 255, 255);
+            painter.fillRect (QRectF (QPointF(x_pos, y_pos), QPointF (x_pos + x_step, y_pos + y_step)), color);
+            y_pos += y_step;
+        }
+        ++data_iter;
+    }
+
+    update ();
+}
 
 //-------------------------------------------------------------------------------------------------
 void FrequencySpectrumGraphicsObject::colouredVisualisation (QPainter *painter)
 {
+    if (max_index_ < 1)
+        return;
     int y_axis_width = 100;
     int drawing_width = width() - y_axis_width;
     qreal adapted_pos = buffer_current_pos_ * drawing_width;
