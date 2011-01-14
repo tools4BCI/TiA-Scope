@@ -63,6 +63,7 @@ private:
     QMap<boost::uint32_t, QMap<DeviceID, QList<double> > > aperiodic_data_; // QMap<signal-flag, QMap<device-id, QList-data> >
     QMap<SignalTypeFlag, QHash<int, QVector<double> > > data_;
     QMap<SignalTypeFlag, QHash<int, int> > end_index_;
+    QMap<SignalTypeFlag, QMap<int, FilteredSignalID> > filter_ids_;
     mutable QHash<SignalTypeFlag, QHash<int, int> > number_new_samples_;
     QHash<SignalTypeFlag, int> sample_limit_;
     QHash<SignalTypeFlag, int> sampling_rate_;

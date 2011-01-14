@@ -1,4 +1,4 @@
-QT += core gui
+QT += core gui network xml
 
 TARGET = TOBI_RemoteScope
 TEMPLATE = app

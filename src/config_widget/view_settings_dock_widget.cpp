@@ -1,6 +1,7 @@
 #include "view_settings_dock_widget.h"
 #include "ui_view_settings_dock_widget.h"
 #include "base/helpers.h"
+#include "data_collector/filters.h"
 
 #include <QSettings>
 
@@ -59,6 +60,15 @@ void ViewSettingsDockWidget::on_decreaseYScaling_clicked ()
     if (signal_view_settings_.isNull())
         return;
     helpers::animateProperty (signal_view_settings_.data(), "basicYScaling", signal_view_settings_->getBasicYScaling(), signal_view_settings_->getBasicYScaling() / 2);
+}
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_lowPass100_toggled (bool enabled)
+{
+    Filters::instance().reset();
+
+    if (enabled)
+        Filters::instance().appendFilter ("Butterworth", "10");
 }
 
 //-------------------------------------------------------------------------------------------------

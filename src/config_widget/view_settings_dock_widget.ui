@@ -132,6 +132,13 @@
      </spacer>
     </item>
     <item>
+     <widget class="QCheckBox" name="lowPass100">
+      <property name="text">
+       <string>Lowpass Filter (100Hz)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>Minimal FFT Window:</string>

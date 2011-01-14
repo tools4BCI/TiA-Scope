@@ -11,6 +11,9 @@ typedef boost::uint32_t SignalTypeFlag;
 typedef boost::uint32_t DeviceID;
 typedef int ChannelID;
 
+typedef unsigned FilterID;
+typedef unsigned FilteredSignalID;
+
 namespace TypeConverter {
     SignalTypeFlag stdStringToSignalTypeFlag (std::string const& type_string);
 }

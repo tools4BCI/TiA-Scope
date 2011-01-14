@@ -1,4 +1,5 @@
 #include "data_buffer.h"
+#include "data_collector/filters.h"
 
 #include <QWriteLocker>
 #include <QReadLocker>
@@ -26,6 +27,7 @@ DataBuffer::DataBuffer (tobiss::SignalInfo::SignalMap const& signal_map, int buf
             data_[signal_type][channel_index] = QVector<double> (sample_limit_[signal_type], 0);
             end_index_[signal_type][channel_index] = 0;
             number_new_samples_[signal_type][channel_index] = 0;
+            filter_ids_[signal_type][channel_index] = Filters::instance().registerSignalToBeFiltered (signal_iter->second.samplingRate ());
         }
     }
 }
@@ -40,7 +42,7 @@ void DataBuffer::appendData (SignalTypeFlag signal, int channel, QList<double> c
     int& end_index = end_index_[signal][channel];
     Q_FOREACH (double sample, data)
     {
-        channel_data[end_index] = sample;
+        channel_data[end_index] = Filters::instance().clock (filter_ids_[signal][channel], sample);
         end_index++;
         if (end_index >= channel_data.size ())
             end_index = 0;
