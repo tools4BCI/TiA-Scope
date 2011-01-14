@@ -10,7 +10,7 @@ namespace Ui {
     class ViewSettingsDockWidget;
 }
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 
@@ -39,6 +39,6 @@ private:
     QSharedPointer<FTViewSettings> ft_view_settings_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // VIEW_SETTINGS_DOCK_WIDGET_H

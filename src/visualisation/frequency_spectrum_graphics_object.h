@@ -11,7 +11,7 @@
 #include <QPixmap>
 #include <QMutex>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 class FrequencySpectrumGraphicsObject : public BaseGraphicsObject
 {
@@ -55,6 +55,6 @@ private:
     QMutex update_buffer_lock_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // FREQUENCY_SPECTRUM_GRAPHICS_OBJECT_H

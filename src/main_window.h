@@ -13,7 +13,9 @@ namespace tobiss {
 
 class TiAClient;
 
-namespace scope {
+}
+
+namespace TiAScope {
 
 class SignalInfoDockWidget;
 class SubjectInfoDockWidget;
@@ -53,11 +55,11 @@ private:
     SignalGraphicsScene* fft_graphics_scene_;
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
-    TiAClient* client_;
+    tobiss::TiAClient* client_;
     SignalGraphicsView* view_;
     SignalGraphicsView* fft_view_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // MAIN_WINDOW_H

@@ -8,7 +8,7 @@
 #include <QSettings>
 #include <QMessageBox>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------
 void ConnectWizard::saveSettings (ConnectWizard const& connect_wizard)
@@ -23,7 +23,7 @@ void ConnectWizard::saveSettings (ConnectWizard const& connect_wizard)
 ConnectWizard::ConnectWizard(QWidget *parent) :
     QWizard (parent),
     ui (new Ui::ConnectWizard),
-    client_ (new TiAClient)
+    client_ (new tobiss::TiAClient)
 {
     ui->setupUi(this);
     ui->portLineEdit->setValidator (new QIntValidator (0, 0xffff, this));
@@ -76,14 +76,14 @@ void ConnectWizard::on_ConnectWizard_currentIdChanged (int id)
         {
             client_->connect (ui->IPAddressLineEdit->text().toStdString(), ui->portLineEdit->text().toUInt());
             client_->requestConfig ();
-            SSConfig config = client_->config ();
-            for (SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
+            tobiss::SSConfig config = client_->config ();
+            for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
                  signal_iter != config.signal_info.signals().end ();
                  ++signal_iter)
             {
                 QTreeWidgetItem* signal_item = new QTreeWidgetItem (ui->signalTree);
                 signal_item->setText (0, signal_iter->first.c_str());
-                Q_FOREACH (Channel channel, signal_iter->second.channels())
+                Q_FOREACH (tobiss::Channel channel, signal_iter->second.channels())
                 {
                     QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
                     channel_item->setText (0, channel.id().c_str());
@@ -99,4 +99,4 @@ void ConnectWizard::on_ConnectWizard_currentIdChanged (int id)
 }
 
 
-} } // namespace
+} // TiAScope

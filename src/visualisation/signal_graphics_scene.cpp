@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 SignalGraphicsScene::SignalGraphicsScene (QObject *parent) :
@@ -80,4 +80,4 @@ void SignalGraphicsScene::setSceneRectWidth (int width)
 
 
 
-} } // namespace
+} // TiAScope

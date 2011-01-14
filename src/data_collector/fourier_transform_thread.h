@@ -10,7 +10,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 class FourierTransformThread : public QThread
@@ -48,6 +48,6 @@ private:
     double window_size_in_secs_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // FOURIER_TRANSFORM_THREAD_H

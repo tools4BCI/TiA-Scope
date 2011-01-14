@@ -8,7 +8,7 @@
 #include <QString>
 #include <QHash>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 class SignalGraphicsObject;
 
@@ -45,6 +45,6 @@ private:
 
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // SIGNAL_GRAPHICS_SCENE_H

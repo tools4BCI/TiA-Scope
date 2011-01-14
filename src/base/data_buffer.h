@@ -14,7 +14,7 @@
 #include <QVector>
 #include <QVarLengthArray>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------
 class DataBuffer : public QObject
@@ -22,7 +22,7 @@ class DataBuffer : public QObject
     Q_OBJECT
 public:
     //-------------------------------------------------------------------------
-    explicit DataBuffer (SignalInfo::SignalMap const& signal_map, int buffer_size_in_seconds);
+    explicit DataBuffer (tobiss::SignalInfo::SignalMap const& signal_map, int buffer_size_in_seconds);
 
     //-------------------------------------------------------------------------
     /// deletes the oldest data if the buffer size is exceeded
@@ -69,6 +69,6 @@ private:
     mutable QReadWriteLock lock_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // DATA_BUFFER_H

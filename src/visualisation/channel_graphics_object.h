@@ -9,7 +9,7 @@
 #include <QTime>
 #include <QVarLengthArray>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 class ChannelGraphicsObject : public BaseGraphicsObject
@@ -55,6 +55,6 @@ private:
     int error_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // CHANNEL_GRAPHICS_OBJECT_H

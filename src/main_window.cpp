@@ -33,7 +33,7 @@
 
 #include <iostream>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace MainWindowHelper
 {
@@ -101,7 +101,7 @@ void MainWindow::on_actionConnect_triggered ()
     {
         client_->connect (connection_dialog.getIPAddress().toStdString(), connection_dialog.getPort());
         client_->requestConfig ();
-        SSConfig config = client_->config();
+        tobiss::SSConfig config = client_->config();
 
         QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (config));
         signal_info_widget_->setSignalInfo (config.signal_info);
@@ -124,7 +124,7 @@ void MainWindow::on_actionConnect_triggered ()
         MainWindowHelper::monitorObjectLife (monitor_widget_, graphics_scene_);
         ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
-        for (SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
+        for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
              signal_iter != config.signal_info.signals().end ();
              ++signal_iter)
         {
@@ -234,4 +234,4 @@ namespace MainWindowHelper
 }
 
 
-} } // namespace
+} // TiAScope

@@ -6,7 +6,7 @@
 #include <QSettings>
 #include <QPropertyAnimation>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace helpers
 {
@@ -18,7 +18,7 @@ void animateProperty (QObject* target, QByteArray const& property_name,
                       QObject* call_back_object = 0, char const* call_back_slot = 0);
 
 
-} } } // namespace
+} } // TiAScope
 
 
 #endif // HELPERS_H

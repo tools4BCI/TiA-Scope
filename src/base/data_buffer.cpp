@@ -6,14 +6,14 @@
 #include <iostream>
 #include <cmath>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-DataBuffer::DataBuffer (SignalInfo::SignalMap const& signal_map, int buffer_size_in_seconds)
+DataBuffer::DataBuffer (tobiss::SignalInfo::SignalMap const& signal_map, int buffer_size_in_seconds)
 {
     setObjectName ("DataBuffer");
 
-    for (SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
+    for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
          signal_iter != signal_map.end();
          ++signal_iter)
     {
@@ -127,4 +127,4 @@ int DataBuffer::getSampleLimit (SignalTypeFlag signal) const
     return sample_limit_[signal];
 }
 
-} } // namespace
+} // TiAScope

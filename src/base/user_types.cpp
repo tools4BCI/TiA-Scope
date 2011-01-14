@@ -2,10 +2,10 @@
 
 #include "tia/constants.h"
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace TypeConverter {
-    Constants constants;
+    tobiss::Constants constants;
 
     //---------------------------------------------------------------------------------------------
     SignalTypeFlag stdStringToSignalTypeFlag (std::string const& type_string)
@@ -14,4 +14,4 @@ namespace TypeConverter {
     }
 }
 
-} } // namespace
+} // TiAScope

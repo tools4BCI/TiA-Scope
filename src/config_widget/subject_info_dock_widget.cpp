@@ -3,7 +3,7 @@
 
 #include <QTableWidgetItem>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace SubjectInfoDockWidgetHelper
 {
@@ -24,7 +24,7 @@ SubjectInfoDockWidget::~SubjectInfoDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-void SubjectInfoDockWidget::setSubjectInfo (SubjectInfo const& subject_info)
+void SubjectInfoDockWidget::setSubjectInfo (tobiss::SubjectInfo const& subject_info)
 {
     SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "Id", subject_info.id().c_str());
     SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "First Name", subject_info.firstName().c_str());
@@ -58,4 +58,4 @@ namespace SubjectInfoDockWidgetHelper
 }
 
 
-} }
+}

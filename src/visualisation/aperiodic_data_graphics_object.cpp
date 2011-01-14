@@ -5,7 +5,7 @@
 #include "tia/defines.h"
 
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 //-------------------------------------------------------------------------------------------------
@@ -51,4 +51,4 @@ void AperiodicDataGraphicsObject::updateView ()
 }
 
 
-} } // namespace
+} // TiAScope

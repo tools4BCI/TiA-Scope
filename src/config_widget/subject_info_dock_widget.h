@@ -9,7 +9,7 @@ namespace Ui {
     class SubjectInfoDockWidget;
 }
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 class SubjectInfoDockWidget : public QDockWidget
 {
@@ -19,7 +19,7 @@ public:
     explicit SubjectInfoDockWidget(QWidget *parent = 0);
     ~SubjectInfoDockWidget();
 
-    void setSubjectInfo (SubjectInfo const& subject_info);
+    void setSubjectInfo (tobiss::SubjectInfo const& subject_info);
 
 public Q_SLOTS:
     void clear ();
@@ -28,6 +28,6 @@ private:
     Ui::SubjectInfoDockWidget *ui;
 };
 
-} }
+} // TiAScope
 
 #endif // SUBJECT_INFO_DOCKWIDGET_H

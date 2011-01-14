@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace ChannelGraphicsObjectHelper
 {
@@ -157,4 +157,4 @@ namespace ChannelGraphicsObjectHelper
     }
 }
 
-} } // namespace
+} // TiAScope

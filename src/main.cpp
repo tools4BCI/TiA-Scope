@@ -8,7 +8,7 @@
 #include <QTextBlock>
 #include <QTextCursor>
 
-using namespace tobiss::scope;
+using namespace TiAScope;
 
 int main(int argc, char *argv[])
 {

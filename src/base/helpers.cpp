@@ -1,6 +1,6 @@
 #include "helpers.h"
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace helpers
 {
@@ -38,4 +38,4 @@ void animateProperty (QObject* target, QByteArray const& property_name,
 }
 
 
-} } } // namespace
+} } // TiAScope

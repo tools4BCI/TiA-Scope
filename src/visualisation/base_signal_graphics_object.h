@@ -3,7 +3,7 @@
 
 #include <QGraphicsObject>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 class BaseSignalGraphicsObject : public QGraphicsObject
@@ -12,6 +12,6 @@ class BaseSignalGraphicsObject : public QGraphicsObject
 
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // BASE_SIGNAL_GRAPHICS_OBJECT_H

@@ -2,7 +2,7 @@
 
 #include <QPainter>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 void ButtonGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -37,4 +37,4 @@ void ButtonGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsI
 }
 
 
-} } // namespace
+} // TiAScope

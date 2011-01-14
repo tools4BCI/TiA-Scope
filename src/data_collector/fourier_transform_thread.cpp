@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace FourierTransformThreadHelper
 {
@@ -130,4 +130,4 @@ namespace FourierTransformThreadHelper
 }
 
 
-} } // namespace
+} // TiAScope

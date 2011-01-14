@@ -5,7 +5,7 @@
 #include <QGraphicsSceneWheelEvent>
 #include <QGraphicsSceneMouseEvent>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 class BaseGraphicsObject : public QGraphicsObject
@@ -56,6 +56,6 @@ private:
     int height_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // BASE_GRAPHICS_OBJECT_H

@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QGtkStyle>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 //-------------------------------------------------------------------------------------------------
@@ -59,5 +59,5 @@ void JoystickGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphic
 }
 
 
-} } // namespace
+} // TiAScope
 

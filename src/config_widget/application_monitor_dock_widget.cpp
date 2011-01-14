@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 //namespace ApplicationMonitorDockWidgetHelper
@@ -69,4 +69,4 @@ void ApplicationMonitorDockWidget::debugMessaging (QtMsgType type, const char* m
 
 
 
-} } // namespace
+} // TiAScope

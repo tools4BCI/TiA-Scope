@@ -9,7 +9,7 @@ namespace Ui {
     class ApplicationMonitorDockWidget;
 }
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 class ApplicationMonitorDockWidget : public QDockWidget
@@ -39,6 +39,6 @@ private:
     static QMutex mutex_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // APPLICATION_MONITOR_DOCK_WIDGET_H

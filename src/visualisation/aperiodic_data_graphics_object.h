@@ -6,7 +6,7 @@
 #include <QSharedPointer>
 #include <QGraphicsWidget>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 class AperiodicDataGraphicsObject : public QGraphicsWidget
@@ -31,7 +31,7 @@ private:
     SignalTypeFlag signal_type_;
 };
 
-} } // namespace
+} // TiAScope
 
 
 #endif // APERIODIC_DATA_GRAPHICS_OBJECT_H

@@ -9,15 +9,16 @@
 namespace tobiss {
 
 class SSConfig;
+}
 
-namespace scope {
+namespace TiAScope {
 
 class FTViewSettings : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit FTViewSettings (SSConfig const& ss_config, QObject *parent = 0);
+    explicit FTViewSettings (tobiss::SSConfig const& ss_config, QObject *parent = 0);
 
     int maxSamplingRate () const;
 
@@ -44,6 +45,6 @@ private:
     int max_sampling_rate_;
 };
 
-} } // namespace tobiss scope
+} // TiAScope tobiss scope
 
 #endif // FT_VIEW_SETTINGS_H

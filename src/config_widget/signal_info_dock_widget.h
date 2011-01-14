@@ -13,7 +13,7 @@ namespace Ui
     class SignalInfoDockWidget;
 }
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-----------------------------------------------------------------------------
 /// SignalInfoDockWidget
@@ -27,7 +27,7 @@ public:
     explicit SignalInfoDockWidget (QWidget *parent = 0);
     ~SignalInfoDockWidget ();
 
-    void setSignalInfo (SignalInfo const& signal_info);
+    void setSignalInfo (tobiss::SignalInfo const& signal_info);
 
 public Q_SLOTS:
     void clear ();
@@ -44,6 +44,6 @@ private:
     bool initializing_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // SIGNAL_INFO_DOCK_WIDGET_H

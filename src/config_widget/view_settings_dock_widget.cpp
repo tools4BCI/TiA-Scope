@@ -4,7 +4,7 @@
 
 #include <QSettings>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 ViewSettingsDockWidget::ViewSettingsDockWidget(QWidget *parent) :
@@ -95,4 +95,4 @@ void ViewSettingsDockWidget::on_fftWindowSizeSpinbox_valueChanged (double value)
 
 
 
-} } // namespace
+} // TiAScope

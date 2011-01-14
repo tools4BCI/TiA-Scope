@@ -10,8 +10,9 @@ namespace Ui {
 namespace tobiss {
 
 class TiAClient;
+}
 
-namespace scope {
+namespace TiAScope {
 
 //-----------------------------------------------------------------------------
 /// ConnectDialog
@@ -44,9 +45,9 @@ private Q_SLOTS:
 private:
     Ui::ConnectWizard *ui;
 
-    TiAClient* client_;
+    tobiss::TiAClient* client_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // CONNECT_DIALOG_H

@@ -1,7 +1,7 @@
 #include "signal_info_dock_widget.h"
 #include "ui_signal_info_dock_widget.h"
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 namespace SignalInfoDockWidgetHelper
 {
@@ -13,7 +13,7 @@ namespace SignalInfoDockWidgetHelper
 
     //-------------------------------------------------------------------------
     /// adds the given signals as a row to the given tree
-    void addSignalsToTree (QTreeWidget* tree_widget, SignalInfo::SignalMap const& signal_map);
+    void addSignalsToTree (QTreeWidget* tree_widget, tobiss::SignalInfo::SignalMap const& signal_map);
 }
 
 //-----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ SignalInfoDockWidget::~SignalInfoDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-void SignalInfoDockWidget::setSignalInfo (SignalInfo const& signal_info)
+void SignalInfoDockWidget::setSignalInfo (tobiss::SignalInfo const& signal_info)
 {
     initializing_ = true;
     ui->signalTree->clear ();
@@ -77,9 +77,9 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
 namespace SignalInfoDockWidgetHelper
 {
     //-------------------------------------------------------------------------
-    void addSignalsToTree (QTreeWidget* tree_widget, SignalInfo::SignalMap const& signal_map)
+    void addSignalsToTree (QTreeWidget* tree_widget, tobiss::SignalInfo::SignalMap const& signal_map)
     {
-        for (SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
+        for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
              signal_iter != signal_map.end();
              ++signal_iter)
         {
@@ -90,7 +90,7 @@ namespace SignalInfoDockWidgetHelper
             signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
             signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate ()).append( " Hz"));
             unsigned index = 0;
-            Q_FOREACH (Channel channel, signal_iter->second.channels ())
+            Q_FOREACH (tobiss::Channel channel, signal_iter->second.channels ())
             {
                 QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
                 channel_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
@@ -105,4 +105,4 @@ namespace SignalInfoDockWidgetHelper
     }
 }
 
-} } // namespace
+} // TiAScope

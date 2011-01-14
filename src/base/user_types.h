@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 typedef boost::uint32_t SignalTypeFlag;
 typedef boost::uint32_t DeviceID;
@@ -15,6 +15,6 @@ namespace TypeConverter {
     SignalTypeFlag stdStringToSignalTypeFlag (std::string const& type_string);
 }
 
-} } // namespace
+} // TiAScope
 
 #endif // USER_TYPES_H

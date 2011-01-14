@@ -4,16 +4,16 @@
 
 #include <algorithm>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
-FTViewSettings::FTViewSettings (SSConfig const& ss_config, QObject *parent) :
+FTViewSettings::FTViewSettings (tobiss::SSConfig const& ss_config, QObject *parent) :
     QObject (parent),
     lower_frequence_bound_ (0),
     upper_frequence_bound_ (0),
     max_sampling_rate_ (0)
 {
-    for (SignalInfo::SignalMap::const_iterator signal_iter = ss_config.signal_info.signals().begin ();
+    for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = ss_config.signal_info.signals().begin ();
          signal_iter != ss_config.signal_info.signals().end (); ++signal_iter)
     {
         samping_rates_[TypeConverter::stdStringToSignalTypeFlag (signal_iter->first)] = signal_iter->second.samplingRate ();
@@ -58,4 +58,4 @@ void FTViewSettings::setUpperFrequenceBound (int upper_bound)
 }
 
 
-} } // namespace tobiss scope
+} // TiAScope tobiss scope

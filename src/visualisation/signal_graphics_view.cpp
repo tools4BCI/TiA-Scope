@@ -1,11 +1,11 @@
 #include "signal_graphics_view.h"
 
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 SignalGraphicsView::SignalGraphicsView(QWidget *parent) :
     QGraphicsView(parent)
 {
 }
 
-} } // namespace
+} // TiAScope

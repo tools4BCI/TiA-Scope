@@ -16,7 +16,7 @@
 #include <QMap>
 #include <QSharedPointer>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 class FrequencySpectrumGraphicsObject;
 class BaseGraphicsObject;
@@ -29,7 +29,7 @@ class SignalGraphicsObject : public QGraphicsObject
     Q_PROPERTY (int height READ height WRITE setHeight)
     Q_PROPERTY (int width READ width WRITE setWidth)
 public:
-    explicit SignalGraphicsObject (Signal const& signal,
+    explicit SignalGraphicsObject (tobiss::Signal const& signal,
                                    QSharedPointer<DataBuffer const> data_buffer,
                                    QSharedPointer<SignalViewSettings> view_settings,
                                    QSharedPointer<FTViewSettings> ft_view_settings = QSharedPointer<FTViewSettings>(0),
@@ -71,6 +71,6 @@ private:
     QSharedPointer<FTViewSettings> ft_view_settings_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // SIGNAL_GRAPHICS_OBJECT_H

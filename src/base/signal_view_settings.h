@@ -6,7 +6,7 @@
 #include <QMap>
 #include <QObject>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 /// SignalViewSettings
@@ -72,6 +72,6 @@ private:
     QMap<SignalTypeFlag, QMap<ChannelID, bool> > channel_visibility_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // SIGNAL_VIEW_SETTINGS_H

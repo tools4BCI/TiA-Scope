@@ -2,7 +2,7 @@
 
 #include <QSettings>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-----------------------------------------------------------------------------
 SignalViewSettings::SignalViewSettings(QObject *parent) :
@@ -50,4 +50,4 @@ void SignalViewSettings::setChannelOverlapping (float channel_overlapping)
 
 
 
-} } // namespace
+} // TiAScope

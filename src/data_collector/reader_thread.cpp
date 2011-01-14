@@ -8,10 +8,10 @@
 #include <QDebug>
 #include <iostream>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, TiAClient* client, bool udp,
+ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, tobiss::TiAClient* client, bool udp,
                             QObject *parent) :
     QThread(parent),
     data_buffer_ (data_buffer),
@@ -31,9 +31,9 @@ void ReaderThread::stop ()
 void ReaderThread::run ()
 {
     running_ = true;
-    DataPacket packet;
+    tobiss::DataPacket packet;
     std::vector<double> data;
-    SSConfig config = client_->config();
+    tobiss::SSConfig config = client_->config();
 
     client_->startReceiving (udp_);
 
@@ -41,7 +41,7 @@ void ReaderThread::run ()
     {
         client_->getDataPacket (packet);
 
-        for (SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
+        for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
              signal_iter != config.signal_info.signals().end ();
              ++signal_iter)
         {
@@ -65,7 +65,7 @@ void ReaderThread::run ()
                 (signal_flag == SIG_JOYSTICK))
             {
                 QList<double> values;
-                for (int index = 1; index < data.size(); index++)
+                for (size_t index = 1; index < data.size(); index++)
                 {
                     values.append (data[index]);
                 }
@@ -91,4 +91,4 @@ void ReaderThread::run ()
         client_->stopReceiving ();
 }
 
-} }
+} // TiAScope

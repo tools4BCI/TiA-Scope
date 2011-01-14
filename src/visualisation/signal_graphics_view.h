@@ -4,7 +4,7 @@
 #include <QGraphicsView>
 #include <QResizeEvent>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 class SignalGraphicsView : public QGraphicsView
 {
@@ -22,6 +22,6 @@ private:
 
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // SIGNAL_GRAPHICS_VIEW_H

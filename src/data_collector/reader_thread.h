@@ -8,13 +8,14 @@
 #include <QThread>
 #include <QSharedPointer>
 
-namespace tobiss { namespace scope {
+namespace TiAScope
+{
 
 class ReaderThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ReaderThread (QSharedPointer<DataBuffer> data_buffer, TiAClient* client, bool udp,
+    explicit ReaderThread (QSharedPointer<DataBuffer> data_buffer, tobiss::TiAClient* client, bool udp,
                            QObject *parent = 0);
 
     void stop ();
@@ -22,11 +23,11 @@ private:
     virtual void run ();
 
     QSharedPointer<DataBuffer> data_buffer_;
-    TiAClient* client_;
+    tobiss::TiAClient* client_;
     bool running_;
     bool udp_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // READER_THREAD_H

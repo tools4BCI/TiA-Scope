@@ -9,7 +9,7 @@
 
 #include <algorithm>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 int FrequencySpectrumGraphicsObject::MAX_HISTORY_SIZE_ = 100;
 
@@ -204,4 +204,4 @@ void FrequencySpectrumGraphicsObject::drawXLabelInTheMiddle (QPainter* painter, 
     }
 }
 
-} } // namespace
+} // TiAScope

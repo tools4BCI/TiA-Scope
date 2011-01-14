@@ -12,10 +12,10 @@
 #include <QGraphicsSceneWheelEvent>
 #include <QDebug>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-SignalGraphicsObject::SignalGraphicsObject (Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
+SignalGraphicsObject::SignalGraphicsObject (tobiss::Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
                                             QSharedPointer<FTViewSettings> ft_view_settings, FourierTransformThread* ft_thread, QGraphicsItem *parent) :
     QGraphicsObject (parent),
     width_ (100),
@@ -170,4 +170,4 @@ void SignalGraphicsObject::wheelEvent (QGraphicsSceneWheelEvent* event)
 }
 
 
-} } // namespace
+} // TiAScope

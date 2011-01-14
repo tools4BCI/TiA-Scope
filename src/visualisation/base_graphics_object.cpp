@@ -1,6 +1,6 @@
 #include "base_graphics_object.h"
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 
 //-----------------------------------------------------------------------------
@@ -19,4 +19,4 @@ void BaseGraphicsObject::setYPos (int y_pos)
 
 
 
-} } // namespace tobiss scope
+} // TiAScope

@@ -7,7 +7,7 @@
 #include <QSharedPointer>
 #include <QGraphicsWidget>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 class ButtonGraphicsObject : public AperiodicDataGraphicsObject
@@ -20,6 +20,6 @@ private:
     virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // BUTTON_GRAPHICS_OBJECT_H

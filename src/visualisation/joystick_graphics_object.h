@@ -9,7 +9,7 @@
 #include <QGraphicsProxyWidget>
 #include <QGraphicsLinearLayout>
 
-namespace tobiss { namespace scope {
+namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
 class JoystickGraphicsObject : public AperiodicDataGraphicsObject
@@ -25,6 +25,6 @@ private:
     QGraphicsLinearLayout* layout_;
 };
 
-} } // namespace
+} // TiAScope
 
 #endif // JOYSTICK_GRAPHICS_OBJECT_H
