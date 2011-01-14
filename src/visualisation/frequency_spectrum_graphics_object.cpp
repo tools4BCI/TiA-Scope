@@ -47,7 +47,8 @@ void FrequencySpectrumGraphicsObject::updateData (QVector<double> data, SignalTy
 
     frequency_range_ = frequency_range;
 
-    updateBuffer (false);
+//    updateBuffer (false);
+    update ();
 
     buffer_current_pos_++;
     if (buffer_current_pos_ >= buffer_.width())
@@ -83,34 +84,40 @@ void FrequencySpectrumGraphicsObject::paint (QPainter *painter, const QStyleOpti
     if (!enabled_)
         return;
 
-    colouredVisualisation (painter);
+//    colouredVisualisation (painter);
 
-    return;
+//    return;
 
-//    painter->translate (0, height () * 3 / 4);
+    if (!history_.size ())
+        return;
 
-//    painter->setPen(Qt::blue);
-//    painter->drawLine (0, 0, width (), 0);
-//    painter->setPen (Qt::blue);
+    QLinkedList<QVector<double> >::const_iterator data_iter = history_.end ();
+    data_iter--;
 
-//    qreal x_step = width ();
-//    x_step /= data_.size();
+    painter->translate (0, height () * 3 / 4);
 
-//    qreal x_pos = 0;
+    painter->setPen(Qt::blue);
+    painter->drawLine (0, 0, width (), 0);
+    painter->setPen (Qt::blue);
 
-//    for (int index = 0; index < data_.size(); index++)
-//    {
-//        if (data_[index] > 0)
-//            painter->drawRect (QRectF (QPointF(x_pos, -data_[index] * yScalingFactor()), QPointF (x_pos + x_step, 0)));
-//        x_pos += x_step;
-//    }
+    qreal x_step = width ();
+    x_step /= data_iter->size();
 
-//    painter->setPen(Qt::black);
-//    painter->drawLine (0, 1, 0, 5);
-//    painter->drawLine (width () - 1, 1, width () - 1, 5);
-//    painter->drawText (0, 5, LABEL_SPACING_, 20, Qt::AlignVCenter | Qt::AlignLeft,  "0.0Hz");
-//    painter->drawText (width () - LABEL_SPACING_ - 1, 5, LABEL_SPACING_, 20, Qt::AlignRight | Qt::AlignVCenter, QString::number (frequency_range_, 'f', 1).append("Hz"));
-//    drawXLabelInTheMiddle (painter, 0, width ());
+    qreal x_pos = 0;
+
+    for (int index = 0; index < data_iter->size(); index++)
+    {
+        if (data_iter->operator[](index) > 0)
+            painter->drawRect (QRectF (QPointF(x_pos, -data_iter->operator[](index) * yScalingFactor()), QPointF (x_pos + x_step, 0)));
+        x_pos += x_step;
+    }
+
+    painter->setPen(Qt::black);
+    painter->drawLine (0, 1, 0, 5);
+    painter->drawLine (width () - 1, 1, width () - 1, 5);
+    painter->drawText (0, 5, LABEL_SPACING_, 20, Qt::AlignVCenter | Qt::AlignLeft,  "0.0Hz");
+    painter->drawText (width () - LABEL_SPACING_ - 1, 5, LABEL_SPACING_, 20, Qt::AlignRight | Qt::AlignVCenter, QString::number (frequency_range_, 'f', 1).append("Hz"));
+    drawXLabelInTheMiddle (painter, 0, width ());
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -142,6 +149,7 @@ void FrequencySpectrumGraphicsObject::updateBuffer (bool whole_history)
     upper_index_ *= data_iter->size ();
     lower_index_ /= frequency_range_;
     upper_index_ /= frequency_range_;
+    upper_index_ = std::min<int>(upper_index_, data_iter->size () - 1);
     max_index_ = data_iter->size ();
 
     if (buffer_.height() < upper_index_ - lower_index_)

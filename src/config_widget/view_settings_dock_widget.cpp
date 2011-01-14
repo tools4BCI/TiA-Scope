@@ -68,7 +68,7 @@ void ViewSettingsDockWidget::on_lowPass100_toggled (bool enabled)
     Filters::instance().reset();
 
     if (enabled)
-        Filters::instance().appendFilter ("Butterworth", "10");
+        Filters::instance().appendFilter ("Butterworth", "100");
 }
 
 //-------------------------------------------------------------------------------------------------
