@@ -3,6 +3,7 @@
 
 namespace tobiss { namespace scope {
 
+//-----------------------------------------------------------------------------
 class ScopeTiAClient
 {
 public:
