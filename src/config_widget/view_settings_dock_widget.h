@@ -28,7 +28,12 @@ public:
 private Q_SLOTS:
     void on_increaseYScaling_clicked ();
     void on_decreaseYScaling_clicked ();
+
+    void on_lowPassNo_toggled (bool enabled);
     void on_lowPass100_toggled (bool enabled);
+    void on_lowPass150_toggled (bool enabled);
+    void on_lowPass200_toggled (bool enabled);
+
     void on_channelOverlappingSlider_valueChanged (int value);
     void on_fftLogCheckbox_toggled (bool enabled);
     void on_fftUpdateIntervalSpinbox_valueChanged (int value);

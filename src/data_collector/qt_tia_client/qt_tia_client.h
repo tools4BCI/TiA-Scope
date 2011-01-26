@@ -1,8 +1,11 @@
 #ifndef SCOPE_TIA_CLIENT_H
 #define SCOPE_TIA_CLIENT_H
 
+#include "tia_metainfo.h"
+#include "datapacket.h"
+
 #include <QString>
-#include <QTcpSocket>
+#include <QSharedPointer>
 
 namespace TiAQtImplementation
 {
@@ -17,18 +20,18 @@ class TiAQtClient
 public:
     virtual ~TiAQtClient () {}
 
-    virtual void connect (QString server_address, unsigned port) = 0;
-    virtual void disconnect () = 0;
-    // virtual void getDataPacket () = 0;
-    // virtual void getConfig () = 0;
+    virtual void connectToServer (QString server_address, unsigned port) = 0;
+    virtual void disconnectFromServer () = 0;
+    virtual TiAMetaInfo getMetaInfo () const = 0;
+    virtual void startReceiving () = 0;
+    virtual void stopReceiving () = 0;
+    virtual QSharedPointer<DataPacket> getDataPacket () = 0;
 
 protected:
     TiAQtClient () {}
 
 private:
     Q_DISABLE_COPY (TiAQtClient);
-
-    QTcpSocket control_connection_socket_;
 };
 
 }

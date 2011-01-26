@@ -3,7 +3,7 @@
 
 #include "base/data_buffer.h"
 
-#include "tia/tia_client.h"
+#include "qt_tia_client/qt_tia_client.h"
 
 #include <QThread>
 #include <QSharedPointer>
@@ -15,7 +15,7 @@ class ReaderThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ReaderThread (QSharedPointer<DataBuffer> data_buffer, tobiss::TiAClient* client, bool udp,
+    explicit ReaderThread (QSharedPointer<DataBuffer> data_buffer, TiAQtImplementation::TiAQtClient* client, bool udp,
                            QObject *parent = 0);
 
     void stop ();
@@ -23,7 +23,7 @@ private:
     virtual void run ();
 
     QSharedPointer<DataBuffer> data_buffer_;
-    tobiss::TiAClient* client_;
+    TiAQtImplementation::TiAQtClient* client_;
     bool running_;
     bool udp_;
 };

@@ -63,13 +63,40 @@ void ViewSettingsDockWidget::on_decreaseYScaling_clicked ()
 }
 
 //-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_lowPassNo_toggled (bool enabled)
+{
+    if (!enabled)
+        return;
+    Filters::instance().reset();
+}
+
+//-------------------------------------------------------------------------------------------------
 void ViewSettingsDockWidget::on_lowPass100_toggled (bool enabled)
 {
+    if (!enabled)
+        return;
     Filters::instance().reset();
-
-    if (enabled)
-        Filters::instance().appendFilter ("Butterworth", "100");
+    Filters::instance().appendFilter ("Butterworth", "100");
 }
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_lowPass150_toggled (bool enabled)
+{
+    if (!enabled)
+        return;
+    Filters::instance().reset();
+    Filters::instance().appendFilter ("Butterworth", "150");
+}
+
+//-------------------------------------------------------------------------------------------------
+void ViewSettingsDockWidget::on_lowPass200_toggled (bool enabled)
+{
+    if (!enabled)
+        return;
+    Filters::instance().reset();
+    Filters::instance().appendFilter ("Butterworth", "200");
+}
+
 
 //-------------------------------------------------------------------------------------------------
 void ViewSettingsDockWidget::on_channelOverlappingSlider_valueChanged (int value)

@@ -2,7 +2,7 @@
 #include "ui_connect_wizard.h"
 
 #include "tia/ssconfig.h"
-#include "tia/tia_client.h""
+#include "tia/tia_client.h"
 #include "tia/ss_meta_info.h"
 
 #include <QSettings>

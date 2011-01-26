@@ -1,6 +1,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include "data_collector/qt_tia_client/qt_tia_client.h"
+
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QSplitter>
@@ -56,6 +58,7 @@ private:
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
     tobiss::TiAClient* client_;
+    TiAQtImplementation::TiAQtClient* qt_client_;
     SignalGraphicsView* view_;
     SignalGraphicsView* fft_view_;
 };

@@ -13,7 +13,7 @@
   <property name="minimumSize">
    <size>
     <width>222</width>
-    <height>417</height>
+    <height>492</height>
    </size>
   </property>
   <property name="features">
@@ -132,9 +132,33 @@
      </spacer>
     </item>
     <item>
-     <widget class="QCheckBox" name="lowPass100">
+     <widget class="QRadioButton" name="lowPassNo">
       <property name="text">
-       <string>Butterworth Filter (100Hz)</string>
+       <string>No Filter</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="lowPass100">
+      <property name="text">
+       <string>Butterworth Filter 100Hz</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="lowPass150">
+      <property name="text">
+       <string>Butterworth Filter 150Hz</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="lowPass200">
+      <property name="text">
+       <string>Butterworth Filter 200Hz</string>
       </property>
      </widget>
     </item>

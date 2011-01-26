@@ -19,6 +19,7 @@
 
 #include "data_collector/reader_thread.h"
 #include "data_collector/fourier_transform_thread.h"
+#include "data_collector/qt_tia_client/impl/tia_client_version02.h"
 
 #include "tia/tia_client.h"
 #include "tia/ssconfig.h"
@@ -51,6 +52,7 @@ MainWindow::MainWindow (QWidget *parent) :
     graphics_scene_ (0),
     reader_thread_ (0),
     ft_thread_ (0),
+    qt_client_ (0),
     view_ (0)
 {
     ui->setupUi(this);
@@ -97,8 +99,10 @@ void MainWindow::on_actionConnect_triggered ()
     QSharedPointer<SignalViewSettings> signal_view_settings (new SignalViewSettings);
 
     client_ = new tobiss::TiAClient ();
+    qt_client_ = new TiAQtImplementation::TiAQtClientVersion02 ();
     try
     {
+        qt_client_->connectToServer (connection_dialog.getIPAddress(), connection_dialog.getPort ());
         client_->connect (connection_dialog.getIPAddress().toStdString(), connection_dialog.getPort());
         client_->requestConfig ();
         tobiss::SSConfig config = client_->config();
@@ -143,14 +147,14 @@ void MainWindow::on_actionConnect_triggered ()
 
         fft_view_->setScene (fft_graphics_scene_);
 
-        reader_thread_ = new ReaderThread (data_buffer, client_, connection_dialog.UDPEnabled(), this);
+        reader_thread_ = new ReaderThread (data_buffer, qt_client_, connection_dialog.UDPEnabled(), this);
         MainWindowHelper::monitorObjectLife (monitor_widget_, reader_thread_);
 
         ui->actionConnect->setEnabled (false);
         ui->actionDisconnect->setEnabled (true);
         ui->actionReceiveData->setEnabled (true);
     }
-    catch (std::ios_base::failure &exception)
+    catch (std::exception &exception)
     {
         QMessageBox::critical (0, "Failed", QString("Connection could not be established!\n").append(exception.what()));
     }
