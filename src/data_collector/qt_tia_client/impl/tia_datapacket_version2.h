@@ -16,7 +16,6 @@ class DataPacketVersion2 : public DataPacket
 {
 public:
     DataPacketVersion2 (QByteArray bytes);
-    DataPacketVersion2 (QTcpSocket& data_stream);
     virtual ~DataPacketVersion2 ();
     virtual QVector<double> getData (SignalTypeFlag signal, ChannelIndex channel) const;
     virtual QSet<SignalTypeFlag> getSignals () const;
@@ -25,8 +24,6 @@ public:
     static unsigned canCreate (QByteArray bytes);
 
 private:
-    void waitForBytes (unsigned num_bytes, QTcpSocket& data_stream);
-
     static quint32 const VERSION_FLAG_;
     static quint32 const SIGNAL_FLAG_MASK_;
     static quint32 const SMALLEST_SIGNAL_FLAG_;

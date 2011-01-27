@@ -1,15 +1,11 @@
 #ifndef FT_VIEW_SETTINGS_H
 #define FT_VIEW_SETTINGS_H
 
-#include "user_types.h"
+#include "data_collector/qt_tia_client/tia_metainfo.h"
 
 #include <QObject>
 #include <QMap>
 
-namespace tobiss {
-
-class SSConfig;
-}
 
 namespace TiAScope {
 
@@ -18,11 +14,11 @@ class FTViewSettings : public QObject
     Q_OBJECT
 
 public:
-    explicit FTViewSettings (tobiss::SSConfig const& ss_config, QObject *parent = 0);
+    explicit FTViewSettings (TiAQtImplementation::TiAMetaInfo const& meta_info, QObject *parent = 0);
 
     int maxSamplingRate () const;
 
-    int samplingRate (SignalTypeFlag signal) const;
+    int samplingRate (TiAQtImplementation::SignalTypeFlag signal) const;
 
     int lowerFrequenceBound () const {return lower_frequence_bound_;}
 
@@ -41,7 +37,7 @@ public Q_SLOTS:
 private:
     int lower_frequence_bound_;
     int upper_frequence_bound_;
-    QMap<SignalTypeFlag, int> samping_rates_;
+    QMap<TiAQtImplementation::SignalTypeFlag, int> samping_rates_;
     int max_sampling_rate_;
 };
 

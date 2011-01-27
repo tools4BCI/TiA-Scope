@@ -4,9 +4,6 @@
 #include "aperiodic_data_graphics_object.h"
 #include "base/helpers.h"
 
-
-#include "tia/constants.h"
-
 #include <QPainter>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsSceneWheelEvent>
@@ -15,22 +12,25 @@
 namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-SignalGraphicsObject::SignalGraphicsObject (tobiss::Signal const& signal, QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
+SignalGraphicsObject::SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
+                                            TiAQtImplementation::TiAMetaInfo const& signal_info,
+                                            QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
                                             QSharedPointer<FTViewSettings> ft_view_settings, FourierTransformThread* ft_thread, QGraphicsItem *parent) :
     QGraphicsObject (parent),
     width_ (100),
     height_ (100),
-    signal_type_ (TypeConverter::stdStringToSignalTypeFlag (signal.type())),
+    signal_type_ (signal_type),
     aperiodic_signal_ (0),
     view_settings_ (view_settings),
     ft_view_settings_ (ft_view_settings)
 {
-    QGraphicsSimpleTextItem* signal_label = new QGraphicsSimpleTextItem (signal.type().c_str(), this);
+    new QGraphicsSimpleTextItem (TiAQtImplementation::signalTypeFlagToString (signal_type), this);
 
-    int channel_amount = signal.channels().size();
-    if (signal_type_ & (SIG_BUTTON | SIG_JOYSTICK))
+    int channel_amount = signal_info.getNumChannels (signal_type_);
+    if (TiAQtImplementation::isAperiodic (signal_type_))
     {
-        aperiodic_signal_ = AperiodicDataGraphicsObject::createAperiodicDataGraphicsObject (signal_type_, data_buffer, this);
+        // TODO: deactivated aperiodic signals
+        // aperiodic_signal_ = AperiodicDataGraphicsObject::createAperiodicDataGraphicsObject (signal_type_, data_buffer, this);
     }
     else
     {
@@ -62,7 +62,7 @@ SignalGraphicsObject::SignalGraphicsObject (tobiss::Signal const& signal, QShare
             ChannelGraphicsObject* previous_channel = 0;
             for (int channel_index = 0; channel_index < channel_amount; channel_index++)
             {
-                ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal.samplingRate(), data_buffer, view_settings, previous_channel, this);
+                ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal_info.getSamplingRate(signal_type_), data_buffer, view_settings, previous_channel, this);
                 if (previous_channel)
                     channel->connect (previous_channel, SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
 
@@ -71,7 +71,7 @@ SignalGraphicsObject::SignalGraphicsObject (tobiss::Signal const& signal, QShare
                 channel->setWidth (width_);
                 channels_[channel_index] = channel;
                 children_.append (channel);
-                QGraphicsSimpleTextItem* channel_label = new QGraphicsSimpleTextItem (signal.channels()[channel_index].id().c_str (), channel);
+                QGraphicsSimpleTextItem* channel_label = new QGraphicsSimpleTextItem (signal_info.getChannelLabel(signal_type_, channel_index), channel);
                 channel_label->setPos (400, channel->height() / 2);
                 previous_channel = channel;
             }

@@ -1,34 +1,31 @@
 #include "ft_view_settings.h"
 
-#include "tia/ssconfig.h"
-
 #include <algorithm>
+
+using namespace TiAQtImplementation;
 
 namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
-FTViewSettings::FTViewSettings (tobiss::SSConfig const& ss_config, QObject *parent) :
+FTViewSettings::FTViewSettings (TiAMetaInfo const& meta_info, QObject *parent) :
     QObject (parent),
     lower_frequence_bound_ (0),
     upper_frequence_bound_ (0),
     max_sampling_rate_ (0)
 {
-    for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = ss_config.signal_info.signals().begin ();
-         signal_iter != ss_config.signal_info.signals().end (); ++signal_iter)
+    Q_FOREACH (SignalTypeFlag signal, meta_info.getSignalTypes())
     {
-        samping_rates_[TypeConverter::stdStringToSignalTypeFlag (signal_iter->first)] = signal_iter->second.samplingRate ();
-        max_sampling_rate_ = std::max<int>(max_sampling_rate_, signal_iter->second.samplingRate ());
+        samping_rates_[signal] = meta_info.getSamplingRate (signal);
+        max_sampling_rate_ = std::max<int>(max_sampling_rate_, samping_rates_[signal]);
     }
     upper_frequence_bound_ = max_sampling_rate_ / 2;
 }
-
 
 //-------------------------------------------------------------------------------------------------
 int FTViewSettings::maxSamplingRate () const
 {
     return max_sampling_rate_;
 }
-
 
 //-------------------------------------------------------------------------------------------------
 int FTViewSettings::samplingRate (SignalTypeFlag signal) const

@@ -5,7 +5,7 @@
 #include "base/signal_view_settings.h"
 #include "base/ft_view_settings.h"
 
-#include "tia/ss_meta_info.h"
+#include "data_collector/qt_tia_client/tia_metainfo.h"
 
 #include "data_collector/fourier_transform_thread.h"
 
@@ -29,7 +29,8 @@ class SignalGraphicsObject : public QGraphicsObject
     Q_PROPERTY (int height READ height WRITE setHeight)
     Q_PROPERTY (int width READ width WRITE setWidth)
 public:
-    explicit SignalGraphicsObject (tobiss::Signal const& signal,
+    explicit SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
+                                   TiAQtImplementation::TiAMetaInfo const& signal_info,
                                    QSharedPointer<DataBuffer const> data_buffer,
                                    QSharedPointer<SignalViewSettings> view_settings,
                                    QSharedPointer<FTViewSettings> ft_view_settings = QSharedPointer<FTViewSettings>(0),

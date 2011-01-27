@@ -35,11 +35,17 @@ SignalTypeFlag toSignalTypeFlag (QString const& str)
 }
 
 //-----------------------------------------------------------------------------
-QString toSignalTypeFlagToString (SignalTypeFlag flag)
+QString signalTypeFlagToString (SignalTypeFlag flag)
 {
     if (signal_flag_string_map.size() == 0)
         initSignalFlagStringMap();
     return signal_flag_string_map[flag];
+}
+
+//-----------------------------------------------------------------------------
+bool isAperiodic (SignalTypeFlag signal)
+{
+    return (signal & (SIGNAL_TYPE_Buttons | SIGNAL_TYPE_Joystick));
 }
 
 

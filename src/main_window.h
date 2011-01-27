@@ -11,12 +11,6 @@ namespace Ui {
     class MainWindow;
 }
 
-namespace tobiss {
-
-class TiAClient;
-
-}
-
 namespace TiAScope {
 
 class SignalInfoDockWidget;
@@ -57,7 +51,6 @@ private:
     SignalGraphicsScene* fft_graphics_scene_;
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
-    tobiss::TiAClient* client_;
     TiAQtImplementation::TiAQtClient* qt_client_;
     SignalGraphicsView* view_;
     SignalGraphicsView* fft_view_;

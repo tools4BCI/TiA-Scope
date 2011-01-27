@@ -3,31 +3,31 @@
 
 #include <QWriteLocker>
 #include <QReadLocker>
+#include <QDebug>
 
 #include <iostream>
 #include <cmath>
 
+using namespace TiAQtImplementation;
+
 namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-DataBuffer::DataBuffer (tobiss::SignalInfo::SignalMap const& signal_map, int buffer_size_in_seconds)
+DataBuffer::DataBuffer (TiAQtImplementation::TiAMetaInfo const& meta_info, int buffer_size_in_seconds)
 {
     setObjectName ("DataBuffer");
 
-    for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
-         signal_iter != signal_map.end();
-         ++signal_iter)
+    Q_FOREACH (SignalTypeFlag signal_flag, meta_info.getSignalTypes ())
     {
-        SignalTypeFlag signal_type = TypeConverter::stdStringToSignalTypeFlag (signal_iter->first);
-        sample_limit_[signal_type] = buffer_size_in_seconds * signal_iter->second.samplingRate ();
-        sampling_rate_[signal_type] = signal_iter->second.samplingRate ();
-        for (unsigned channel_index = 0; channel_index < signal_iter->second.channels ().size ();
+        sample_limit_[signal_flag] = buffer_size_in_seconds * meta_info.getSamplingRate (signal_flag);
+        sampling_rate_[signal_flag] = meta_info.getSamplingRate (signal_flag);
+        for (ChannelIndex channel_index = 0; channel_index < meta_info.getNumChannels (signal_flag);
              ++channel_index)
         {
-            data_[signal_type][channel_index] = QVector<double> (sample_limit_[signal_type], 0);
-            end_index_[signal_type][channel_index] = 0;
-            number_new_samples_[signal_type][channel_index] = 0;
-            filter_ids_[signal_type][channel_index] = Filters::instance().registerSignalToBeFiltered (signal_iter->second.samplingRate ());
+            data_[signal_flag][channel_index] = QVector<double> (sample_limit_[signal_flag], 0);
+            end_index_[signal_flag][channel_index] = 0;
+            number_new_samples_[signal_flag][channel_index] = 0;
+            filter_ids_[signal_flag][channel_index] = Filters::instance().registerSignalToBeFiltered (sampling_rate_[signal_flag]);
         }
     }
 }
@@ -50,19 +50,19 @@ void DataBuffer::appendData (SignalTypeFlag signal, int channel, QList<double> c
 }
 
 //-------------------------------------------------------------------------
-void DataBuffer::setAperiodicValues (boost::uint32_t signal_flag, boost::uint32_t device_id, QList<double> const& data)
+void DataBuffer::setAperiodicValues (quint32 signal_flag, quint32 device_id, QList<double> const& data)
 {
     aperiodic_data_[signal_flag][device_id] = data;
 }
 
 //-------------------------------------------------------------------------
-QList<DeviceID> DataBuffer::getAperiodicDeviceIDs (boost::uint32_t signal_flag) const
+QList<DeviceID> DataBuffer::getAperiodicDeviceIDs (SignalTypeFlag signal_flag) const
 {
     return aperiodic_data_[signal_flag].keys ();
 }
 
 //-------------------------------------------------------------------------
-QList<double> DataBuffer::getAperiodicValues (boost::uint32_t signal_flag, DeviceID device_id) const
+QList<double> DataBuffer::getAperiodicValues (SignalTypeFlag signal_flag, DeviceID device_id) const
 {
     return aperiodic_data_[signal_flag][device_id];
 }
@@ -89,6 +89,12 @@ double DataBuffer::getData (SignalTypeFlag signal, int channel, int sample_index
 //-------------------------------------------------------------------------
 void DataBuffer::getData (SignalTypeFlag signal, int channel, QVarLengthArray<double>& data_array) const
 {
+    if (!sample_limit_.contains (signal) ||
+        !end_index_.contains (signal))
+        return;
+    if (!end_index_[signal].contains (channel))
+        return;
+
     int const limit = sample_limit_[signal];
     int const end_index = end_index_[signal][channel];
 

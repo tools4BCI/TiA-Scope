@@ -7,11 +7,6 @@ namespace Ui {
     class ConnectWizard;
 }
 
-namespace tobiss {
-
-class TiAClient;
-}
-
 namespace TiAScope {
 
 //-----------------------------------------------------------------------------
@@ -44,8 +39,6 @@ private Q_SLOTS:
 
 private:
     Ui::ConnectWizard *ui;
-
-    tobiss::TiAClient* client_;
 };
 
 } // TiAScope

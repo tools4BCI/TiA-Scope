@@ -24,11 +24,12 @@ SubjectInfoDockWidget::~SubjectInfoDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-void SubjectInfoDockWidget::setSubjectInfo (tobiss::SubjectInfo const& subject_info)
+void SubjectInfoDockWidget::setSubjectInfo (TiAQtImplementation::SubjectInfoMap const&  subject_info)
 {
-    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "Id", subject_info.id().c_str());
-    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "First Name", subject_info.firstName().c_str());
-    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "Last Name", subject_info.surname().c_str());
+    Q_FOREACH (QString key, subject_info.keys())
+    {
+        SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, key, subject_info[key]);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -36,7 +37,6 @@ void SubjectInfoDockWidget::clear ()
 {
     ui->table->setRowCount (0);
 }
-
 
 //-----------------------------------------------------------------------------
 namespace SubjectInfoDockWidgetHelper

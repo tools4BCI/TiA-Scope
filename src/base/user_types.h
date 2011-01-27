@@ -1,22 +1,17 @@
 #ifndef USER_TYPES_H
 #define USER_TYPES_H
 
-#include <boost/cstdint.hpp>
-
+#include <QtGlobal>
 #include <string>
 
 namespace TiAScope {
 
-typedef boost::uint32_t SignalTypeFlag;
-typedef boost::uint32_t DeviceID;
+typedef quint32 SignalTypeFlag;
+typedef quint32 DeviceID;
 typedef int ChannelID;
 
 typedef unsigned FilterID;
 typedef unsigned FilteredSignalID;
-
-namespace TypeConverter {
-    SignalTypeFlag stdStringToSignalTypeFlag (std::string const& type_string);
-}
 
 } // TiAScope
 

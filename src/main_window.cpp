@@ -21,10 +21,6 @@
 #include "data_collector/fourier_transform_thread.h"
 #include "data_collector/qt_tia_client/impl/tia_client_version02.h"
 
-#include "tia/tia_client.h"
-#include "tia/ssconfig.h"
-#include "tia/ss_meta_info.h"
-
 #include <QCoreApplication>
 #include <QSharedPointer>
 #include <QMessageBox>
@@ -98,23 +94,20 @@ void MainWindow::on_actionConnect_triggered ()
 
     QSharedPointer<SignalViewSettings> signal_view_settings (new SignalViewSettings);
 
-    client_ = new tobiss::TiAClient ();
     qt_client_ = new TiAQtImplementation::TiAQtClientVersion02 ();
     try
     {
         qt_client_->connectToServer (connection_dialog.getIPAddress(), connection_dialog.getPort ());
-        client_->connect (connection_dialog.getIPAddress().toStdString(), connection_dialog.getPort());
-        client_->requestConfig ();
-        tobiss::SSConfig config = client_->config();
+        TiAQtImplementation::TiAMetaInfo meta_info = qt_client_->getMetaInfo();
 
-        QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (config));
-        signal_info_widget_->setSignalInfo (config.signal_info);
+        QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (meta_info));
+        signal_info_widget_->setSignalInfo (meta_info);
         signal_view_settings->connect (signal_info_widget_, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)), SLOT(setChannelVisibility(SignalTypeFlag,ChannelID,bool)));
 
-        subject_info_widget_->setSubjectInfo (config.subject_info);
+        subject_info_widget_->setSubjectInfo (meta_info.getSubjectInfo ());
         view_settings_widget_->setSignalViewSettings (signal_view_settings);
         view_settings_widget_->setFTViewSettings (ft_view_settings);
-        QSharedPointer<DataBuffer> data_buffer (new DataBuffer (config.signal_info.signals (), 30));
+        QSharedPointer<DataBuffer> data_buffer (new DataBuffer (qt_client_->getMetaInfo(), 30));
         MainWindowHelper::monitorObjectLife (monitor_widget_, data_buffer.data());
 
         ft_thread_ =  new FourierTransformThread (data_buffer, this);
@@ -128,19 +121,17 @@ void MainWindow::on_actionConnect_triggered ()
         MainWindowHelper::monitorObjectLife (monitor_widget_, graphics_scene_);
         ft_thread_->connect (signal_info_widget_, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
-        for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = config.signal_info.signals().begin ();
-             signal_iter != config.signal_info.signals().end ();
-             ++signal_iter)
+        Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_type, meta_info.getSignalTypes())
         {
-            SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings);
+            SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_type, meta_info, data_buffer, signal_view_settings);
             signal_object->setWidth (view_->width());
             signal_object->connect (view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
-            graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), signal_object);
+            graphics_scene_->addSignalGraphicsObject (signal_type, signal_object);
 
-            SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_iter->second, data_buffer, signal_view_settings, ft_view_settings, ft_thread_);
+            SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_type, meta_info, data_buffer, signal_view_settings, ft_view_settings, ft_thread_);
             ft_signal_object->setWidth (fft_view_->width());
             ft_signal_object->connect (fft_view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
-            fft_graphics_scene_->addSignalGraphicsObject (TypeConverter::stdStringToSignalTypeFlag (signal_iter->second.type()), ft_signal_object);
+            fft_graphics_scene_->addSignalGraphicsObject (signal_type, ft_signal_object);
         }
         view_->setScene (graphics_scene_);
         graphics_scene_->startTimer (40);
@@ -213,17 +204,15 @@ void MainWindow::readerThreadFinished ()
 
     try
     {
-        if (client_->receiving())
-            client_->stopReceiving();
-        client_->disconnect ();
-        delete client_;
+        if (qt_client_)
+            qt_client_->disconnectFromServer();
+        delete qt_client_;
     }
-    catch (std::ios_base::failure& exc)
+    catch (std::exception& exc)
     {
         qDebug () << "Exception while disconnecting:" << exc.what();
     }
-    client_ = 0;
-
+    qt_client_ = 0;
 }
 
 //-------------------------------------------------------------------------------------------------

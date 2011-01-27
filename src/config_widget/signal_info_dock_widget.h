@@ -3,7 +3,7 @@
 
 #include "base/user_types.h"
 
-#include "tia/ss_meta_info.h"
+#include "data_collector/qt_tia_client/tia_metainfo.h"
 
 #include <QDockWidget>
 #include <QTreeWidgetItem>
@@ -27,7 +27,7 @@ public:
     explicit SignalInfoDockWidget (QWidget *parent = 0);
     ~SignalInfoDockWidget ();
 
-    void setSignalInfo (tobiss::SignalInfo const& signal_info);
+    void setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info);
 
 public Q_SLOTS:
     void clear ();

@@ -7,6 +7,8 @@
 #include <QDomDocument>
 #include <QHostAddress>
 #include <QThread>
+#include <QTime>
+#include <QMutexLocker>
 
 namespace TiAQtImplementation
 {
@@ -32,20 +34,6 @@ void TiAQtClientVersion02::connectToServer (QString server_address, unsigned por
     control_stream_.setDevice (&control_socket_);
     buildMetaInfo ();
     getDataConnection ();
-    // QThread::currentThread()->wait (2000);
-//    startReceiving();
-//    unsigned num = 0;
-//    data_socket_.waitForReadyRead();
-//    while (true)
-//    {
-//        qDebug () << num;
-//        QSharedPointer<DataPacket> packet = getDataPacket();
-//        num++;
-////        if ((num % 100) == 0)
-////        {
-////            qDebug () << "Datapakets received: " << num;
-////        }
-//    }
 }
 
 //-----------------------------------------------------------------------------
@@ -80,21 +68,25 @@ void TiAQtClientVersion02::stopReceiving ()
 //-----------------------------------------------------------------------------
 QSharedPointer<DataPacket> TiAQtClientVersion02::getDataPacket ()
 {
-    unsigned needed = 0;
+    QMutexLocker locker (&data_stream_data_mutex_);
+    unsigned needed = DataPacketVersion2::canCreate (data_stream_data_);
     while (needed == 0)
     {
+        data_stream_data_wait_.wait (&data_stream_data_mutex_);
         needed = DataPacketVersion2::canCreate (data_stream_data_);
     }
 
     QByteArray packet = data_stream_data_.left(needed);
     data_stream_data_.remove(0, needed);
-    return QSharedPointer<DataPacket> (new DataPacketVersion2 (packet));
+    QSharedPointer<DataPacket> datapacket (new DataPacketVersion2 (packet));
+    return datapacket;
 }
 
 //-----------------------------------------------------------------------------
 void Receiver::receiveData ()
 {
     data_stream_data_.append(data_socket_.readAll());
+    data_stream_data_wait_.wakeAll ();
 }
 
 //-----------------------------------------------------------------------------
@@ -114,12 +106,10 @@ void TiAQtClientVersion02::buildMetaInfo ()
         QString signal_type = signal_element.attribute ("type");
 
         SignalTypeFlag singal_type_flag = toSignalTypeFlag (signal_type);
-        meta_info_.addSignal (singal_type_flag);
-        meta_info_.setSamplingRate (singal_type_flag, samplingrate_element.text().toDouble());
-
-        qDebug () << "  *" << signal_type << samplingrate_element.text().toDouble() << "Hz";
 
         QDomNodeList channel_nodes = signal_element.elementsByTagName ("ch");
+        meta_info_.addSignal (singal_type_flag, channel_nodes.size ());
+        meta_info_.setSamplingRate (singal_type_flag, samplingrate_element.text().toDouble());
         for (int channel_index = 0; channel_index < channel_nodes.size(); channel_index++)
         {
             QDomElement channel_element = channel_nodes.item (channel_index).toElement ();
@@ -146,7 +136,7 @@ void TiAQtClientVersion02::getDataConnection ()
     data_socket_.connectToHost (control_socket_.peerAddress(), port);
     qDebug () << "readBufferSize = " << data_socket_.readBufferSize();
     data_socket_.waitForConnected ();
-    receiver_ = new Receiver (data_stream_data_, data_socket_);
+    receiver_ = new Receiver (data_stream_data_, data_socket_, data_stream_data_wait_);
 }
 
 //-----------------------------------------------------------------------------

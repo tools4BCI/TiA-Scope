@@ -2,11 +2,7 @@
 #include "button_graphics_object.h"
 #include "joystick_graphics_object.h"
 
-#include "tia/defines.h"
-
-
 namespace TiAScope {
-
 
 //-------------------------------------------------------------------------------------------------
 AperiodicDataGraphicsObject* AperiodicDataGraphicsObject::createAperiodicDataGraphicsObject (SignalTypeFlag signal, QSharedPointer<DataBuffer const> data_buffer, QGraphicsItem *parent)
@@ -14,10 +10,10 @@ AperiodicDataGraphicsObject* AperiodicDataGraphicsObject::createAperiodicDataGra
     AperiodicDataGraphicsObject* object = 0;
     switch (signal)
     {
-    case SIG_BUTTON:
+    case TiAQtImplementation::SIGNAL_TYPE_Buttons:
         object = new ButtonGraphicsObject (parent);
         break;
-    case SIG_JOYSTICK:
+    case TiAQtImplementation::SIGNAL_TYPE_Joystick:
         object = new JoystickGraphicsObject (parent);
         break;
     }

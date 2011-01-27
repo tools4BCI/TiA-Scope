@@ -1,7 +1,7 @@
 #ifndef SUBJECT_INFO_DOCKWIDGET_H
 #define SUBJECT_INFO_DOCKWIDGET_H
 
-#include "tia/ss_meta_info.h"
+#include "data_collector/qt_tia_client/tia_metainfo.h"
 
 #include <QDockWidget>
 
@@ -19,7 +19,7 @@ public:
     explicit SubjectInfoDockWidget(QWidget *parent = 0);
     ~SubjectInfoDockWidget();
 
-    void setSubjectInfo (tobiss::SubjectInfo const& subject_info);
+    void setSubjectInfo (TiAQtImplementation::SubjectInfoMap const& subject_info);
 
 public Q_SLOTS:
     void clear ();

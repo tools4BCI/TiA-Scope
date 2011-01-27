@@ -6,6 +6,8 @@
 #include <QTcpSocket>
 #include <QTextStream>
 #include <QDataStream>
+#include <QMutex>
+#include <QWaitCondition>
 
 namespace TiAQtImplementation
 {
@@ -45,6 +47,8 @@ private:
     static QString const STOP_COMMAND_;
 
     QByteArray data_stream_data_;
+    QMutex data_stream_data_mutex_;
+    QWaitCondition data_stream_data_wait_;
     Receiver* receiver_;
 };
 
@@ -52,8 +56,10 @@ class Receiver : public QObject
 {
     Q_OBJECT
 public:
-    Receiver (QByteArray& data_stream_data , QTcpSocket& data_socket) :
-            data_stream_data_ (data_stream_data), data_socket_ (data_socket)
+    Receiver (QByteArray& data_stream_data , QTcpSocket& data_socket,
+              QWaitCondition& data_stream_data_wait) :
+            data_stream_data_ (data_stream_data), data_socket_ (data_socket),
+            data_stream_data_wait_ (data_stream_data_wait)
     {
         this->connect (&data_socket_, SIGNAL(readyRead()), SLOT(receiveData()));
     }
@@ -64,6 +70,7 @@ private Q_SLOTS:
 private:
     QByteArray& data_stream_data_;
     QTcpSocket& data_socket_;
+    QWaitCondition& data_stream_data_wait_;
     unsigned last_;
 };
 

@@ -13,7 +13,7 @@ namespace SignalInfoDockWidgetHelper
 
     //-------------------------------------------------------------------------
     /// adds the given signals as a row to the given tree
-    void addSignalsToTree (QTreeWidget* tree_widget, tobiss::SignalInfo::SignalMap const& signal_map);
+    void addSignalsToTree (QTreeWidget* tree_widget, TiAQtImplementation::TiAMetaInfo const& signal_info);
 }
 
 //-----------------------------------------------------------------------------
@@ -35,11 +35,11 @@ SignalInfoDockWidget::~SignalInfoDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-void SignalInfoDockWidget::setSignalInfo (tobiss::SignalInfo const& signal_info)
+void SignalInfoDockWidget::setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info)
 {
     initializing_ = true;
     ui->signalTree->clear ();
-    SignalInfoDockWidgetHelper::addSignalsToTree (ui->signalTree, signal_info.signals());
+    SignalInfoDockWidgetHelper::addSignalsToTree (ui->signalTree, signal_info);
     initializing_ = false;
 }
 
@@ -77,27 +77,25 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
 namespace SignalInfoDockWidgetHelper
 {
     //-------------------------------------------------------------------------
-    void addSignalsToTree (QTreeWidget* tree_widget, tobiss::SignalInfo::SignalMap const& signal_map)
+    void addSignalsToTree (QTreeWidget* tree_widget, TiAQtImplementation::TiAMetaInfo const& signal_info)
     {
-        for (tobiss::SignalInfo::SignalMap::const_iterator signal_iter = signal_map.begin();
-             signal_iter != signal_map.end();
-             ++signal_iter)
+        Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal, signal_info.getSignalTypes())
         {
             QTreeWidgetItem* signal_item = new QTreeWidgetItem (tree_widget);
-            signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, TypeConverter::stdStringToSignalTypeFlag (signal_iter->first.c_str()));
-            signal_item->setText (NAME_COLUMN_INDEX, QString (signal_iter->first.c_str()));
+            signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal);
+            signal_item->setText (NAME_COLUMN_INDEX, TiAQtImplementation::signalTypeFlagToString (signal));
             signal_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
             signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
-            signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate ()).append( " Hz"));
+            signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_info.getSamplingRate(signal)).append( " Hz"));
             unsigned index = 0;
-            Q_FOREACH (tobiss::Channel channel, signal_iter->second.channels ())
+            for (TiAQtImplementation::ChannelIndex channel = 0; channel < signal_info.getNumChannels (signal); ++channel)
             {
                 QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
                 channel_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
                 channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
-                channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, TypeConverter::stdStringToSignalTypeFlag (signal_iter->first.c_str()));
+                channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal);
                 channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, index);
-                channel_item->setText (NAME_COLUMN_INDEX, channel.id().c_str());
+                channel_item->setText (NAME_COLUMN_INDEX, signal_info.getChannelLabel (signal, channel));
                 channel_item->setCheckState (FT_COLUMN_INDEX, Qt::Unchecked);
                 index++;
             }
