@@ -2,6 +2,7 @@
 #define MAIN_WINDOW_H
 
 #include "data_collector/qt_tia_client/qt_tia_client.h"
+#include "base/signal_view_settings.h"
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -35,6 +36,8 @@ public:
 
 private Q_SLOTS:
     void on_actionDisconnect_triggered ();
+    void on_actionZoomIn_triggered ();
+    void on_actionZoomOut_triggered ();
     void on_actionReceiveData_toggled (bool checked);
 
     void startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client);
@@ -46,6 +49,7 @@ private:
     void initWelcomeScreen ();
     void initDataViewScreen ();
 
+
     Ui::MainWindow *ui;
 //    SignalInfoDockWidget* signal_info_widget_;
 //    SubjectInfoDockWidget* subject_info_widget_;
@@ -56,6 +60,8 @@ private:
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
     QSharedPointer<TiAQtImplementation::TiAQtClient> qt_client_;
+    QList<QDockWidget*> dock_widgets_;
+    QSharedPointer<SignalViewSettings> signal_view_settings_;
 //    SignalGraphicsView* view_;
 //    SignalGraphicsView* fft_view_;
 };

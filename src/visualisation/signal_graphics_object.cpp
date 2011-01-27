@@ -24,7 +24,7 @@ SignalGraphicsObject::SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag 
     view_settings_ (view_settings),
     ft_view_settings_ (ft_view_settings)
 {
-    new QGraphicsSimpleTextItem (TiAQtImplementation::signalTypeFlagToString (signal_type), this);
+    label_item_ = new QGraphicsSimpleTextItem (TiAQtImplementation::signalTypeFlagToString (signal_type), this);
 
     int channel_amount = signal_info.getNumChannels (signal_type_);
     if (TiAQtImplementation::isAperiodic (signal_type_))
@@ -66,13 +66,11 @@ SignalGraphicsObject::SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag 
                 if (previous_channel)
                     channel->connect (previous_channel, SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
 
-                channel->setPos (0, ChannelGraphicsObject::defaultHeight() * channels_.size());
+                channel->setPos (0, (ChannelGraphicsObject::defaultHeight() * channels_.size()) + label_item_->boundingRect().height());
                 channel->setHeight (ChannelGraphicsObject::defaultHeight());
                 channel->setWidth (width_);
                 channels_[channel_index] = channel;
                 children_.append (channel);
-                QGraphicsSimpleTextItem* channel_label = new QGraphicsSimpleTextItem (signal_info.getChannelLabel(signal_type_, channel_index), channel);
-                channel_label->setPos (400, channel->height() / 2);
                 previous_channel = channel;
             }
             connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
@@ -112,8 +110,8 @@ void SignalGraphicsObject::updateToDataBuffer ()
 //-----------------------------------------------------------------------------
 void SignalGraphicsObject::setHeight (int height)
 {
-    height_ = height;
-    Q_EMIT bottomYChanged (y() + height);
+    height_ = height + label_item_->boundingRect().height();
+    Q_EMIT bottomYChanged (y() + height_);
 }
 
 //-----------------------------------------------------------------------------

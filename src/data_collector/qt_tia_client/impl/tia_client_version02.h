@@ -8,6 +8,7 @@
 #include <QDataStream>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QDomDocument>
 
 namespace TiAQtImplementation
 {
@@ -32,6 +33,7 @@ public:
 
 private:
     void buildMetaInfo ();
+    void readSubjectInfo (QDomDocument& config_doc, QString key);
     void getDataConnection ();
     QString callConfigCommand (QString const& command);
 

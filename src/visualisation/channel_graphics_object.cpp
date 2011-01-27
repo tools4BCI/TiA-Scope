@@ -101,8 +101,8 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     painter->setPen (Qt::black);
     painter->setClipping (false);
     painter->setClipRect (boundingRect());
-    if (view_settings_->getChannelOverlapping() == 0)
-        painter->drawRect (boundingRect());
+    //if (view_settings_->getChannelOverlapping() == 0)
+    //    painter->drawRect (boundingRect());
     painter->translate (0, height() / 2);
     bool cyclic_mode = view_settings_->getCyclicMode();
 

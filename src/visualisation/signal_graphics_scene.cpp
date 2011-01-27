@@ -68,14 +68,14 @@ void SignalGraphicsScene::startTimer (int milli_seconds_interval)
 void SignalGraphicsScene::setSceneRectHeight (int height)
 {
     setSceneRect (sceneRect().x(), sceneRect().y(), sceneRect().width(), height);
-    qDebug () << "SignalGraphicsScene::setSceneRectHeight " << height;
+    // qDebug () << "SignalGraphicsScene::setSceneRectHeight " << height;
 }
 
 //---------------------------------------------------------------------------------------------
 void SignalGraphicsScene::setSceneRectWidth (int width)
 {
     setSceneRect (sceneRect().x(), sceneRect().y(), width, sceneRect().height());
-    qDebug () << "SignalGraphicsScene::setSceneRectWidth " << width;
+    // qDebug () << "SignalGraphicsScene::setSceneRectWidth " << width;
 }
 
 

@@ -14,6 +14,9 @@
    <iconset resource="../../resources.qrc">
     <normaloff>:/icons/user.png</normaloff>:/icons/user.png</iconset>
   </property>
+  <property name="features">
+   <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+  </property>
   <property name="windowTitle">
    <string>Subject Info</string>
   </property>

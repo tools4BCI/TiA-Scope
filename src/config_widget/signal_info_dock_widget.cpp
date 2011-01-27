@@ -17,14 +17,16 @@ namespace SignalInfoDockWidgetHelper
 }
 
 //-----------------------------------------------------------------------------
-SignalInfoDockWidget::SignalInfoDockWidget (QWidget *parent) :
+SignalInfoDockWidget::SignalInfoDockWidget (QSharedPointer<SignalViewSettings> settings, QWidget *parent) :
     QDockWidget (parent),
     ui (new Ui::SignalInfoDockWidget),
-    initializing_ (false)
+    initializing_ (false),
+    settings_ (settings)
 {
     ui->setupUi(this);
     ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, true);
     ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, true);
+    ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::FT_COLUMN_INDEX, true);
     ui->signalTree->setColumnWidth (SignalInfoDockWidgetHelper::FT_COLUMN_INDEX, 20);
 }
 
@@ -72,6 +74,15 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
                                               item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
     }
 }
+
+//-------------------------------------------------------------------------------------------------
+void SignalInfoDockWidget::on_channelOverlappingSlider_valueChanged (int value)
+{
+    if (settings_.isNull())
+        return;
+    settings_->setChannelOverlapping (static_cast<float>(value) / 100.0);
+}
+
 
 //-----------------------------------------------------------------------------
 namespace SignalInfoDockWidgetHelper

@@ -2,11 +2,12 @@
 #define SIGNAL_INFO_DOCK_WIDGET_H
 
 #include "base/user_types.h"
-
 #include "data_collector/qt_tia_client/tia_metainfo.h"
+#include "base/signal_view_settings.h"
 
 #include <QDockWidget>
 #include <QTreeWidgetItem>
+#include <QSharedPointer>
 
 namespace Ui
 {
@@ -24,7 +25,7 @@ class SignalInfoDockWidget : public QDockWidget
     Q_OBJECT
 
 public:
-    explicit SignalInfoDockWidget (QWidget *parent = 0);
+    explicit SignalInfoDockWidget (QSharedPointer<SignalViewSettings> settings, QWidget *parent = 0);
     ~SignalInfoDockWidget ();
 
     void setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info);
@@ -38,10 +39,12 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void on_signalTree_itemChanged (QTreeWidgetItem* item, int column);
+    void on_channelOverlappingSlider_valueChanged (int value);
 
 private:
     Ui::SignalInfoDockWidget *ui;
     bool initializing_;
+    QSharedPointer<SignalViewSettings> settings_;
 };
 
 } // TiAScope

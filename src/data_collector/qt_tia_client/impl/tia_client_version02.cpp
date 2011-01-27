@@ -117,7 +117,21 @@ void TiAQtClientVersion02::buildMetaInfo ()
             meta_info_.setChannelLabel (singal_type_flag, channel_index, channel_element.attribute ("id"));
         }
     }
+
+    // build subject info
+    readSubjectInfo (config_doc, "firstName");
+    readSubjectInfo (config_doc, "surname");
+    readSubjectInfo (config_doc, "birthday");
+    readSubjectInfo (config_doc, "handedness");
 }
+//-----------------------------------------------------------------------------
+void TiAQtClientVersion02::readSubjectInfo (QDomDocument& config_doc, QString key)
+{
+    QDomNodeList key_nodes = config_doc.elementsByTagName (key);
+    if (key_nodes.size())
+        meta_info_.addSubjectInfoEntry (key, key_nodes.item (0).toElement().text());
+}
+
 
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion02::getDataConnection ()

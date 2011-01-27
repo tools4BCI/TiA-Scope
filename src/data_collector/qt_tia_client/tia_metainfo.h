@@ -19,6 +19,7 @@ public:
     void addSignal (SignalTypeFlag signal, ChannelIndex num_channels) {signal_types_.insert (signal); num_channels_.insert(signal, num_channels);}
     void setSamplingRate (SignalTypeFlag signal, double sampling_rate) {sampling_rates_[signal] = sampling_rate;}
     void setChannelLabel (SignalTypeFlag signal, ChannelIndex channel, QString label) {channel_labels_[signal][channel] = label;}
+    void addSubjectInfoEntry (QString key, QString value) {subject_info_.insert (key, value);}
 
     QSet<SignalTypeFlag> getSignalTypes () const {return signal_types_;}
     ChannelIndex getNumChannels (SignalTypeFlag signal) const {return num_channels_[signal];}

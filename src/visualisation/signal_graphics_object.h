@@ -70,6 +70,7 @@ private:
     AperiodicDataGraphicsObject* aperiodic_signal_;
     QSharedPointer<SignalViewSettings> view_settings_;
     QSharedPointer<FTViewSettings> ft_view_settings_;
+    QGraphicsSimpleTextItem* label_item_;
 };
 
 } // TiAScope

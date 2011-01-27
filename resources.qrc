@@ -3,10 +3,12 @@
         <file>icons/connect.png</file>
         <file>icons/cancel.png</file>
         <file>icons/player_play.png</file>
-        <file>icons/tobi.png</file>
         <file>icons/user.png</file>
         <file>icons/autoscale.png</file>
         <file>icons/scale-in.png</file>
         <file>icons/scale-out.png</file>
+        <file>icons/view_settings.png</file>
+        <file>icons/zoom_in.png</file>
+        <file>icons/zoom_out.png</file>
     </qresource>
 </RCC>
