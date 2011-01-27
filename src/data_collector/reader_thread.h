@@ -15,7 +15,7 @@ class ReaderThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ReaderThread (QSharedPointer<DataBuffer> data_buffer, TiAQtImplementation::TiAQtClient* client, bool udp,
+    explicit ReaderThread (QSharedPointer<DataBuffer> data_buffer, QSharedPointer<TiAQtImplementation::TiAQtClient> client, bool udp,
                            QObject *parent = 0);
 
     void stop ();
@@ -23,7 +23,7 @@ private:
     virtual void run ();
 
     QSharedPointer<DataBuffer> data_buffer_;
-    TiAQtImplementation::TiAQtClient* client_;
+    QSharedPointer<TiAQtImplementation::TiAQtClient> client_;
     bool running_;
     bool udp_;
 };

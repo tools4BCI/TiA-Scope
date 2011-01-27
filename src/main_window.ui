@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>1314</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -55,23 +55,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionConnect"/>
    <addaction name="actionDisconnect"/>
    <addaction name="actionReceiveData"/>
    <addaction name="separator"/>
   </widget>
-  <action name="actionConnect">
-   <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/connect.png</normaloff>:/icons/connect.png</iconset>
-   </property>
-   <property name="text">
-    <string>Connect</string>
-   </property>
-   <property name="toolTip">
-    <string>Connect to a Signal Server</string>
-   </property>
-  </action>
   <action name="actionDisconnect">
    <property name="enabled">
     <bool>false</bool>

@@ -21,6 +21,7 @@ class SignalGraphicsScene;
 class SignalGraphicsView;
 class ReaderThread;
 class FourierTransformThread;
+class WelcomeWidget;
 
 
 class MainWindow : public QMainWindow
@@ -33,27 +34,30 @@ public:
 
 
 private Q_SLOTS:
-    void on_actionConnect_triggered ();
     void on_actionDisconnect_triggered ();
     void on_actionReceiveData_toggled (bool checked);
+
+    void startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client);
 
     void ftThreadFinished ();
     void readerThreadFinished ();
 
 private:
+    void initWelcomeScreen ();
+    void initDataViewScreen ();
+
     Ui::MainWindow *ui;
-    QSplitter* splitter_;
-    SignalInfoDockWidget* signal_info_widget_;
-    SubjectInfoDockWidget* subject_info_widget_;
-    ViewSettingsDockWidget* view_settings_widget_;
-    ApplicationMonitorDockWidget* monitor_widget_;
-    SignalGraphicsScene* graphics_scene_;
-    SignalGraphicsScene* fft_graphics_scene_;
+//    SignalInfoDockWidget* signal_info_widget_;
+//    SubjectInfoDockWidget* subject_info_widget_;
+//    ViewSettingsDockWidget* view_settings_widget_;
+//    ApplicationMonitorDockWidget* monitor_widget_;
+//    SignalGraphicsScene* graphics_scene_;
+//    SignalGraphicsScene* fft_graphics_scene_;
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
-    TiAQtImplementation::TiAQtClient* qt_client_;
-    SignalGraphicsView* view_;
-    SignalGraphicsView* fft_view_;
+    QSharedPointer<TiAQtImplementation::TiAQtClient> qt_client_;
+//    SignalGraphicsView* view_;
+//    SignalGraphicsView* fft_view_;
 };
 
 } // TiAScope

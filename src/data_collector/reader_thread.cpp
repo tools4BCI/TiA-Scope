@@ -9,7 +9,7 @@
 namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, TiAQtImplementation::TiAQtClient* client, bool udp,
+ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, QSharedPointer<TiAQtImplementation::TiAQtClient> client, bool udp,
                             QObject *parent) :
     QThread(parent),
     data_buffer_ (data_buffer),
