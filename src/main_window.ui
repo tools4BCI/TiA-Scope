@@ -58,6 +58,7 @@
    <addaction name="actionDisconnect"/>
    <addaction name="actionReceiveData"/>
    <addaction name="separator"/>
+   <addaction name="actionAutoScaling"/>
    <addaction name="actionZoomIn"/>
    <addaction name="actionZoomOut"/>
    <addaction name="separator"/>
@@ -140,6 +141,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionAutoScaling">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/auto_scaling.png</normaloff>:/icons/auto_scaling.png</iconset>
+   </property>
+   <property name="text">
+    <string>Auto Scaling</string>
    </property>
   </action>
  </widget>

@@ -24,6 +24,9 @@ public:
     explicit SignalViewSettings(QObject *parent = 0);
 
     //---------------------------------------------------------------------------------------------
+    bool autoScalingEnabled () const {return auto_scaling_;}
+
+    //---------------------------------------------------------------------------------------------
     bool getCyclicMode () const {return cyclic_mode_;}
 
     //---------------------------------------------------------------------------------------------
@@ -38,6 +41,9 @@ public:
     //---------------------------------------------------------------------------------------------
     float getChannelOverlapping () const {return channel_overlapping_;}
 public Q_SLOTS:
+    //---------------------------------------------------------------------------------------------
+    void setAutoScalingEnabled (bool enabled) {auto_scaling_ = enabled;}
+
     //---------------------------------------------------------------------------------------------
     void setSignalVisualisationTime (double seconds) {signal_visualisation_time_ = seconds; Q_EMIT signalVisualisationTimeChanged (signal_visualisation_time_);}
 
@@ -65,6 +71,7 @@ Q_SIGNALS:
     //---------------------------------------------------------------------------------------------
     void channelOverlappingChanged ();
 private:
+    bool auto_scaling_;
     double signal_visualisation_time_;
     double basic_y_scaling_;
     bool cyclic_mode_;

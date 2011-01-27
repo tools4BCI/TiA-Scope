@@ -38,6 +38,7 @@ private Q_SLOTS:
     void on_actionDisconnect_triggered ();
     void on_actionZoomIn_triggered ();
     void on_actionZoomOut_triggered ();
+    void on_actionAutoScaling_toggled (bool checked);
     void on_actionReceiveData_toggled (bool checked);
 
     void startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client);

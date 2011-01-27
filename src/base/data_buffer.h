@@ -44,6 +44,12 @@ public:
     double getData (TiAQtImplementation::SignalTypeFlag signal, int channel, int sample_index) const;
 
     //-------------------------------------------------------------------------
+    double getMin (TiAQtImplementation::SignalTypeFlag signal, int channel) const;
+
+    //-------------------------------------------------------------------------
+    double getMax (TiAQtImplementation::SignalTypeFlag signal, int channel) const;
+
+    //-------------------------------------------------------------------------
     /// fill the data_array with the last samples of the given channel
     void getData (TiAQtImplementation::SignalTypeFlag signal, int channel, QVarLengthArray<double>& data_array) const;
 
@@ -62,6 +68,8 @@ public:
 private:
     QMap<quint32, QMap<DeviceID, QList<double> > > aperiodic_data_; // QMap<signal-flag, QMap<device-id, QList-data> >
     QMap<TiAQtImplementation::SignalTypeFlag, QHash<int, QVector<double> > > data_;
+    QMap<TiAQtImplementation::SignalTypeFlag, QHash<int, double> > min_;
+    QMap<TiAQtImplementation::SignalTypeFlag, QHash<int, double> > max_;
     QMap<TiAQtImplementation::SignalTypeFlag, QHash<int, int> > end_index_;
     QMap<TiAQtImplementation::SignalTypeFlag, QMap<int, FilteredSignalID> > filter_ids_;
     mutable QHash<TiAQtImplementation::SignalTypeFlag, QHash<int, int> > number_new_samples_;

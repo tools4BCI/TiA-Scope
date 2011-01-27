@@ -100,6 +100,13 @@ void MainWindow::on_actionZoomOut_triggered ()
     helpers::animateProperty (signal_view_settings_.data(), "basicYScaling", signal_view_settings_->getBasicYScaling(), signal_view_settings_->getBasicYScaling() / 2);
 }
 
+//-----------------------------------------------------------------------------
+void MainWindow::on_actionAutoScaling_toggled (bool checked)
+{
+    if (checked)
+        helpers::animateProperty (signal_view_settings_.data(), "basicYScaling", signal_view_settings_->getBasicYScaling(), 1);
+}
+
 //-------------------------------------------------------------------------------------------------
 void MainWindow::on_actionReceiveData_toggled (bool checked)
 {
@@ -155,6 +162,7 @@ void MainWindow::initWelcomeScreen ()
 {
     ui->actionSubjectInfo->setChecked (false);
     ui->actionViewSettings->setChecked (false);
+    ui->actionAutoScaling->setChecked (false);
     Q_FOREACH (QDockWidget* dock_widget, dock_widgets_)
     {
         removeDockWidget (dock_widget);
@@ -189,6 +197,9 @@ void MainWindow::initDataViewScreen ()
     // init views
     TiAQtImplementation::TiAMetaInfo meta_info = qt_client_->getMetaInfo();
     signal_view_settings_ = QSharedPointer<SignalViewSettings> (new SignalViewSettings);
+    signal_view_settings_->connect (ui->actionAutoScaling, SIGNAL(toggled(bool)), SLOT(setAutoScalingEnabled(bool)));
+    ui->actionAutoScaling->setChecked (true);
+
     //QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (meta_info));
     //subject_info_widget_->setSubjectInfo (meta_info.getSubjectInfo ());
     //view_settings_widget_->setSignalViewSettings (signal_view_settings);

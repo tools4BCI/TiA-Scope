@@ -43,6 +43,8 @@ void DataBuffer::appendData (SignalTypeFlag signal, int channel, QList<double> c
     Q_FOREACH (double sample, data)
     {
         channel_data[end_index] = Filters::instance().clock (filter_ids_[signal][channel], sample);
+        min_[signal][channel] = qMin (min_[signal][channel], channel_data[end_index]);
+        max_[signal][channel] = qMax (max_[signal][channel], channel_data[end_index]);
         end_index++;
         if (end_index >= channel_data.size ())
             end_index = 0;
@@ -112,6 +114,26 @@ void DataBuffer::getData (SignalTypeFlag signal, int channel, QVarLengthArray<do
         }
         sample_index++;
     }
+}
+
+//-------------------------------------------------------------------------
+double DataBuffer::getMin (TiAQtImplementation::SignalTypeFlag signal, int channel) const
+{
+    if (!min_.contains(signal))
+        return 0;
+    if (min_[signal].size() <= channel)
+        return 0;
+    return min_[signal][channel];
+}
+
+//-------------------------------------------------------------------------
+double DataBuffer::getMax (TiAQtImplementation::SignalTypeFlag signal, int channel) const
+{
+    if (!max_.contains(signal))
+        return 0;
+    if (max_[signal].size() <= channel)
+        return 0;
+    return max_[signal][channel];
 }
 
 //-------------------------------------------------------------------------

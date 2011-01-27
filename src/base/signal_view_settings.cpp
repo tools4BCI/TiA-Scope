@@ -7,6 +7,7 @@ namespace TiAScope {
 //-----------------------------------------------------------------------------
 SignalViewSettings::SignalViewSettings(QObject *parent) :
     QObject(parent),
+    auto_scaling_ (false),
     cyclic_mode_ (false),
     channel_overlapping_ (0)
 {

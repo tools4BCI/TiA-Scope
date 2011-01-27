@@ -103,7 +103,18 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     painter->setClipRect (boundingRect());
     //if (view_settings_->getChannelOverlapping() == 0)
     //    painter->drawRect (boundingRect());
+
+    double y_scaling = yScalingFactor() * view_settings_->getBasicYScaling();
     painter->translate (0, height() / 2);
+    if (view_settings_->autoScalingEnabled())
+    {
+        double max = qAbs (data_buffer_->getMax (signal_, channel_));
+        double min = qAbs (data_buffer_->getMin (signal_, channel_));
+        double scale = (height() - 2)  / 2;
+        scale /= qMax (max, min);
+        y_scaling = scale * view_settings_->getBasicYScaling();
+    }
+
     bool cyclic_mode = view_settings_->getCyclicMode();
 
     QPointF first (width (), 0);
@@ -128,7 +139,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     for (int sample = data_.size() - 1; sample >= 0; sample--)
     {
         qreal y = 0;
-        y = data_[sample] * yScalingFactor() * view_settings_->getBasicYScaling();
+        y = data_[sample] * y_scaling;
         first.setX (first.x() - x_step);
         if (first.x() <= 0 && cyclic_mode)
         {
