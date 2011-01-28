@@ -19,6 +19,23 @@
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
+     <widget class="QRadioButton" name="cyclicMode">
+      <property name="text">
+       <string>Cyclic Mode</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="scrollingMode">
+      <property name="text">
+       <string>Scrolling Mode</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QTreeWidget" name="signalTree">
       <property name="animated">
        <bool>true</bool>

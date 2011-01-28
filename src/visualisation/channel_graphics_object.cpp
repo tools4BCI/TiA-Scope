@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QGraphicsSceneWheelEvent>
 #include <QMenu>
+#include <QDebug>
 
 #include <iostream>
 
@@ -49,9 +50,9 @@ void ChannelGraphicsObject::updateView ()
     x_step /= sampling_rate_ * seconds_to_display;
     data_buffer_->lockForRead();
     int new_samples = data_buffer_->numberNewSamples (signal_, channel_);
-    cyclic_start_.setX (cyclic_start_.x() + x_step * new_samples);
-    if (cyclic_start_.x() >= width ())
-        cyclic_start_.setX (0);
+    cyclic_start_.setX (cyclic_start_.x() + (x_step * new_samples));
+    if (cyclic_start_.x() > width ())
+        cyclic_start_.setX (cyclic_start_.x() - width ());
 
     data_buffer_->getData (signal_, channel_, data_);
     data_buffer_->unlockForRead();

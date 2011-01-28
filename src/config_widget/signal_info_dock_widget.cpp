@@ -83,6 +83,11 @@ void SignalInfoDockWidget::on_channelOverlappingSlider_valueChanged (int value)
     settings_->setChannelOverlapping (static_cast<float>(value) / 100.0);
 }
 
+//-------------------------------------------------------------------------------------------------
+void SignalInfoDockWidget::on_cyclicMode_toggled (bool checked)
+{
+    settings_->setCyclicMode (checked);
+}
 
 //-----------------------------------------------------------------------------
 namespace SignalInfoDockWidgetHelper
