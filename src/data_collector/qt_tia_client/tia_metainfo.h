@@ -25,6 +25,7 @@ public:
     ChannelIndex getNumChannels (SignalTypeFlag signal) const {return num_channels_[signal];}
     QMap<QString, QString> getSubjectInfo () const {return subject_info_;}
     double getSamplingRate (SignalTypeFlag signal) const {return sampling_rates_[signal];}
+    QMap<SignalTypeFlag, double> getSamplingRates () const {return sampling_rates_;}
     QString getChannelLabel (SignalTypeFlag signal, ChannelIndex channel) const {return channel_labels_[signal][channel];}
 
 private:

@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TiA Scope</string>
+   <string>TiA Scope 1.0</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
@@ -63,6 +63,7 @@
    <addaction name="actionZoomOut"/>
    <addaction name="separator"/>
    <addaction name="actionViewSettings"/>
+   <addaction name="actionFilter"/>
    <addaction name="actionSubjectInfo"/>
   </widget>
   <action name="actionDisconnect">
@@ -153,6 +154,21 @@
    </property>
    <property name="text">
     <string>Auto Scaling</string>
+   </property>
+  </action>
+  <action name="actionFilter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/icons/filter.png</normaloff>:/icons/filter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Signal Processing</string>
+   </property>
+   <property name="toolTip">
+    <string>Signal Processing</string>
    </property>
   </action>
  </widget>

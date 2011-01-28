@@ -11,7 +11,7 @@
 
 #include "config_widget/signal_info_dock_widget.h"
 #include "config_widget/subject_info_dock_widget.h"
-#include "config_widget/view_settings_dock_widget.h"
+#include "config_widget/filter_dockwidget.h"
 #include "config_widget/application_monitor_dock_widget.h"
 
 #include "connection_widget/connect_dialog.h"
@@ -28,6 +28,7 @@
 #include <QTimer>
 #include <QDebug>
 
+#include <algorithm>
 #include <iostream>
 
 namespace TiAScope {
@@ -252,6 +253,14 @@ void MainWindow::initDataViewScreen ()
     subject_info_widget->setSubjectInfo (meta_info.getSubjectInfo());
     subject_info_widget->setVisible (ui->actionSubjectInfo->isChecked());
     subject_info_widget->connect (ui->actionSubjectInfo, SIGNAL(toggled(bool)), SLOT(setVisible(bool)));
+
+    // init filters dock widget
+    QList<double> samplingrates = meta_info.getSamplingRates().values();
+    FilterDockWidget* filter_widget = new FilterDockWidget (*(std::min_element (samplingrates.constBegin(), samplingrates.constEnd())), this);
+    dock_widgets_.append (filter_widget);
+    addDockWidget (Qt::LeftDockWidgetArea, filter_widget);
+    filter_widget->hide ();
+    filter_widget->connect (ui->actionFilter, SIGNAL(toggled(bool)), SLOT(setVisible(bool)));
 
     ui->actionReceiveData->setEnabled (true);
     ui->actionReceiveData->setChecked (true);

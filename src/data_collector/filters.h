@@ -9,6 +9,7 @@
 #include <QVector>
 #include <QSharedPointer>
 #include <QMap>
+#include <QMutex>
 
 namespace TiAScope
 {
@@ -58,6 +59,7 @@ private:
     QMap<FilterID, QString> applied_filters_parameters_;
     QMap<FilteredSignalID, double> signal_samplingrates_;
     QMap<FilteredSignalID, QVector<QSharedPointer<Filter> > > signal_filters_;
+    QMutex mutex_;
 };
 
 }

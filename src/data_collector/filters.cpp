@@ -1,6 +1,8 @@
 #include "filters.h"
 #include "filters/butterworth_filter.h"
 
+#include <QMutexLocker>
+
 namespace TiAScope
 {
 
@@ -33,6 +35,8 @@ QStringList Filters::availableFilters () const
 //-----------------------------------------------------------------------------
 FilterID Filters::appendFilter (QString filter_name, QString parameter)
 {
+    QMutexLocker locker (&mutex_);
+
     FilterID new_filter_id = next_free_filter_id_;
     next_free_filter_id_++;
 
@@ -48,6 +52,8 @@ FilterID Filters::appendFilter (QString filter_name, QString parameter)
 //-----------------------------------------------------------------------------
 void Filters::reset ()
 {
+    QMutexLocker locker (&mutex_);
+
     applied_filters_.clear ();
 
     Q_FOREACH (FilteredSignalID signal_id, signal_filters_.keys())
@@ -59,6 +65,8 @@ void Filters::reset ()
 //-----------------------------------------------------------------------------
 FilteredSignalID Filters::registerSignalToBeFiltered (double sampling_rate)
 {
+    QMutexLocker locker (&mutex_);
+
     FilteredSignalID signal_id = next_free_filtered_signal_id_;
     next_free_filtered_signal_id_++;
 
@@ -75,6 +83,7 @@ FilteredSignalID Filters::registerSignalToBeFiltered (double sampling_rate)
 //-----------------------------------------------------------------------------
 double Filters::clock (FilteredSignalID signal, double sample_value)
 {
+    QMutexLocker locker (&mutex_);
     double filtered_value = sample_value;
     Q_FOREACH (QSharedPointer<Filter> filter, signal_filters_[signal])
     {
