@@ -7,6 +7,7 @@
 
 #include <QThread>
 #include <QSharedPointer>
+#include <QMutex>
 
 namespace TiAScope
 {
@@ -22,6 +23,7 @@ public:
 private:
     virtual void run ();
 
+    QMutex running_mutex_;
     QSharedPointer<DataBuffer> data_buffer_;
     QSharedPointer<TiAQtImplementation::TiAQtClient> client_;
     bool running_;

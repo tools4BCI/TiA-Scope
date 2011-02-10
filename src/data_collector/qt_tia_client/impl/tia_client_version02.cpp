@@ -19,9 +19,16 @@ QString const TiAQtClientVersion02::START_COMMAND_ = "<?xml version=\"1.0\" enco
 QString const TiAQtClientVersion02::STOP_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>stopTransmission</type><sender/></header><stopTransmission /></message>";
 
 //-----------------------------------------------------------------------------
-TiAQtClientVersion02::TiAQtClientVersion02 () : TiAQtClient ()
+TiAQtClientVersion02::TiAQtClientVersion02 () : TiAQtClient (),
+    receiver_ (0)
 {
     // nothing to do here
+}
+
+//-----------------------------------------------------------------------------
+TiAQtClientVersion02::~TiAQtClientVersion02 ()
+{
+    delete receiver_;
 }
 
 //-----------------------------------------------------------------------------
@@ -80,13 +87,6 @@ QSharedPointer<DataPacket> TiAQtClientVersion02::getDataPacket ()
     data_stream_data_.remove(0, needed);
     QSharedPointer<DataPacket> datapacket (new DataPacketVersion2 (packet));
     return datapacket;
-}
-
-//-----------------------------------------------------------------------------
-void Receiver::receiveData ()
-{
-    data_stream_data_.append(data_socket_.readAll());
-    data_stream_data_wait_.wakeAll ();
 }
 
 //-----------------------------------------------------------------------------
@@ -150,7 +150,7 @@ void TiAQtClientVersion02::getDataConnection ()
     data_socket_.connectToHost (control_socket_.peerAddress(), port);
     qDebug () << "readBufferSize = " << data_socket_.readBufferSize();
     data_socket_.waitForConnected ();
-    receiver_ = new Receiver (data_stream_data_, data_socket_, data_stream_data_wait_);
+    receiver_ = new DataReceiveBlocker (data_stream_data_, data_socket_, data_stream_data_wait_);
 }
 
 //-----------------------------------------------------------------------------

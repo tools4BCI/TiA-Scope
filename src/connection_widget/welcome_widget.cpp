@@ -1,7 +1,9 @@
 #include "welcome_widget.h"
 #include "ui_welcome_widget.h"
 
+#include "data_collector/qt_tia_client/tia_exception.h"
 #include "data_collector/qt_tia_client/impl/tia_client_version02.h"
+#include "data_collector/qt_tia_client/impl/tia_client_version10.h"
 
 #include <QSettings>
 #include <QHostAddress>
@@ -64,24 +66,41 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port)
 {
     if (checkAddressString (server_ip, port))
     {
-        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion02);
-        try
+
+        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
+        if (!clientConnects (new_client, server_ip, port))
         {
-            new_client->connectToServer (server_ip, port.toUInt ());
+            new_client = QSharedPointer<TiAQtImplementation::TiAQtClient> (new TiAQtImplementation::TiAQtClientVersion02);
+            if (clientConnects (new_client, server_ip, port))
+            {
+                Q_EMIT connectionSelected (new_client);
+                saveSettings (server_ip, port.toUInt());
+            }
+            else
+                QMessageBox::critical (this, "Error", QString ("No supported signal server found at ").append(server_ip).append(":").append(port));
+        }
+        else
+        {
             Q_EMIT connectionSelected (new_client);
             saveSettings (server_ip, port.toUInt());
-        }
-        catch (std::exception &exc)
-        {
-            QMessageBox::critical (this, "Error", exc.what ());
-        }
-        catch (...)
-        {
-            QMessageBox::critical (this, "Error", "Undefined error while connecting!");
         }
     }
     else
         QMessageBox::critical (this, "Error", "No valid IP Address or port!");
+}
+
+//-----------------------------------------------------------------------------
+bool WelcomeWidget::clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port)
+{
+    try
+    {
+        client->connectToServer (server_ip, port.toUInt ());
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
 
 //-----------------------------------------------------------------------------

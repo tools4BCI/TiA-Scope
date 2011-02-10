@@ -21,6 +21,7 @@
 #include "data_collector/fourier_transform_thread.h"
 #include "data_collector/qt_tia_client/impl/tia_client_version02.h"
 
+
 #include <QCoreApplication>
 #include <QSharedPointer>
 #include <QMessageBox>
@@ -111,6 +112,7 @@ void MainWindow::on_actionAutoScaling_toggled (bool checked)
 //-------------------------------------------------------------------------------------------------
 void MainWindow::on_actionReceiveData_toggled (bool checked)
 {
+    qDebug () << __FUNCTION__ << checked;
     if (checked)
     {
         reader_thread_->start ();
@@ -120,6 +122,7 @@ void MainWindow::on_actionReceiveData_toggled (bool checked)
     {
         reader_thread_->stop();
         ft_thread_->stop();
+        //reader_thread_->wait ();
     }
 }
 

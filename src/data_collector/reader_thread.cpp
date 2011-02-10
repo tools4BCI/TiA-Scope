@@ -4,6 +4,7 @@
 #include "qt_tia_client/tia_metainfo.h"
 
 #include <QDebug>
+#include <QMutexLocker>
 #include <iostream>
 
 namespace TiAScope {
@@ -22,19 +23,25 @@ ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, QSharedPoint
 //-----------------------------------------------------------------------------
 void ReaderThread::stop ()
 {
+    running_mutex_.lock();
     running_ = false;
+    running_mutex_.unlock();;
 }
 
 //-----------------------------------------------------------------------------
 void ReaderThread::run ()
 {
+    running_mutex_.lock();
     running_ = true;
+    running_mutex_.unlock();
     TiAQtImplementation::TiAMetaInfo config = client_->getMetaInfo();
 
     client_->startReceiving();
 
+    running_mutex_.lock();
     while (running_)
     {
+        running_mutex_.unlock();
         QSharedPointer<TiAQtImplementation::DataPacket> datapacket = client_->getDataPacket();
         Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_flag, datapacket->getSignals())
         {
@@ -48,8 +55,11 @@ void ReaderThread::run ()
                     data_buffer_->appendData (signal_flag, channel_index, datapacket->getData (signal_flag, channel_index).toList());
             }
         }
+        running_mutex_.lock();
     }
+    running_mutex_.unlock();
     client_->stopReceiving ();
+    qDebug () << __FUNCTION__ << "finished";
 }
 
 } // TiAScope

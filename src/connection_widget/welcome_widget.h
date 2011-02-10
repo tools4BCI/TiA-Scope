@@ -33,6 +33,7 @@ private:
     virtual void showEvent (QShowEvent* event);
     void loadSettings ();
     void tryToConnect (QString server_ip, QString port);
+    bool clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port);
     bool checkAddressString (QString server_ip, QString port) const;
 
     Ui::WelcomeWidget *ui;
