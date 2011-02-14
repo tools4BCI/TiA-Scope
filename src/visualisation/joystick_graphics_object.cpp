@@ -16,7 +16,7 @@ JoystickGraphicsObject::JoystickGraphicsObject (QGraphicsItem *parent) :
 }
 
 //-------------------------------------------------------------------------------------------------
-void JoystickGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void JoystickGraphicsObject::paint (QPainter */*painter*/, const QStyleOptionGraphicsItem *, QWidget *)
 {
     int X_SPACING = 40;
 

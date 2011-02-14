@@ -20,7 +20,7 @@ unsigned DataPacketVersion2::canCreate (QByteArray bytes)
     quint32 flags = 0;
     memcpy (&flags, bytes.left(4).constData(), 4);
 
-    unsigned num_signals = 0;
+    int num_signals = 0;
 
     for (SignalTypeFlag signal_flag_iter = 0x1;
          signal_flag_iter < 0x200000;
@@ -32,7 +32,7 @@ unsigned DataPacketVersion2::canCreate (QByteArray bytes)
     if (bytes.size () < (28 + (4 * num_signals)))
         return false;
 
-    unsigned num_values = 0;
+    int num_values = 0;
     for (int signal_index = 0; signal_index < num_signals; signal_index++)
     {
         quint16 values = 0;
@@ -40,7 +40,7 @@ unsigned DataPacketVersion2::canCreate (QByteArray bytes)
         num_values += values;
     }
 
-    unsigned needed = (num_values * 4) + (28 + (4 * num_signals));
+    int needed = (num_values * 4) + (28 + (4 * num_signals));
     if (bytes.size() < needed)
         return 0;
     else
@@ -59,7 +59,7 @@ DataPacketVersion2::DataPacketVersion2 (QByteArray bytes)
     if ((flags & VERSION_FLAG_) != VERSION_FLAG_)
         throw TiAException ("DataPacketVersion2: Version flag does not match!");
 
-    unsigned num_signals = 0;
+    int num_signals = 0;
 
     for (SignalTypeFlag signal_flag_iter = SMALLEST_SIGNAL_FLAG_;
          signal_flag_iter < HIGHEST_SIGNAL_FLAG_;
@@ -93,9 +93,9 @@ DataPacketVersion2::DataPacketVersion2 (QByteArray bytes)
     for (int signal_index = 0; signal_index < signals_.size(); signal_index++)
     {
         ChannelIndex num_channels = num_values[signal_index] / block_sizes[signal_index];
-        for (int channel_index = 0; channel_index < num_channels; channel_index++)
+        for (unsigned channel_index = 0; channel_index < num_channels; channel_index++)
         {
-            for (int value_index = 0; value_index < block_sizes[signal_index]; value_index++)
+            for (unsigned value_index = 0; value_index < block_sizes[signal_index]; value_index++)
             {
                 float value;
                 memcpy (&value, bytes.mid (offset, 4).constData(), 4);

@@ -14,7 +14,8 @@ namespace TiAQtImplementation
 {
 
 QString const TiAQtClientVersion02::GET_CONFIG_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>getConfig</type><sender></sender></header><getConfig/></message>";
-QString const TiAQtClientVersion02::GET_DATACONNECTION_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>getDataConnection</type><sender/></header><getDataConnection><connectionType>tcp</connectionType></getDataConnection></message>";
+QString const TiAQtClientVersion02::GET_UDP_DATACONNECTION_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>getDataConnection</type><sender/></header><getDataConnection><connectionType>udp</connectionType></getDataConnection></message>";
+QString const TiAQtClientVersion02::GET_TCP_DATACONNECTION_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>getDataConnection</type><sender/></header><getDataConnection><connectionType>tcp</connectionType></getDataConnection></message>";
 QString const TiAQtClientVersion02::START_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>startTransmission</type><sender/></header><startTransmission /></message>";
 QString const TiAQtClientVersion02::STOP_COMMAND_ = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message version=\"0.1\"><header><type>stopTransmission</type><sender/></header><stopTransmission /></message>";
 
@@ -32,7 +33,7 @@ TiAQtClientVersion02::~TiAQtClientVersion02 ()
 }
 
 //-----------------------------------------------------------------------------
-void TiAQtClientVersion02::connectToServer (QString server_address, unsigned port)
+void TiAQtClientVersion02::connectToServer (QString server_address, unsigned port, bool udp_data_connection)
 {
     control_socket_.connectToHost (server_address, port);
     if (!control_socket_.waitForConnected ())
@@ -40,17 +41,18 @@ void TiAQtClientVersion02::connectToServer (QString server_address, unsigned por
 
     control_stream_.setDevice (&control_socket_);
     buildMetaInfo ();
-    getDataConnection ();
+    getDataConnection (udp_data_connection);
 }
 
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion02::disconnectFromServer ()
 {
-    //data_stream_.setDevice (0);
-    data_socket_.disconnectFromHost ();
+    udp_data_socket_.disconnectFromHost ();
+    tcp_data_socket_.disconnectFromHost ();
     control_stream_.setDevice (0);
     control_socket_.disconnectFromHost ();
-    data_socket_.waitForDisconnected ();
+    udp_data_socket_.waitForDisconnected ();
+    tcp_data_socket_.waitForDisconnected ();
     control_socket_.waitForDisconnected ();
 }
 
@@ -134,9 +136,14 @@ void TiAQtClientVersion02::readSubjectInfo (QDomDocument& config_doc, QString ke
 
 
 //-----------------------------------------------------------------------------
-void TiAQtClientVersion02::getDataConnection ()
+void TiAQtClientVersion02::getDataConnection (bool udp)
 {
-    QString data_connection_str = callConfigCommand (GET_DATACONNECTION_COMMAND_);
+    QString data_connection_str;
+    if (udp)
+        data_connection_str = callConfigCommand (GET_UDP_DATACONNECTION_COMMAND_);
+    else
+        data_connection_str = callConfigCommand (GET_TCP_DATACONNECTION_COMMAND_);
+
     QDomDocument data_con_doc;
     data_con_doc.setContent (data_connection_str);
     QDomNodeList ports = data_con_doc.elementsByTagName ("port");
@@ -147,10 +154,17 @@ void TiAQtClientVersion02::getDataConnection ()
     if (!ok)
         throw TiAException (QString ("Couldn't convert port string (received from server to establish a data connection) into a number. Port string is: ").append(ports.item(0).toElement().text()));
 
-    data_socket_.connectToHost (control_socket_.peerAddress(), port);
-    qDebug () << "readBufferSize = " << data_socket_.readBufferSize();
-    data_socket_.waitForConnected ();
-    receiver_ = new DataReceiveBlocker (data_stream_data_, data_socket_, data_stream_data_wait_);
+    if (udp)
+    {
+        udp_data_socket_.bind (port, QUdpSocket::ShareAddress);
+        receiver_ = new DataReceiveBlocker (data_stream_data_, &udp_data_socket_, data_stream_data_wait_);
+    }
+    else
+    {
+        tcp_data_socket_.connectToHost (control_socket_.peerAddress(), port, QAbstractSocket::ReadOnly);
+        tcp_data_socket_.waitForConnected ();
+        receiver_ = new DataReceiveBlocker (data_stream_data_, &tcp_data_socket_, data_stream_data_wait_);
+    }
 }
 
 //-----------------------------------------------------------------------------

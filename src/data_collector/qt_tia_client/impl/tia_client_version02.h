@@ -7,6 +7,7 @@
 #include <QTcpSocket>
 #include <QTextStream>
 #include <QDataStream>
+#include <QUdpSocket>
 #include <QMutex>
 #include <QWaitCondition>
 #include <QDomDocument>
@@ -24,7 +25,7 @@ class TiAQtClientVersion02 : public TiAQtClient
 public:
     TiAQtClientVersion02 ();
     virtual ~TiAQtClientVersion02 ();
-    virtual void connectToServer (QString server_address, unsigned port);
+    virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection);
     virtual void disconnectFromServer ();
     virtual TiAMetaInfo getMetaInfo () const;
     virtual void startReceiving ();
@@ -34,17 +35,19 @@ public:
 private:
     void buildMetaInfo ();
     void readSubjectInfo (QDomDocument& config_doc, QString key);
-    void getDataConnection ();
+    void getDataConnection (bool udp);
     QString callConfigCommand (QString const& command);
 
     Q_DISABLE_COPY (TiAQtClientVersion02);
     QTcpSocket control_socket_;
-    QTcpSocket data_socket_;
+    QUdpSocket udp_data_socket_;
+    QTcpSocket tcp_data_socket_;
     QTextStream control_stream_;
     TiAMetaInfo meta_info_;
 
     static QString const GET_CONFIG_COMMAND_;
-    static QString const GET_DATACONNECTION_COMMAND_;
+    static QString const GET_UDP_DATACONNECTION_COMMAND_;
+    static QString const GET_TCP_DATACONNECTION_COMMAND_;
     static QString const START_COMMAND_;
     static QString const STOP_COMMAND_;
 

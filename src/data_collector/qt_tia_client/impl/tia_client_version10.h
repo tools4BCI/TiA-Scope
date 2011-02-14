@@ -7,6 +7,7 @@
 
 #include <QDomDocument>
 #include <QTcpSocket>
+#include <QUdpSocket>
 #include <QMutex>
 #include <QWaitCondition>
 
@@ -20,7 +21,7 @@ public:
 
     virtual ~TiAQtClientVersion10 () {}
 
-    virtual void connectToServer (QString server_address, unsigned port);
+    virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection);
     virtual void disconnectFromServer ();
     virtual TiAMetaInfo getMetaInfo () const;
     virtual void startReceiving ();
@@ -32,18 +33,20 @@ private:
 
     void buildMetaInfo ();
     void readSubjectInfo (QDomDocument& config_doc, QString key);
-    void getDataConnection ();
+    void getDataConnection (bool udp);
     TiAControlMessage callConfigCommand (QString const& command);
     QString readLine (QString awaited_start = "");
 
     static QString const GET_CONFIG_COMMAND_;
-    static QString const GET_DATACONNECTION_COMMAND_;
+    static QString const GET_UDP_DATACONNECTION_COMMAND_;
+    static QString const GET_TCP_DATACONNECTION_COMMAND_;
     static QString const START_COMMAND_;
     static QString const STOP_COMMAND_;
     static QString const VERSION_LINE_;
 
     QTcpSocket control_socket_;
-    QTcpSocket data_socket_;
+    QUdpSocket udp_data_socket_;
+    QTcpSocket tcp_data_socket_;
     QTextStream control_stream_;
     TiAMetaInfo meta_info_;
     DataReceiveBlocker* receiver_;

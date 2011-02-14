@@ -20,7 +20,7 @@ class TiAQtClient
 public:
     virtual ~TiAQtClient () {}
 
-    virtual void connectToServer (QString server_address, unsigned port) = 0;
+    virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection) = 0;
     virtual void disconnectFromServer () = 0;
     virtual TiAMetaInfo getMetaInfo () const = 0;
     virtual void startReceiving () = 0;

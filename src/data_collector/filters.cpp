@@ -97,6 +97,7 @@ QSharedPointer<Filter> Filters::buildFilter (QString filter_name, double samplin
 {
     if (filter_name == QString ("Butterworth"))
         return QSharedPointer<Filter> (new ButterworthFilter (sampling_rate, parameter.toDouble()));
+    return QSharedPointer<Filter> ();
 }
 
 

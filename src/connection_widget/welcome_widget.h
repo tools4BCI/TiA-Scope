@@ -27,13 +27,13 @@ Q_SIGNALS:
 private Q_SLOTS:
     void on_connectToServer1_clicked ();
     void on_connectToNewServer_clicked ();
-    void saveSettings (QString server_ip, unsigned port);
+    void saveSettings (QString server_ip, unsigned port, bool udp_data_connection);
 
 private:
     virtual void showEvent (QShowEvent* event);
     void loadSettings ();
-    void tryToConnect (QString server_ip, QString port);
-    bool clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port);
+    void tryToConnect (QString server_ip, QString port, bool udp_data_connection);
+    bool clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port, bool udp_data_connection);
     bool checkAddressString (QString server_ip, QString port) const;
 
     Ui::WelcomeWidget *ui;

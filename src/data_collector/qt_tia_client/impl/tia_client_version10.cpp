@@ -11,7 +11,8 @@ namespace TiAQtImplementation
 {
 
 QString const TiAQtClientVersion10::GET_CONFIG_COMMAND_ = "TiA 1.0\nGetMetaInfo\n\n";
-QString const TiAQtClientVersion10::GET_DATACONNECTION_COMMAND_ = "TiA 1.0\nGetDataConnection: TCP\n\n";
+QString const TiAQtClientVersion10::GET_UDP_DATACONNECTION_COMMAND_ = "TiA 1.0\nGetDataConnection: UDP\n\n";
+QString const TiAQtClientVersion10::GET_TCP_DATACONNECTION_COMMAND_ = "TiA 1.0\nGetDataConnection: TCP\n\n";
 QString const TiAQtClientVersion10::START_COMMAND_ = "TiA 1.0\nStartDataTransmission\n\n";
 QString const TiAQtClientVersion10::STOP_COMMAND_ = "TiA 1.0\nStopDataTransmission\n\n";
 
@@ -22,7 +23,7 @@ TiAQtClientVersion10::TiAQtClientVersion10 () : receiver_ (0)
 }
 
 //-----------------------------------------------------------------------------
-void TiAQtClientVersion10::connectToServer (QString server_address, unsigned port)
+void TiAQtClientVersion10::connectToServer (QString server_address, unsigned port, bool udp_data_connection)
 {
     control_socket_.connectToHost (server_address, port);
     if (!control_socket_.waitForConnected ())
@@ -30,16 +31,18 @@ void TiAQtClientVersion10::connectToServer (QString server_address, unsigned por
 
     control_stream_.setDevice (&control_socket_);
     buildMetaInfo ();
-    getDataConnection ();
+    getDataConnection (udp_data_connection);
 }
 
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion10::disconnectFromServer ()
 {
-    data_socket_.disconnectFromHost ();
+    udp_data_socket_.disconnectFromHost ();
+    tcp_data_socket_.disconnectFromHost ();
     control_stream_.setDevice (0);
     control_socket_.disconnectFromHost ();
-    data_socket_.waitForDisconnected ();
+    udp_data_socket_.waitForDisconnected ();
+    tcp_data_socket_.waitForDisconnected ();
     control_socket_.waitForDisconnected ();
 }
 
@@ -112,7 +115,7 @@ void TiAQtClientVersion10::buildMetaInfo ()
 //    readSubjectInfo (config_doc, "handedness");
 }
 //-----------------------------------------------------------------------------
-void TiAQtClientVersion10::readSubjectInfo (QDomDocument& config_doc, QString key)
+void TiAQtClientVersion10::readSubjectInfo (QDomDocument& /*config_doc*/, QString /*key*/)
 {
 //    QDomNodeList key_nodes = config_doc.elementsByTagName (key);
 //    if (key_nodes.size())
@@ -121,13 +124,22 @@ void TiAQtClientVersion10::readSubjectInfo (QDomDocument& config_doc, QString ke
 
 
 //-----------------------------------------------------------------------------
-void TiAQtClientVersion10::getDataConnection ()
+void TiAQtClientVersion10::getDataConnection (bool udp)
 {
-    TiAControlMessage data_connection_message = callConfigCommand (GET_DATACONNECTION_COMMAND_);
-    data_socket_.connectToHost (control_socket_.peerAddress(), data_connection_message.parameter.toUInt());
-    qDebug () << "readBufferSize = " << data_socket_.readBufferSize();
-    data_socket_.waitForConnected ();
-    receiver_ = new DataReceiveBlocker (data_stream_data_, data_socket_, data_stream_data_wait_);
+    if (udp)
+    {
+        TiAControlMessage data_connection_message = callConfigCommand (GET_UDP_DATACONNECTION_COMMAND_);
+        udp_data_socket_.bind (data_connection_message.parameter.toUInt(), QUdpSocket::ShareAddress);
+        receiver_ = new DataReceiveBlocker (data_stream_data_, &udp_data_socket_, data_stream_data_wait_);
+    }
+    else
+    {
+        TiAControlMessage data_connection_message = callConfigCommand (GET_TCP_DATACONNECTION_COMMAND_);
+        tcp_data_socket_.connectToHost (control_socket_.peerAddress(), data_connection_message.parameter.toUInt());
+        tcp_data_socket_.waitForConnected ();
+        receiver_ = new DataReceiveBlocker (data_stream_data_, &tcp_data_socket_, data_stream_data_wait_);
+    }
+
 }
 
 //-----------------------------------------------------------------------------
@@ -151,7 +163,7 @@ TiAControlMessage TiAQtClientVersion10::callConfigCommand (QString const& comman
     }
 
     QString optional_content = readLine ();
-    unsigned content_length = 0;
+    int content_length = 0;
     if (optional_content.size())
     {
         QStringList list = optional_content.split(":");
