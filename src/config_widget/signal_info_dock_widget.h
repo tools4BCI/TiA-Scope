@@ -35,7 +35,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void channelVisibilityChanged (SignalTypeFlag signal, ChannelID channel, bool visibility);
-    void signalChannelFTEnabledChanged (SignalTypeFlag signal, int channel, bool enabled);
 
 private Q_SLOTS:
     void on_signalTree_itemChanged (QTreeWidgetItem* item, int column);

@@ -1,20 +1,9 @@
 #include "signal_info_dock_widget.h"
 #include "ui_signal_info_dock_widget.h"
+#include "signal_info_utils.h"
 
-namespace TiAScope {
-
-namespace SignalInfoDockWidgetHelper
+namespace TiAScope
 {
-    const int NAME_COLUMN_INDEX = 0;
-    const int SAMPLING_RATE_COLUMN_INDEX = 1;
-    const int FT_COLUMN_INDEX = 2;
-    const int SIGNAL_TYPE_COLUMN_INDEX = 3;
-    const int CHANNEL_INDEX_COLUMN_INDEX = 4;
-
-    //-------------------------------------------------------------------------
-    /// adds the given signals as a row to the given tree
-    void addSignalsToTree (QTreeWidget* tree_widget, TiAQtImplementation::TiAMetaInfo const& signal_info);
-}
 
 //-----------------------------------------------------------------------------
 SignalInfoDockWidget::SignalInfoDockWidget (QSharedPointer<SignalViewSettings> settings, QWidget *parent) :
@@ -24,10 +13,8 @@ SignalInfoDockWidget::SignalInfoDockWidget (QSharedPointer<SignalViewSettings> s
     settings_ (settings)
 {
     ui->setupUi(this);
-    ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, true);
-    ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, true);
-    ui->signalTree->setColumnHidden (SignalInfoDockWidgetHelper::FT_COLUMN_INDEX, true);
-    ui->signalTree->setColumnWidth (SignalInfoDockWidgetHelper::FT_COLUMN_INDEX, 20);
+    ui->signalTree->setColumnHidden (SignalInfoUtils::SIGNAL_TYPE_COLUMN_INDEX, true);
+    ui->signalTree->setColumnHidden (SignalInfoUtils::CHANNEL_INDEX_COLUMN_INDEX, true);
 }
 
 //-----------------------------------------------------------------------------
@@ -41,7 +28,7 @@ void SignalInfoDockWidget::setSignalInfo (TiAQtImplementation::TiAMetaInfo const
 {
     initializing_ = true;
     ui->signalTree->clear ();
-    SignalInfoDockWidgetHelper::addSignalsToTree (ui->signalTree, signal_info);
+    SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info);
     initializing_ = false;
 }
 
@@ -57,22 +44,22 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
 {
     if (initializing_)
         return;
-    if (column == SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX)
+    if (column == SignalInfoUtils::NAME_COLUMN_INDEX)
     {
         for (int index = 0; index < item->childCount(); index++)
-            item->child (index)->setCheckState (SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX, item->checkState(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX));
+            item->child (index)->setCheckState (SignalInfoUtils::NAME_COLUMN_INDEX, item->checkState(SignalInfoUtils::NAME_COLUMN_INDEX));
         if (item->childCount() == 0)
         {
-            Q_EMIT channelVisibilityChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(),
-                                            item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
-                                            item->checkState(SignalInfoDockWidgetHelper::NAME_COLUMN_INDEX) == Qt::Checked);
+            Q_EMIT channelVisibilityChanged (item->data (SignalInfoUtils::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(),
+                                            item->data (SignalInfoUtils::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
+                                            item->checkState(SignalInfoUtils::NAME_COLUMN_INDEX) == Qt::Checked);
         }
     }
-    else if (column == SignalInfoDockWidgetHelper::FT_COLUMN_INDEX)
-    {
-        Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
-                                              item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
-    }
+//    else if (column == SignalInfoDockWidgetHelper::FT_COLUMN_INDEX)
+//    {
+//        Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
+//                                              item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
+//    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -89,34 +76,5 @@ void SignalInfoDockWidget::on_cyclicMode_toggled (bool checked)
     settings_->setCyclicMode (checked);
 }
 
-//-----------------------------------------------------------------------------
-namespace SignalInfoDockWidgetHelper
-{
-    //-------------------------------------------------------------------------
-    void addSignalsToTree (QTreeWidget* tree_widget, TiAQtImplementation::TiAMetaInfo const& signal_info)
-    {
-        Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal, signal_info.getSignalTypes())
-        {
-            QTreeWidgetItem* signal_item = new QTreeWidgetItem (tree_widget);
-            signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal);
-            signal_item->setText (NAME_COLUMN_INDEX, TiAQtImplementation::signalTypeFlagToString (signal));
-            signal_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-            signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
-            signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_info.getSamplingRate(signal)).append( " Hz"));
-            unsigned index = 0;
-            for (TiAQtImplementation::ChannelIndex channel = 0; channel < signal_info.getNumChannels (signal); ++channel)
-            {
-                QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
-                channel_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-                channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
-                channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal);
-                channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, index);
-                channel_item->setText (NAME_COLUMN_INDEX, signal_info.getChannelLabel (signal, channel));
-                channel_item->setCheckState (FT_COLUMN_INDEX, Qt::Unchecked);
-                index++;
-            }
-        }
-    }
-}
 
 } // TiAScope

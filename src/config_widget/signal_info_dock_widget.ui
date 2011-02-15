@@ -55,11 +55,6 @@
       </column>
       <column>
        <property name="text">
-        <string>FT</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
         <string notr="true">SignalTypeFlag</string>
        </property>
       </column>

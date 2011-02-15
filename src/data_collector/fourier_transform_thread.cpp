@@ -22,7 +22,7 @@ FourierTransformThread::FourierTransformThread (QSharedPointer<DataBuffer const>
     buffers_size_ (0),
     running_ (false),
     ln_ (false),
-    window_size_in_secs_ (1)
+    window_size_in_secs_ (2)
 {
     setObjectName (QString("FourierTransformThread - 0x").append(QString::number(reinterpret_cast<int const>(this), 16)));
 }
@@ -41,12 +41,12 @@ void FourierTransformThread::run ()
     int elapsed_time = 0;
     running_ = true;
     int update_interval = 0;
-    QSettings settings;
+    //QSettings settings;
 
     while (running_)
     {
-        ln_ = settings.value ("fourier/ln", ln_).toBool();
-        window_size_in_secs_ = settings.value ("fourier/window_size_s", window_size_in_secs_).toDouble();
+        //ln_ = settings.value ("fourier/ln", ln_).toBool();
+        //window_size_in_secs_ = settings.value ("fourier/window_size_s", window_size_in_secs_).toDouble();
         Q_FOREACH (SignalTypeFlag signal, ft_enabled_.keys())
         {
             Q_FOREACH (int channel, ft_enabled_[signal].keys())
@@ -61,7 +61,7 @@ void FourierTransformThread::run ()
         }
 
         elapsed_time = time_.elapsed ();
-        update_interval = settings.value ("fourier/update_interval_msec", 160).toInt();
+        update_interval = 80;//settings.value ("fourier/update_interval_msec", 160).toInt();
         if (elapsed_time < update_interval)
             usleep ((update_interval - elapsed_time) * 1000);
         time_.restart ();

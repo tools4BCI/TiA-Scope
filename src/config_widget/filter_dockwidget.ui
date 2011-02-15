@@ -14,10 +14,43 @@
    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
   </property>
   <property name="windowTitle">
-   <string>Filters</string>
+   <string>Signal Processing</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>FFT</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTreeWidget" name="signalTree">
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Sampling Rate</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>SignalTypeFlag</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ChannelIndex</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
     <item>
      <widget class="QGroupBox" name="lowpass">
       <property name="title">

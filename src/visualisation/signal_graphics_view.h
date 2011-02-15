@@ -10,7 +10,7 @@ class SignalGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit SignalGraphicsView(QWidget *parent = 0);
+    explicit SignalGraphicsView(QWidget *parent = 0) : QGraphicsView(parent) {}
 
 Q_SIGNALS:
     void widthChanged (int width);

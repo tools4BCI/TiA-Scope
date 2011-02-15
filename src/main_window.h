@@ -40,6 +40,7 @@ private Q_SLOTS:
     void on_actionZoomOut_triggered ();
     void on_actionAutoScaling_toggled (bool checked);
     void on_actionReceiveData_toggled (bool checked);
+    void setFTVisible (bool fts);
 
     void startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client);
 
@@ -52,19 +53,14 @@ private:
 
 
     Ui::MainWindow *ui;
-//    SignalInfoDockWidget* signal_info_widget_;
-//    SubjectInfoDockWidget* subject_info_widget_;
-//    ViewSettingsDockWidget* view_settings_widget_;
-//    ApplicationMonitorDockWidget* monitor_widget_;
-//    SignalGraphicsScene* graphics_scene_;
-//    SignalGraphicsScene* fft_graphics_scene_;
     ReaderThread* reader_thread_;
     FourierTransformThread* ft_thread_;
     QSharedPointer<TiAQtImplementation::TiAQtClient> qt_client_;
     QList<QDockWidget*> dock_widgets_;
     QSharedPointer<SignalViewSettings> signal_view_settings_;
-//    SignalGraphicsView* view_;
-//    SignalGraphicsView* fft_view_;
+    QSplitter* splitter_;
+        //    SignalGraphicsView* view_;
+    SignalGraphicsView* fft_view_;
 };
 
 } // TiAScope

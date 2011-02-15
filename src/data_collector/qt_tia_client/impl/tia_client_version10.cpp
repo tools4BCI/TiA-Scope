@@ -104,7 +104,7 @@ void TiAQtClientVersion10::buildMetaInfo ()
         for (int channel_index = 0; channel_index < channel_nodes.size(); channel_index++)
         {
             QDomElement channel_element = channel_nodes.item (channel_index).toElement ();
-            meta_info_.setChannelLabel (singal_type_flag, channel_element.attribute ("nr").toUInt(), channel_element.attribute ("label"));
+            meta_info_.setChannelLabel (singal_type_flag, channel_element.attribute ("nr").toUInt() - 1, channel_element.attribute ("label"));
         }
     }
 

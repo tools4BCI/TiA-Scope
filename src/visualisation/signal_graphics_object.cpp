@@ -37,6 +37,7 @@ SignalGraphicsObject::SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag 
         connect (view_settings_.data(), SIGNAL(channelVisibilityChanged (SignalTypeFlag, ChannelID, bool)), SLOT(setChannelVisibility(SignalTypeFlag,ChannelID,bool)));
         if (ft_thread)
         {
+            qDebug () << "FFT";
             FrequencySpectrumGraphicsObject* previous_channel = 0;
             for (int channel_index = 0; channel_index < channel_amount; channel_index++)
             {
