@@ -256,7 +256,6 @@ void MainWindow::initDataViewScreen ()
     connect (filter_widget, SIGNAL(anyFTEnabled(bool)), SLOT(setFTVisible(bool)));
     ft_thread_->connect (filter_widget, SIGNAL(signalChannelFTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableFT(SignalTypeFlag,int,bool)), Qt::QueuedConnection);
 
-    ft_thread_->start ();
     ui->actionReceiveData->setEnabled (true);
     ui->actionReceiveData->setChecked (true);
 }
