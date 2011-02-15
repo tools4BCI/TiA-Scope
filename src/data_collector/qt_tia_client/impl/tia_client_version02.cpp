@@ -21,7 +21,8 @@ QString const TiAQtClientVersion02::STOP_COMMAND_ = "<?xml version=\"1.0\" encod
 
 //-----------------------------------------------------------------------------
 TiAQtClientVersion02::TiAQtClientVersion02 () : TiAQtClient (),
-    receiver_ (0)
+    receiver_ (0),
+    receiving_ (false)
 {
     // nothing to do here
 }
@@ -66,12 +67,14 @@ TiAMetaInfo TiAQtClientVersion02::getMetaInfo () const
 void TiAQtClientVersion02::startReceiving ()
 {
     callConfigCommand (START_COMMAND_);
+    receiving_ = true;
 }
 
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion02::stopReceiving ()
 {
     callConfigCommand (STOP_COMMAND_);
+    receiving_ = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -79,11 +82,15 @@ QSharedPointer<DataPacket> TiAQtClientVersion02::getDataPacket ()
 {
     QMutexLocker locker (&data_stream_data_mutex_);
     unsigned needed = DataPacketVersion2::canCreate (data_stream_data_);
-    while (needed == 0)
+    while ((needed == 0) && receiving_)
     {
         data_stream_data_wait_.wait (&data_stream_data_mutex_);
+        if (!receiving_)
+            return QSharedPointer<DataPacket> (0);
         needed = DataPacketVersion2::canCreate (data_stream_data_);
     }
+    if (!receiving_)
+        return QSharedPointer<DataPacket> (0);
 
     QByteArray packet = data_stream_data_.left(needed);
     data_stream_data_.remove(0, needed);
@@ -172,13 +179,20 @@ QString TiAQtClientVersion02::callConfigCommand (QString const& command)
 {
     control_stream_ << command;
     control_stream_.flush();
+    qDebug () << "Send message: " << command;
 
+    QTime time;
     QString message;
-    while (!message.contains ("</message>"))
+    time.restart();
+    while ((!message.contains ("</message>")) && (time.elapsed() < 2000))
     {
-        control_socket_.waitForReadyRead ();
+        control_socket_.waitForReadyRead (100);
         QString new_text = control_stream_.readAll ();
         message.append (new_text);
+    }
+    if (time.elapsed() > 2000)
+    {
+        throw TiAException ("Server did not respond within 2s.");
     }
     qDebug () << "received: " << message;
     return message;

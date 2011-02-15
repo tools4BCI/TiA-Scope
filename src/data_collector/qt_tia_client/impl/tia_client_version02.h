@@ -55,6 +55,7 @@ private:
     QMutex data_stream_data_mutex_;
     QWaitCondition data_stream_data_wait_;
     DataReceiveBlocker* receiver_;
+    bool receiving_;
 };
 
 

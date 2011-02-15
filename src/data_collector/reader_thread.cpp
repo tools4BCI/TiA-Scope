@@ -2,10 +2,12 @@
 #include "base/user_types.h"
 
 #include "qt_tia_client/tia_metainfo.h"
+#include "qt_tia_client/tia_exception.h"
 
 #include <QDebug>
 #include <QMutexLocker>
 #include <iostream>
+#include <QMessageBox>
 
 namespace TiAScope {
 
@@ -34,31 +36,47 @@ void ReaderThread::run ()
     running_mutex_.lock();
     running_ = true;
     running_mutex_.unlock();
-    TiAQtImplementation::TiAMetaInfo config = client_->getMetaInfo();
-
-    client_->startReceiving();
-
-    running_mutex_.lock();
-    while (running_)
+    try
     {
-        running_mutex_.unlock();
-        QSharedPointer<TiAQtImplementation::DataPacket> datapacket = client_->getDataPacket();
-        Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_flag, datapacket->getSignals())
+
+        TiAQtImplementation::TiAMetaInfo config = client_->getMetaInfo();
+
+        client_->startReceiving();
+
+        running_mutex_.lock();
+        while (running_)
         {
-            if (signal_flag & (TiAQtImplementation::SIGNAL_TYPE_Buttons | TiAQtImplementation::SIGNAL_TYPE_Joystick))
+            running_mutex_.unlock();
+            QSharedPointer<TiAQtImplementation::DataPacket> datapacket = client_->getDataPacket();
+            if (datapacket.isNull())
             {
-                // todo: handle aperiodic signals!
+                running_ = false;
             }
             else
             {
-                for (TiAQtImplementation::ChannelIndex channel_index = 0; channel_index < datapacket->getNumChannels(signal_flag); ++channel_index)
-                    data_buffer_->appendData (signal_flag, channel_index, datapacket->getData (signal_flag, channel_index).toList());
+                Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_flag, datapacket->getSignals())
+                {
+                    if (signal_flag & (TiAQtImplementation::SIGNAL_TYPE_Buttons | TiAQtImplementation::SIGNAL_TYPE_Joystick))
+                    {
+                        // todo: handle aperiodic signals!
+                    }
+                    else
+                    {
+                        for (TiAQtImplementation::ChannelIndex channel_index = 0; channel_index < datapacket->getNumChannels(signal_flag); ++channel_index)
+                            data_buffer_->appendData (signal_flag, channel_index, datapacket->getData (signal_flag, channel_index).toList());
+                    }
+                }
             }
+            running_mutex_.lock();
         }
-        running_mutex_.lock();
+        running_mutex_.unlock();
+        client_->stopReceiving ();
     }
-    running_mutex_.unlock();
-    client_->stopReceiving ();
+    catch (TiAQtImplementation::TiAException &exc)
+    {
+        QMessageBox::critical (0, "Error", exc.what());
+    }
+
     qDebug () << __FUNCTION__ << "finished";
 }
 
