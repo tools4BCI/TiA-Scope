@@ -38,9 +38,6 @@ void ReaderThread::run ()
     running_mutex_.unlock();
     try
     {
-
-        //TiAQtImplementation::TiAMetaInfo config = client_->getMetaInfo();
-
         client_->startReceiving();
 
         running_mutex_.lock();
@@ -56,7 +53,7 @@ void ReaderThread::run ()
             {
                 Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_flag, datapacket->getSignals())
                 {
-                    if (signal_flag & (TiAQtImplementation::SIGNAL_TYPE_Buttons | TiAQtImplementation::SIGNAL_TYPE_Joystick))
+                    if (TiAQtImplementation::isAperiodic (signal_flag))
                     {
                         // todo: handle aperiodic signals!
                     }
@@ -74,6 +71,7 @@ void ReaderThread::run ()
     }
     catch (TiAQtImplementation::TiAException &exc)
     {
+        qDebug () << exc.what();
         QMessageBox::critical (0, "Error", exc.what());
     }
 
