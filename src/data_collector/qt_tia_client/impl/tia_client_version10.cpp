@@ -6,6 +6,7 @@
 #include <QMutexLocker>
 #include <QStringList>
 #include <QHostAddress>
+#include <QTime>
 
 namespace TiAQtImplementation
 {
@@ -191,8 +192,14 @@ QString TiAQtClientVersion10::readLine (QString awaited_start)
 {
     QString line;
     char data;
+    QTime time;
+    time.restart ();
     while (!control_socket_.read (&data, 1))
+    {
+        if (time.elapsed() > 1000)
+            throw TiAException (QString ("Server does not respond to TiA 1.0."));
         control_socket_.waitForReadyRead (10);
+    }
 
     if (awaited_start.size())
         if (awaited_start[0] != data)
