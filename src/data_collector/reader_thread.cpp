@@ -39,7 +39,7 @@ void ReaderThread::run ()
     try
     {
 
-        TiAQtImplementation::TiAMetaInfo config = client_->getMetaInfo();
+        //TiAQtImplementation::TiAMetaInfo config = client_->getMetaInfo();
 
         client_->startReceiving();
 
