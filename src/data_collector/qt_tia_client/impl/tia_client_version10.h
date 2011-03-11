@@ -34,6 +34,7 @@ private:
     void buildMetaInfo ();
     void readSubjectInfo (QDomDocument& config_doc, QString key);
     void getDataConnection (bool udp);
+    void getStateConnection ();
     TiAControlMessage callConfigCommand (QString const& command);
     QString readLine (QString awaited_start = "");
 
@@ -43,10 +44,12 @@ private:
     static QString const START_COMMAND_;
     static QString const STOP_COMMAND_;
     static QString const VERSION_LINE_;
+    static QString const GET_STATE_CONNECTION_COMMAND_;
 
     QTcpSocket control_socket_;
     QUdpSocket udp_data_socket_;
     QTcpSocket tcp_data_socket_;
+    QTcpSocket state_socket_;
     QTextStream control_stream_;
     TiAMetaInfo meta_info_;
     DataReceiveBlocker* receiver_;

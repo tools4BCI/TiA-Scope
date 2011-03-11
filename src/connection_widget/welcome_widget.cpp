@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QHostAddress>
 #include <QMessageBox>
+#include <QDebug>
 
 namespace TiAScope
 {
@@ -73,6 +74,7 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
         QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
         if (!clientConnects (new_client, server_ip, port, udp_data_connection))
         {
+            qDebug () << "Try Client version 0.2";
             new_client = QSharedPointer<TiAQtImplementation::TiAQtClient> (new TiAQtImplementation::TiAQtClientVersion02);
             if (clientConnects (new_client, server_ip, port, udp_data_connection))
             {

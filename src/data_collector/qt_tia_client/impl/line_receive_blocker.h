@@ -21,11 +21,17 @@ public:
     //-------------------------------------------------------------------------
     LineReceiveBlocker (QTcpSocket& text_socket) : text_socket_ (text_socket)
     {
+        //this->connect (&text_socket_, SIGN);
         //qDebug () << __FUNCTION__ << this->connect (&text_socket_, SIGNAL(readyRead()), SLOT(receiveData()));
     }
 
 
     //-------------------------------------------------------------------------
+private Q_SLOTS:
+    void receiveText ()
+    {
+
+    }
 
 private:
     QTcpSocket& text_socket_;

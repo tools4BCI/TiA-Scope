@@ -16,7 +16,7 @@ QString const TiAQtClientVersion10::GET_UDP_DATACONNECTION_COMMAND_ = "TiA 1.0\n
 QString const TiAQtClientVersion10::GET_TCP_DATACONNECTION_COMMAND_ = "TiA 1.0\nGetDataConnection: TCP\n\n";
 QString const TiAQtClientVersion10::START_COMMAND_ = "TiA 1.0\nStartDataTransmission\n\n";
 QString const TiAQtClientVersion10::STOP_COMMAND_ = "TiA 1.0\nStopDataTransmission\n\n";
-
+QString const TiAQtClientVersion10::GET_STATE_CONNECTION_COMMAND_ = "TiA 1.0\nGetServerStateConnection\n\n";
 
 //-----------------------------------------------------------------------------
 TiAQtClientVersion10::TiAQtClientVersion10 () : receiver_ (0)
@@ -32,6 +32,7 @@ void TiAQtClientVersion10::connectToServer (QString server_address, unsigned por
 
     control_stream_.setDevice (&control_socket_);
     buildMetaInfo ();
+    getStateConnection ();
     getDataConnection (udp_data_connection);
 }
 
@@ -142,6 +143,17 @@ void TiAQtClientVersion10::getDataConnection (bool udp)
     }
 
 }
+
+//-----------------------------------------------------------------------------
+void TiAQtClientVersion10::getStateConnection ()
+{
+    TiAControlMessage state_connection_reply = callConfigCommand (GET_STATE_CONNECTION_COMMAND_);
+    qDebug () << state_connection_reply.command << state_connection_reply.parameter.toUInt() << control_socket_.peerAddress();
+    state_socket_.connectToHost (control_socket_.peerAddress(), state_connection_reply.parameter.toUInt());
+    state_socket_.waitForConnected();
+    qDebug () << __FUNCTION__ << state_socket_.readAll();
+}
+
 
 //-----------------------------------------------------------------------------
 TiAControlMessage TiAQtClientVersion10::callConfigCommand (QString const& command)
