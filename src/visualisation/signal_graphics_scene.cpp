@@ -10,7 +10,7 @@ namespace TiAScope {
 SignalGraphicsScene::SignalGraphicsScene (QObject *parent) :
     QGraphicsScene (0, 0, 0, 0, parent)
 {
-    setObjectName (QString("SignalGraphicsScene - 0x").append(QString::number(reinterpret_cast<unsigned>(this), 16)));
+    setObjectName (QString("SignalGraphicsScene - 0x").append(QString::number(reinterpret_cast<unsigned int64_t>(this), 16)));
 }
 
 //-------------------------------------------------------------------------------------------------

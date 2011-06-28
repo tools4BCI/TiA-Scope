@@ -24,7 +24,7 @@ FourierTransformThread::FourierTransformThread (QSharedPointer<DataBuffer const>
     ln_ (false),
     window_size_in_secs_ (2)
 {
-    setObjectName (QString("FourierTransformThread - 0x").append(QString::number(reinterpret_cast<int const>(this), 16)));
+    setObjectName (QString("FourierTransformThread - 0x").append(QString::number(reinterpret_cast<int64_t const>(this), 16)));
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -21,6 +21,13 @@ void initSignalFlagStringMap ()
     signal_flag_string_map.insert (SIGNAL_TYPE_Sensors, SIGNAL_Sensors);
     signal_flag_string_map.insert (SIGNAL_TYPE_NIRS, SIGNAL_NIRS);
     signal_flag_string_map.insert (SIGNAL_TYPE_FMRI, SIGNAL_FMRI);
+
+    signal_flag_string_map.insert (SIGNAL_TYPE_USER1, SIGNAL_USER_1);
+    signal_flag_string_map.insert (SIGNAL_TYPE_USER2, SIGNAL_USER_2);
+    signal_flag_string_map.insert (SIGNAL_TYPE_USER3, SIGNAL_USER_3);
+    signal_flag_string_map.insert (SIGNAL_TYPE_USER4, SIGNAL_USER_4);
+    signal_flag_string_map.insert (SIGNAL_TYPE_UNDEFINED, SIGNAL_UNDEFINED);
+    signal_flag_string_map.insert (SIGNAL_TYPE_EVENTS, SIGNAL_EVENT);
 }
 
 //-----------------------------------------------------------------------------

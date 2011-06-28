@@ -44,6 +44,13 @@ QString const SIGNAL_Joystick = "joystick";
 QString const SIGNAL_Sensors = "sensor";
 QString const SIGNAL_NIRS = "nirs";
 QString const SIGNAL_FMRI = "fmri";
+QString const SIGNAL_USER_1 = "user1";
+QString const SIGNAL_USER_2 = "user2";
+QString const SIGNAL_USER_3 = "user3";
+QString const SIGNAL_USER_4 = "user4";
+QString const SIGNAL_UNDEFINED = "undefined";
+QString const SIGNAL_EVENT = "event";
+
 
 //-----------------------------------------------------------------------------
 SignalTypeFlag toSignalTypeFlag (QString const& str);

@@ -19,7 +19,7 @@ ReaderThread::ReaderThread (QSharedPointer<DataBuffer> data_buffer, QSharedPoint
     client_ (client),
     udp_ (udp)
 {
-    setObjectName (QString("ReaderThread 0x").append(QString::number(reinterpret_cast<int const>(this), 16)));
+    setObjectName (QString("ReaderThread 0x").append(QString::number(reinterpret_cast<int64_t const>(this), 16)));
 }
 
 //-----------------------------------------------------------------------------
