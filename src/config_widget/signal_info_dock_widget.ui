@@ -20,8 +20,14 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QRadioButton" name="cyclicMode">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="text">
        <string>Cyclic Mode</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -31,7 +37,7 @@
        <string>Scrolling Mode</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
      </widget>
     </item>

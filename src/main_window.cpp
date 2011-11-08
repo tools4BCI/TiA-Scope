@@ -199,7 +199,7 @@ void MainWindow::initDataViewScreen ()
     TiAQtImplementation::TiAMetaInfo meta_info = qt_client_->getMetaInfo();
     signal_view_settings_ = QSharedPointer<SignalViewSettings> (new SignalViewSettings);
     signal_view_settings_->connect (ui->actionAutoScaling, SIGNAL(toggled(bool)), SLOT(setAutoScalingEnabled(bool)));
-    ui->actionAutoScaling->setChecked (true);
+    ui->actionAutoScaling->setChecked (false);
 
     QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (meta_info));
     QSharedPointer<DataBuffer> data_buffer (new DataBuffer (qt_client_->getMetaInfo(), 30));
