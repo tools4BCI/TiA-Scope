@@ -7,6 +7,7 @@
 #include "tia_datapacket_basedlibtia.h"
 
 #include "tia/tia_client.h"
+
 #include "tia/data_packet_interface.h"
 
 namespace TiAQtImplementation

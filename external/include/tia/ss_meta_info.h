@@ -271,13 +271,11 @@ class SignalInfo
 
     void setMasterBlockSize(boost::uint16_t size) { master_block_size_ = size; }
 
-// MOC_SKIP_BEGIN
 
     const SignalMap& signals() const { return signals_; }
 
     SignalMap& signals() { return signals_; }
 
-// MOC_SKIP_END
 
   private:
     boost::uint16_t  master_block_size_;      ///<

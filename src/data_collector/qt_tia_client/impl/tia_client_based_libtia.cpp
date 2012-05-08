@@ -1,5 +1,12 @@
 #include "tia_client_based_libtia.h"
 
+//bad hack to undefine signals that is used by Qt
+//but at the same time defines a method of SignalInfo
+//used in libTiA
+#undef signals
+
+#include "tia/ssconfig.h"
+
 using namespace TiAQtImplementation;
 
 //-----------------------------------------------------------------------------
@@ -25,8 +32,8 @@ void TiAQtClientBasedLibTiA::connectToServer(QString server_address, unsigned po
 
     //TODO: add possibility to connect to the servers state connection
 
-    //TODO: crate method startDataConnection in tia_client_ instead
-    tia_client_.startReceiving(udp_data_connection);
+    tia_client_.createDataConnection(udp_data_connection);
+
 }
 
 //-----------------------------------------------------------------------------
@@ -62,14 +69,26 @@ QSharedPointer<DataPacket> TiAQtClientBasedLibTiA::getDataPacket()
 
 TiAMetaInfo TiAQtClientBasedLibTiA::getMetaInfo() const
 {
+//    tia_client_.config()
+    const tia::SSConfig& ss_config = tia_client_.config();
 
+//    const tia::SignalInfo::SignalMap &signal_map = ss_config.signal_info.signals();
+
+//    const tia::SignalInfo::SignalMap::iterator signal = signal_map.begin();
+
+//    for(; signal != signal_map.end(); ++signal)
+//    {
+//        signal->
+//    }
+
+//    ss_config.subject_info_;
 }
 
 //-----------------------------------------------------------------------------
 
 void TiAQtClientBasedLibTiA::startReceiving()
 {
-    //TODO: call start receiving of tia_client that only sends the start receiving command
+    tia_client_.startReceiving();
 }
 
 //-----------------------------------------------------------------------------
@@ -78,3 +97,6 @@ void TiAQtClientBasedLibTiA::stopReceiving()
 {
     tia_client_.stopReceiving();
 }
+
+//revert hack that signals is undefined
+#define signals Q_SIGNALS

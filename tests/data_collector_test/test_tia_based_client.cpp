@@ -37,6 +37,8 @@ TEST(tryConnectoToServer)
 
     quint32 loops = 5;
 
+    client.startReceiving();
+
     while(loops--)
     {
         QSharedPointer<DataPacket> packet = client.getDataPacket();
@@ -48,3 +50,4 @@ TEST(tryConnectoToServer)
 
     CHECK(!client.connected());
 }
+
