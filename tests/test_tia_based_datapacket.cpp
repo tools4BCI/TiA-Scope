@@ -1,11 +1,11 @@
 #include <QtCore/QString>
 
 
-#include "../UnitTest++/UnitTest++.h"
+#include "UnitTest++.h"
 
 
-#include "../../src/data_collector/qt_tia_client/impl/tia_datapacket_basedlibtia.h"
-#include "../../src/data_collector/qt_tia_client/impl/tia_datapacket_version2.h"
+#include "data_collector/qt_tia_client/impl/tia_datapacket_basedlibtia.h"
+#include "data_collector/qt_tia_client/impl/tia_datapacket_version2.h"
 
 #include "tia-private/datapacket/data_packet_3_impl.h"
 
