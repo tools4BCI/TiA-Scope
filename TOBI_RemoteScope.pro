@@ -11,6 +11,9 @@ CONFIG += ordered
 
 SUBDIRS = src
 
+SUBDIRS += TOBI_RemoteScope_Tests.pro
+
+
 
 
 

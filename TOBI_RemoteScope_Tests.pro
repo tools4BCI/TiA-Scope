@@ -1,12 +1,70 @@
-TEMPLATE = subdirs
+TEMPLATE += app
+CONFIG += console
+DESTDIR = tests
 
-SUBDIRS = tests
+CONFIG   -= app_bundle
+
+QT += network xml
+
+TARGET = tobi_scope_tests
+
+OBJECTS_DIR = tmp/tests/
+
+#SUBDIRS = tests
+
+SOURCES += \
+    tests/main.cpp \
+    tests/test_tia_based_datapacket.cpp \
+    tests/test_tia_based_client.cpp
+
+HEADERS += \
+    tests/print_to_console.h
+
+INCLUDEPATH += src \
+    external/include \
+    tests/UnitTest++
 
 
-INCLUDEPATH += $$_PRO_FILE_PWD_/external/include
+include(src/data_collector/data_collector.pri)
+include(src/base/base.pri)
 
-LIBS += -L$$_PRO_FILE_PWD_/external/lib \
-        -lssclient \
-        -lboost_system \
-        -lboost_date_time \
-        -lticpp
+DEPENDPATH += $$INCLUDEPATH
+
+
+DEFINES += TIXML_USE_TICPP
+
+
+HARDWARE_PLATFORM = $$system(uname -m)
+contains( HARDWARE_PLATFORM, x86_64 )::{
+    message(Building 64 bit )
+  }else::{
+    message(Building 32 bit )
+  }
+
+
+LIBS += -Ltests/UnitTest++
+
+unix {
+    LIBS += -lboost_thread -lboost_system
+
+    HARDWARE_PLATFORM = $$system(uname -m)
+    contains( HARDWARE_PLATFORM, x86_64 )::{
+        # 64-bit Linux
+        LIBS += -Lexternal/lib/ticpp/linux  \
+                -Lexternal/lib/tia/linux/amd64 \\
+                -Wl,-rpath=external/lib/tia/linux/amd64 \
+                -ltia  -lticpp_64 \
+                -lUnitTest++_64
+
+    }else::{
+        # 32-bit Linux
+        LIBS += -Lexternal/lib/ticpp/linux  \
+                -Lexternal/lib/tia/linux/x86 \
+                -Wl,-rpath=external/lib/tia/linux/x86 \
+                -ltia  -lticpp \
+                -lUnitTest++
+
+    }
+}
+
+win32:LIBS += external/lib/tia/win/Win32/tia.lib

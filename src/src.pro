@@ -3,6 +3,8 @@ QT += core gui network xml
 TARGET = TOBI_RemoteScope
 TEMPLATE = app
 
+OBJECTS_DIR = ../tmp/
+
 include (../TOBI_RemoteScope_settings.pri)
 include ($$_PRO_FILE_PWD_/config_widget/config_widget.pri)
 include ($$_PRO_FILE_PWD_/data_collector/data_collector.pri)
