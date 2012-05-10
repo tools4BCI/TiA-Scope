@@ -27,6 +27,9 @@ public:
 
     virtual void disconnectFromServer ();
     virtual TiAMetaInfo getMetaInfo () const;
+
+    virtual tia::SSConfig getTiaMetaInfo() const;
+
     virtual void startReceiving ();
     virtual void stopReceiving ();
     virtual QSharedPointer<DataPacket> getDataPacket ();

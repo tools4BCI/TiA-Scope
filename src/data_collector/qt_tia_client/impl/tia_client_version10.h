@@ -24,6 +24,9 @@ public:
     virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection);
     virtual void disconnectFromServer ();
     virtual TiAMetaInfo getMetaInfo () const;
+
+    virtual tia::SSConfig getTiaMetaInfo() const;
+
     virtual void startReceiving ();
     virtual void stopReceiving ();
     virtual QSharedPointer<DataPacket> getDataPacket ();
@@ -52,6 +55,9 @@ private:
     QTcpSocket state_socket_;
     QTextStream control_stream_;
     TiAMetaInfo meta_info_;
+
+    tia::SSConfig tia_meta_info_;
+
     DataReceiveBlocker* receiver_;
     QByteArray data_stream_data_;
     QMutex data_stream_data_mutex_;

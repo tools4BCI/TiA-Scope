@@ -3,6 +3,8 @@
 
 #include "data_collector/qt_tia_client/tia_metainfo.h"
 
+#include "tia/ss_meta_info.h"
+
 #include <QDockWidget>
 
 namespace Ui {
@@ -20,6 +22,8 @@ public:
     ~SubjectInfoDockWidget();
 
     void setSubjectInfo (TiAQtImplementation::SubjectInfoMap const& subject_info);
+
+    void setSubjectInfo (tia::SubjectInfo const& subject_info);
 
 public Q_SLOTS:
     void clear ();

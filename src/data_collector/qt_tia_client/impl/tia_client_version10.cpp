@@ -3,6 +3,8 @@
 #include "tia_datapacket_version2.h"
 #include "line_receive_blocker.h"
 
+#include "tia-private/newtia/tia_meta_info_parse_and_build_functions.h"
+
 #include <QMutexLocker>
 #include <QStringList>
 #include <QHostAddress>
@@ -52,6 +54,12 @@ void TiAQtClientVersion10::disconnectFromServer ()
 TiAMetaInfo TiAQtClientVersion10::getMetaInfo () const
 {
     return meta_info_;
+}
+
+//-----------------------------------------------------------------------------
+tia::SSConfig TiAQtClientVersion10::getTiaMetaInfo() const
+{
+    return tia_meta_info_;
 }
 
 //-----------------------------------------------------------------------------
@@ -109,6 +117,8 @@ void TiAQtClientVersion10::buildMetaInfo ()
             meta_info_.setChannelLabel (singal_type_flag, channel_element.attribute ("nr").toUInt() - 1, channel_element.attribute ("label"));
         }
     }
+
+    tia_meta_info_ = tia::parseTiAMetaInfoFromXMLString(config.content.toStdString());
 
     // build subject info
 //    readSubjectInfo (config_doc, "firstName");

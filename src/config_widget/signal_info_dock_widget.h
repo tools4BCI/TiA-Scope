@@ -5,6 +5,8 @@
 #include "data_collector/qt_tia_client/tia_metainfo.h"
 #include "base/signal_view_settings.h"
 
+#include "tia/ssconfig.h"
+
 #include <QDockWidget>
 #include <QTreeWidgetItem>
 #include <QSharedPointer>
@@ -29,6 +31,8 @@ public:
     ~SignalInfoDockWidget ();
 
     void setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info);
+
+    void setSignalInfo (tia::SSConfig const& signal_info);
 
 public Q_SLOTS:
     void clear ();

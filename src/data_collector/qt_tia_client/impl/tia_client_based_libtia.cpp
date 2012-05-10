@@ -84,6 +84,11 @@ TiAMetaInfo TiAQtClientBasedLibTiA::getMetaInfo() const
 //    ss_config.subject_info_;
 }
 
+tia::SSConfig TiAQtClientBasedLibTiA::getTiaMetaInfo() const
+{
+    return tia_client_.config();
+}
+
 //-----------------------------------------------------------------------------
 
 void TiAQtClientBasedLibTiA::startReceiving()

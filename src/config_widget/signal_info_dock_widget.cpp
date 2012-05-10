@@ -31,6 +31,22 @@ void SignalInfoDockWidget::setSignalInfo (TiAQtImplementation::TiAMetaInfo const
     SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info);
     initializing_ = false;
 }
+//-----------------------------------------------------------------------------
+//bad hack to undefine signals that is used by Qt
+//but at the same time defines a method of SignalInfo
+//used in libTiA
+#undef signals
+
+void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
+{
+    initializing_ = true;
+    ui->signalTree->clear ();
+    SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info);
+    initializing_ = false;
+}
+
+//revert hack that signals is undefined
+#define signals Q_SIGNALS
 
 //-----------------------------------------------------------------------------
 void SignalInfoDockWidget::clear ()

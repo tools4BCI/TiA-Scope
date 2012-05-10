@@ -11,6 +11,7 @@
 
 #include "channel_graphics_object.h"
 
+
 #include <QGraphicsObject>
 #include <QString>
 #include <QMap>
@@ -31,6 +32,14 @@ class SignalGraphicsObject : public QGraphicsObject
 public:
     explicit SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
                                    TiAQtImplementation::TiAMetaInfo const& signal_info,
+                                   QSharedPointer<DataBuffer const> data_buffer,
+                                   QSharedPointer<SignalViewSettings> view_settings,
+                                   QSharedPointer<FTViewSettings> ft_view_settings = QSharedPointer<FTViewSettings>(0),
+                                   FourierTransformThread* ft_thread = 0,
+                                   QGraphicsItem *parent = 0);
+
+    explicit SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
+                                   tia::SSConfig const& meta_info,
                                    QSharedPointer<DataBuffer const> data_buffer,
                                    QSharedPointer<SignalViewSettings> view_settings,
                                    QSharedPointer<FTViewSettings> ft_view_settings = QSharedPointer<FTViewSettings>(0),

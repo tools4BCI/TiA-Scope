@@ -3,6 +3,8 @@
 
 #include "data_collector/qt_tia_client/tia_metainfo.h"
 
+#include "tia/ssconfig.h"
+
 #include <QTreeWidget>
 
 //-----------------------------------------------------------------------------
@@ -15,6 +17,8 @@ namespace SignalInfoUtils
 
     //-------------------------------------------------------------------------
     void addSignalsToTree (QTreeWidget* tree_widget, TiAQtImplementation::TiAMetaInfo const& signal_info, bool default_checked = true, bool signal_types_checkable = true);
+
+    void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool default_checked = true, bool signal_types_checkable = true);
 }
 
 

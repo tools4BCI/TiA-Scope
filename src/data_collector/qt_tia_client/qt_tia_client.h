@@ -2,7 +2,10 @@
 #define SCOPE_TIA_CLIENT_H
 
 #include "tia_metainfo.h"
+#include "tia/ssconfig.h"
+
 #include "datapacket.h"
+
 
 #include <QString>
 #include <QSharedPointer>
@@ -23,6 +26,9 @@ public:
     virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection) = 0;
     virtual void disconnectFromServer () = 0;
     virtual TiAMetaInfo getMetaInfo () const = 0;
+
+    virtual tia::SSConfig getTiaMetaInfo () const = 0;
+
     virtual void startReceiving () = 0;
     virtual void stopReceiving () = 0;
     virtual QSharedPointer<DataPacket> getDataPacket () = 0;

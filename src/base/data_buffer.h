@@ -4,6 +4,8 @@
 #include "user_types.h"
 #include "data_collector/qt_tia_client/tia_metainfo.h"
 
+#include "tia/ssconfig.h"
+
 #include <QObject>
 #include <QMap>
 #include <QHash>
@@ -23,6 +25,8 @@ class DataBuffer : public QObject
 public:
     //-------------------------------------------------------------------------
     explicit DataBuffer (TiAQtImplementation::TiAMetaInfo const& meta_info, int buffer_size_in_seconds);
+
+    explicit DataBuffer (tia::SSConfig const& meta_info, int buffer_size_in_seconds);
 
     //-------------------------------------------------------------------------
     /// deletes the oldest data if the buffer size is exceeded

@@ -10,6 +10,9 @@
 #include <QTime>
 #include <QMutexLocker>
 
+#include "tia-private/config/control_message_decoder.h"
+#include <sstream>
+
 namespace TiAQtImplementation
 {
 
@@ -61,6 +64,13 @@ void TiAQtClientVersion02::disconnectFromServer ()
 TiAMetaInfo TiAQtClientVersion02::getMetaInfo () const
 {
     return meta_info_;
+}
+
+//-----------------------------------------------------------------------------
+
+tia::SSConfig TiAQtClientVersion02::getTiaMetaInfo() const
+{
+    return tia_meta_info_;
 }
 
 //-----------------------------------------------------------------------------
@@ -132,6 +142,47 @@ void TiAQtClientVersion02::buildMetaInfo ()
     readSubjectInfo (config_doc, "surname");
     readSubjectInfo (config_doc, "birthday");
     readSubjectInfo (config_doc, "handedness");
+
+
+    std::stringstream ss;
+
+    tia::ControlMsgDecoderXML msg_decoder;
+
+    msg_decoder.setInputStream(&ss);
+
+    ss << config.toStdString();
+
+//    std::cout << ss.str() << std::endl;
+
+    tia::ControlMsg *reply = msg_decoder.decodeMsg();
+
+    if (reply == 0)
+    {
+      throw TiAException (QString ("TiAQtClientVersion02: Can't decode meta info."));
+    }
+
+    // Check reply type
+    switch (reply->msgType())
+    {
+      case tia::ControlMsg::Config: break;
+
+      case tia::ControlMsg::ErrorReply:
+      {
+        throw TiAException (QString ("TiAQtClientVersion02: Getting the config failed due to a server error."));
+      }
+      default:
+      {
+        throw TiAException (QString ("TiAQtClientVersion02: Got unexpected reply of type : ").append(reply->msgType()));
+      }
+    }
+
+    tia::ConfigMsg *config_msg = static_cast<tia::ConfigMsg *>(reply);
+
+    tia_meta_info_.subject_info = config_msg->subject_info;
+    tia_meta_info_.signal_info = config_msg->signal_info;
+
+    delete config_msg;
+
 }
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion02::readSubjectInfo (QDomDocument& config_doc, QString key)

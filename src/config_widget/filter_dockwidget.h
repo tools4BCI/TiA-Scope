@@ -4,6 +4,8 @@
 #include "data_collector/qt_tia_client/tia_metainfo.h"
 #include "base/user_types.h"
 
+#include "tia/ssconfig.h"
+
 #include <QTreeWidgetItem>
 #include <QDockWidget>
 
@@ -24,6 +26,8 @@ public:
     ~FilterDockWidget();
 
     void setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info);
+
+    void setSignalInfo (tia::SSConfig const& signal_info);
 
 Q_SIGNALS:
     void signalChannelFTEnabledChanged (SignalTypeFlag signal, int channel, bool enabled);

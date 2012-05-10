@@ -32,6 +32,22 @@ void SubjectInfoDockWidget::setSubjectInfo (TiAQtImplementation::SubjectInfoMap 
     }
 }
 
+
+//-----------------------------------------------------------------------------
+void SubjectInfoDockWidget::setSubjectInfo (tia::SubjectInfo const&  subject_info)
+{
+
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "id", subject_info.id().c_str());
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "first name", subject_info.firstName().c_str());
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "sur name", subject_info.surname().c_str());
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "brithday", subject_info.birthday().c_str());
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "medication", subject_info.medication().c_str());
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "handedness", subject_info.handedness() == tia::SubjectInfo::RightHanded ? "right-handed" : "left-handed");
+    SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, "sex", subject_info.sex() == tia::SubjectInfo::Male ? "male" : "female");
+
+    //TODO: extract the subjects shortinfomap!
+}
+
 //-----------------------------------------------------------------------------
 void SubjectInfoDockWidget::clear ()
 {

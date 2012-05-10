@@ -3,6 +3,8 @@
 
 #include "data_collector/qt_tia_client/tia_metainfo.h"
 
+#include "tia/ssconfig.h"
+
 #include <QObject>
 #include <QMap>
 
@@ -15,6 +17,7 @@ class FTViewSettings : public QObject
 
 public:
     explicit FTViewSettings (TiAQtImplementation::TiAMetaInfo const& meta_info, QObject *parent = 0);
+    explicit FTViewSettings (tia::SSConfig const& meta_info, QObject *parent = 0);
 
     int maxSamplingRate () const;
 
@@ -37,7 +40,7 @@ public Q_SLOTS:
 private:
     int lower_frequence_bound_;
     int upper_frequence_bound_;
-    QMap<TiAQtImplementation::SignalTypeFlag, int> samping_rates_;
+    QMap<TiAQtImplementation::SignalTypeFlag, int> sampling_rates_;
     int max_sampling_rate_;
 };
 
