@@ -15,8 +15,7 @@ class FTViewSettings : public QObject
 {
     Q_OBJECT
 
-public:
-    explicit FTViewSettings (TiAQtImplementation::TiAMetaInfo const& meta_info, QObject *parent = 0);
+public:    
     explicit FTViewSettings (tia::SSConfig const& meta_info, QObject *parent = 0);
 
     int maxSamplingRate () const;

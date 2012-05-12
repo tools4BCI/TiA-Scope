@@ -30,13 +30,6 @@ class SignalGraphicsObject : public QGraphicsObject
     Q_PROPERTY (int height READ height WRITE setHeight)
     Q_PROPERTY (int width READ width WRITE setWidth)
 public:
-    explicit SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
-                                   TiAQtImplementation::TiAMetaInfo const& signal_info,
-                                   QSharedPointer<DataBuffer const> data_buffer,
-                                   QSharedPointer<SignalViewSettings> view_settings,
-                                   QSharedPointer<FTViewSettings> ft_view_settings = QSharedPointer<FTViewSettings>(0),
-                                   FourierTransformThread* ft_thread = 0,
-                                   QGraphicsItem *parent = 0);
 
     explicit SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
                                    tia::SSConfig const& meta_info,

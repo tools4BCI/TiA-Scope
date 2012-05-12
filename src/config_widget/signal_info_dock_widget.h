@@ -28,9 +28,7 @@ class SignalInfoDockWidget : public QDockWidget
 
 public:
     explicit SignalInfoDockWidget (QSharedPointer<SignalViewSettings> settings, QWidget *parent = 0);
-    ~SignalInfoDockWidget ();
-
-    void setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info);
+    ~SignalInfoDockWidget ();  
 
     void setSignalInfo (tia::SSConfig const& signal_info);
 

@@ -9,21 +9,6 @@ using namespace TiAQtImplementation;
 namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------
-FTViewSettings::FTViewSettings (TiAMetaInfo const& meta_info, QObject *parent) :
-    QObject (parent),
-    lower_frequence_bound_ (0),
-    upper_frequence_bound_ (0),
-    max_sampling_rate_ (0)
-{
-    Q_FOREACH (SignalTypeFlag signal, meta_info.getSignalTypes())
-    {
-        sampling_rates_[signal] = meta_info.getSamplingRate (signal);
-        max_sampling_rate_ = std::max<int>(max_sampling_rate_, sampling_rates_[signal]);
-    }
-    upper_frequence_bound_ = max_sampling_rate_ / 2;
-}
-
-//-------------------------------------------------------------------------------------------------
 //bad hack to undefine signals that is used by Qt
 //but at the same time defines a method of SignalInfo
 //used in libTiA

@@ -61,14 +61,7 @@ void TiAQtClientVersion02::disconnectFromServer ()
 }
 
 //-----------------------------------------------------------------------------
-TiAMetaInfo TiAQtClientVersion02::getMetaInfo () const
-{
-    return meta_info_;
-}
-
-//-----------------------------------------------------------------------------
-
-tia::SSConfig TiAQtClientVersion02::getTiaMetaInfo() const
+tia::SSConfig TiAQtClientVersion02::getMetaInfo() const
 {
     return tia_meta_info_;
 }
@@ -113,37 +106,6 @@ void TiAQtClientVersion02::buildMetaInfo ()
 {
     QString config = callConfigCommand (GET_CONFIG_COMMAND_);
 
-    QDomDocument config_doc;
-    config_doc.setContent (config);
-    QDomNodeList signal_nodes = config_doc.elementsByTagName ("sig");
-
-    qDebug () << "Signals: ";
-    for (int node_index = 0; node_index < signal_nodes.count(); node_index++)
-    {
-        QDomElement signal_element = signal_nodes.item (node_index).toElement ();
-        QDomElement samplingrate_element = signal_element.firstChildElement ("samplingRate");
-        QString signal_type = signal_element.attribute ("type");
-
-        SignalTypeFlag singal_type_flag = toSignalTypeFlag (signal_type);
-
-        QDomNodeList channel_nodes = signal_element.elementsByTagName ("ch");
-        meta_info_.addSignal (singal_type_flag, channel_nodes.size ());
-        meta_info_.setSamplingRate (singal_type_flag, samplingrate_element.text().toDouble());
-        for (int channel_index = 0; channel_index < channel_nodes.size(); channel_index++)
-        {
-            QDomElement channel_element = channel_nodes.item (channel_index).toElement ();
-            qDebug () << "    -" << channel_element.attribute ("id");
-            meta_info_.setChannelLabel (singal_type_flag, channel_index, channel_element.attribute ("id"));
-        }
-    }
-
-    // build subject info
-    readSubjectInfo (config_doc, "firstName");
-    readSubjectInfo (config_doc, "surname");
-    readSubjectInfo (config_doc, "birthday");
-    readSubjectInfo (config_doc, "handedness");
-
-
     std::stringstream ss;
 
     tia::ControlMsgDecoderXML msg_decoder;
@@ -151,8 +113,6 @@ void TiAQtClientVersion02::buildMetaInfo ()
     msg_decoder.setInputStream(&ss);
 
     ss << config.toStdString();
-
-//    std::cout << ss.str() << std::endl;
 
     tia::ControlMsg *reply = msg_decoder.decodeMsg();
 
@@ -184,14 +144,6 @@ void TiAQtClientVersion02::buildMetaInfo ()
     delete config_msg;
 
 }
-//-----------------------------------------------------------------------------
-void TiAQtClientVersion02::readSubjectInfo (QDomDocument& config_doc, QString key)
-{
-    QDomNodeList key_nodes = config_doc.elementsByTagName (key);
-    if (key_nodes.size())
-        meta_info_.addSubjectInfoEntry (key, key_nodes.item (0).toElement().text());
-}
-
 
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion02::getDataConnection (bool udp)

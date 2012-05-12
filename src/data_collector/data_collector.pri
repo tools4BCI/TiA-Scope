@@ -12,7 +12,6 @@ HEADERS += \
     data_collector/qt_tia_client/tia_types.h \
     data_collector/qt_tia_client/impl/tia_datapacket_version2.h \
     data_collector/qt_tia_client/tia_exception.h \
-    data_collector/qt_tia_client/tia_metainfo.h \
     data_collector/qt_tia_client/impl/tia_client_version10.h \
     data_collector/qt_tia_client/impl/tia_control_message.h \
     data_collector/qt_tia_client/impl/data_receive_blocker.h \

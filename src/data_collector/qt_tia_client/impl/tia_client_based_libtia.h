@@ -25,10 +25,9 @@ public:
 
     virtual bool connected();
 
-    virtual void disconnectFromServer ();
-    virtual TiAMetaInfo getMetaInfo () const;
+    virtual void disconnectFromServer ();    
 
-    virtual tia::SSConfig getTiaMetaInfo() const;
+    virtual tia::SSConfig getMetaInfo() const;
 
     virtual void startReceiving ();
     virtual void stopReceiving ();

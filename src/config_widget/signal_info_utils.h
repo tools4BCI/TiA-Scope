@@ -15,9 +15,7 @@ namespace SignalInfoUtils
     const int SIGNAL_TYPE_COLUMN_INDEX = 2;
     const int CHANNEL_INDEX_COLUMN_INDEX = 3;
 
-    //-------------------------------------------------------------------------
-    void addSignalsToTree (QTreeWidget* tree_widget, TiAQtImplementation::TiAMetaInfo const& signal_info, bool default_checked = true, bool signal_types_checkable = true);
-
+    //-------------------------------------------------------------------------    
     void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool default_checked = true, bool signal_types_checkable = true);
 }
 

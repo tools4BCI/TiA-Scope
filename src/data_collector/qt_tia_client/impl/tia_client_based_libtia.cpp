@@ -66,25 +66,7 @@ QSharedPointer<DataPacket> TiAQtClientBasedLibTiA::getDataPacket()
 }
 
 //-----------------------------------------------------------------------------
-
-TiAMetaInfo TiAQtClientBasedLibTiA::getMetaInfo() const
-{
-//    tia_client_.config()
-    const tia::SSConfig& ss_config = tia_client_.config();
-
-//    const tia::SignalInfo::SignalMap &signal_map = ss_config.signal_info.signals();
-
-//    const tia::SignalInfo::SignalMap::iterator signal = signal_map.begin();
-
-//    for(; signal != signal_map.end(); ++signal)
-//    {
-//        signal->
-//    }
-
-//    ss_config.subject_info_;
-}
-
-tia::SSConfig TiAQtClientBasedLibTiA::getTiaMetaInfo() const
+tia::SSConfig TiAQtClientBasedLibTiA::getMetaInfo() const
 {
     return tia_client_.config();
 }

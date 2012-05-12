@@ -24,8 +24,6 @@ class DataBuffer : public QObject
     Q_OBJECT
 public:
     //-------------------------------------------------------------------------
-    explicit DataBuffer (TiAQtImplementation::TiAMetaInfo const& meta_info, int buffer_size_in_seconds);
-
     explicit DataBuffer (tia::SSConfig const& meta_info, int buffer_size_in_seconds);
 
     //-------------------------------------------------------------------------

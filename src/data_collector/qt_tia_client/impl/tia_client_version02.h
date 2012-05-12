@@ -27,17 +27,15 @@ public:
     virtual ~TiAQtClientVersion02 ();
     virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection);
     virtual void disconnectFromServer ();
-    virtual TiAMetaInfo getMetaInfo () const;
 
-    virtual tia::SSConfig getTiaMetaInfo() const;
+    virtual tia::SSConfig getMetaInfo() const;
 
     virtual void startReceiving ();
     virtual void stopReceiving ();
     virtual QSharedPointer<DataPacket> getDataPacket ();
 
 private:
-    void buildMetaInfo ();
-    void readSubjectInfo (QDomDocument& config_doc, QString key);
+    void buildMetaInfo ();    
     void getDataConnection (bool udp);
     QString callConfigCommand (QString const& command);
 
@@ -46,7 +44,6 @@ private:
     QUdpSocket udp_data_socket_;
     QTcpSocket tcp_data_socket_;
     QTextStream control_stream_;
-    TiAMetaInfo meta_info_;
 
     tia::SSConfig tia_meta_info_;
 

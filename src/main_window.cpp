@@ -197,37 +197,18 @@ void MainWindow::initDataViewScreen ()
     ui->actionDisconnect->setEnabled (true);
 
     // init views
-    TiAQtImplementation::TiAMetaInfo meta_info = qt_client_->getMetaInfo();
-
-    tia::SSConfig tia_meta_info = qt_client_->getTiaMetaInfo();
+    tia::SSConfig tia_meta_info = qt_client_->getMetaInfo();
 
     signal_view_settings_ = QSharedPointer<SignalViewSettings> (new SignalViewSettings);
     signal_view_settings_->connect (ui->actionAutoScaling, SIGNAL(toggled(bool)), SLOT(setAutoScalingEnabled(bool)));
     ui->actionAutoScaling->setChecked (false);
 
-//    QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (meta_info));
     QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (tia_meta_info));
 
-//    QSharedPointer<DataBuffer> data_buffer (new DataBuffer (meta_info, 30));
+
     QSharedPointer<DataBuffer> data_buffer (new DataBuffer (tia_meta_info, 30));
 
     ft_thread_ =  new FourierTransformThread (data_buffer, this);
-
-//    Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_type, meta_info.getSignalTypes())
-//    {
-//        if (!TiAQtImplementation::isAperiodic (signal_type))
-//        {
-//            SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_type, meta_info, data_buffer, signal_view_settings_);
-//            signal_object->setWidth (signal_view->width());
-//            signal_object->connect (signal_view, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
-//            signals_graphics_scene->addSignalGraphicsObject (signal_type, signal_object);
-
-//            SignalGraphicsObject* ft_signal_object = new SignalGraphicsObject (signal_type, meta_info, data_buffer, signal_view_settings_, ft_view_settings, ft_thread_);
-//            ft_signal_object->setWidth (fft_view_->width());
-//            ft_signal_object->connect (fft_view_, SIGNAL(widthChanged(int)), SLOT(setWidth(int)));
-//            fft_graphics_scene->addSignalGraphicsObject (signal_type, ft_signal_object);
-//        }
-//    }
 
     tia::Constants tia_constatnts;
 
@@ -270,7 +251,6 @@ void MainWindow::initDataViewScreen ()
     SignalInfoDockWidget* signal_info_widget = new SignalInfoDockWidget (signal_view_settings_, splitter_);
     dock_widgets_.append (signal_info_widget);
     addDockWidget (Qt::LeftDockWidgetArea, signal_info_widget);
-//    signal_info_widget->setSignalInfo (meta_info);
 
     signal_info_widget->setSignalInfo (tia_meta_info);
 
@@ -282,7 +262,6 @@ void MainWindow::initDataViewScreen ()
     SubjectInfoDockWidget* subject_info_widget = new SubjectInfoDockWidget (splitter_);
     dock_widgets_.append (subject_info_widget);
     addDockWidget (Qt::LeftDockWidgetArea, subject_info_widget);
-//    subject_info_widget->setSubjectInfo (meta_info.getSubjectInfo());
 
     subject_info_widget->setSubjectInfo (tia_meta_info.subject_info);
 
@@ -290,8 +269,6 @@ void MainWindow::initDataViewScreen ()
     subject_info_widget->connect (ui->actionSubjectInfo, SIGNAL(toggled(bool)), SLOT(setVisible(bool)));
 
     // init filters dock widget
-//    QList<double> samplingrates = meta_info.getSamplingRates().values();
-
 
     //bad hack to undefine signals that is used by Qt
     //but at the same time defines a method of SignalInfo
@@ -313,7 +290,6 @@ void MainWindow::initDataViewScreen ()
     dock_widgets_.append (filter_widget);
     addDockWidget (Qt::LeftDockWidgetArea, filter_widget);
     filter_widget->hide ();
-//    filter_widget->setSignalInfo (meta_info);
 
     filter_widget->setSignalInfo(tia_meta_info);
 

@@ -15,26 +15,6 @@ using namespace TiAQtImplementation;
 namespace TiAScope {
 
 //-----------------------------------------------------------------------------
-DataBuffer::DataBuffer (TiAQtImplementation::TiAMetaInfo const& meta_info, int buffer_size_in_seconds)
-{
-    setObjectName ("DataBuffer");
-
-    Q_FOREACH (SignalTypeFlag signal_flag, meta_info.getSignalTypes ())
-    {
-        sample_limit_[signal_flag] = buffer_size_in_seconds * meta_info.getSamplingRate (signal_flag);
-        sampling_rate_[signal_flag] = meta_info.getSamplingRate (signal_flag);
-        for (ChannelIndex channel_index = 0; channel_index < meta_info.getNumChannels (signal_flag);
-             ++channel_index)
-        {
-            data_[signal_flag][channel_index] = QVector<double> (sample_limit_[signal_flag], 0);
-            end_index_[signal_flag][channel_index] = 0;
-            number_new_samples_[signal_flag][channel_index] = 0;
-            filter_ids_[signal_flag][channel_index] = Filters::instance().registerSignalToBeFiltered (sampling_rate_[signal_flag]);
-        }
-    }
-}
-
-//-----------------------------------------------------------------------------
 //bad hack to undefine signals that is used by Qt
 //but at the same time defines a method of SignalInfo
 //used in libTiA

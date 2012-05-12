@@ -24,10 +24,9 @@ public:
     virtual ~TiAQtClient () {}
 
     virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection) = 0;
-    virtual void disconnectFromServer () = 0;
-    virtual TiAMetaInfo getMetaInfo () const = 0;
+    virtual void disconnectFromServer () = 0;    
 
-    virtual tia::SSConfig getTiaMetaInfo () const = 0;
+    virtual tia::SSConfig getMetaInfo () const = 0;
 
     virtual void startReceiving () = 0;
     virtual void stopReceiving () = 0;

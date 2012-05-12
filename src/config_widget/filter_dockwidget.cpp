@@ -25,15 +25,6 @@ FilterDockWidget::~FilterDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-void FilterDockWidget::setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info)
-{
-    initializing_ = true;
-    ui->signalTree->clear ();
-    SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info, false, false);
-    initializing_ = false;
-}
-
-//-----------------------------------------------------------------------------
 void FilterDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
 {
     initializing_ = true;

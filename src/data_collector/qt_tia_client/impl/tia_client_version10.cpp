@@ -51,13 +51,7 @@ void TiAQtClientVersion10::disconnectFromServer ()
 }
 
 //-----------------------------------------------------------------------------
-TiAMetaInfo TiAQtClientVersion10::getMetaInfo () const
-{
-    return meta_info_;
-}
-
-//-----------------------------------------------------------------------------
-tia::SSConfig TiAQtClientVersion10::getTiaMetaInfo() const
+tia::SSConfig TiAQtClientVersion10::getMetaInfo() const
 {
     return tia_meta_info_;
 }
@@ -94,31 +88,29 @@ QSharedPointer<DataPacket> TiAQtClientVersion10::getDataPacket ()
 //-----------------------------------------------------------------------------
 void TiAQtClientVersion10::buildMetaInfo ()
 {
-    TiAControlMessage config = callConfigCommand (GET_CONFIG_COMMAND_);
+//    TiAControlMessage config = callConfigCommand (GET_CONFIG_COMMAND_);
 
-    QDomDocument config_doc;
-    config_doc.setContent (config.content);
-    QDomNodeList signal_nodes = config_doc.elementsByTagName ("signal");
+//    QDomDocument config_doc;
+//    config_doc.setContent (config.content);
+//    QDomNodeList signal_nodes = config_doc.elementsByTagName ("signal");
 
-    for (int node_index = 0; node_index < signal_nodes.count(); node_index++)
-    {
-        QDomElement signal_element = signal_nodes.item (node_index).toElement ();
-        QString signal_type = signal_element.attribute ("type");
+//    for (int node_index = 0; node_index < signal_nodes.count(); node_index++)
+//    {
+//        QDomElement signal_element = signal_nodes.item (node_index).toElement ();
+//        QString signal_type = signal_element.attribute ("type");
 
-        SignalTypeFlag singal_type_flag = toSignalTypeFlag (signal_type);
+//        SignalTypeFlag singal_type_flag = toSignalTypeFlag (signal_type);
 
-        meta_info_.addSignal (singal_type_flag, signal_element.attribute("numChannels").toUInt());
-        meta_info_.setSamplingRate (singal_type_flag, signal_element.attribute("samplingRate").toDouble());
+//        meta_info_.addSignal (singal_type_flag, signal_element.attribute("numChannels").toUInt());
+//        meta_info_.setSamplingRate (singal_type_flag, signal_element.attribute("samplingRate").toDouble());
 
-        QDomNodeList channel_nodes = signal_element.elementsByTagName ("channel");
-        for (int channel_index = 0; channel_index < channel_nodes.size(); channel_index++)
-        {
-            QDomElement channel_element = channel_nodes.item (channel_index).toElement ();
-            meta_info_.setChannelLabel (singal_type_flag, channel_element.attribute ("nr").toUInt() - 1, channel_element.attribute ("label"));
-        }
-    }
-
-    tia_meta_info_ = tia::parseTiAMetaInfoFromXMLString(config.content.toStdString());
+//        QDomNodeList channel_nodes = signal_element.elementsByTagName ("channel");
+//        for (int channel_index = 0; channel_index < channel_nodes.size(); channel_index++)
+//        {
+//            QDomElement channel_element = channel_nodes.item (channel_index).toElement ();
+//            meta_info_.setChannelLabel (singal_type_flag, channel_element.attribute ("nr").toUInt() - 1, channel_element.attribute ("label"));
+//        }
+//    }
 
     // build subject info
 //    readSubjectInfo (config_doc, "firstName");

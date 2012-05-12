@@ -23,9 +23,7 @@ class FilterDockWidget : public QDockWidget
 
 public:
     explicit FilterDockWidget (unsigned min_samplingrate, QWidget *parent = 0);
-    ~FilterDockWidget();
-
-    void setSignalInfo (TiAQtImplementation::TiAMetaInfo const& signal_info);
+    ~FilterDockWidget();    
 
     void setSignalInfo (tia::SSConfig const& signal_info);
 
