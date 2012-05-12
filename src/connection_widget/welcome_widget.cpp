@@ -4,6 +4,7 @@
 #include "data_collector/qt_tia_client/tia_exception.h"
 #include "data_collector/qt_tia_client/impl/tia_client_version02.h"
 #include "data_collector/qt_tia_client/impl/tia_client_version10.h"
+#include "data_collector/qt_tia_client/impl/tia_client_based_libtia.h"
 
 #include <QSettings>
 #include <QHostAddress>
@@ -71,7 +72,10 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
     if (checkAddressString (server_ip, port))
     {
 
-        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
+        //use libTia instead of own TiAClientImplementation
+        //TODO: add possibility to check if new tia should be used or old one!
+//        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
+        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientBasedLibTiA(true));
         if (!clientConnects (new_client, server_ip, port, udp_data_connection))
         {
             qDebug () << "Try Client version 0.2";

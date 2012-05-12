@@ -6,6 +6,7 @@
 #undef signals
 
 #include "tia/ssconfig.h"
+#include "data_collector/qt_tia_client/tia_exception.h"
 
 using namespace TiAQtImplementation;
 
@@ -54,9 +55,10 @@ void TiAQtClientBasedLibTiA::disconnectFromServer()
 
 QSharedPointer<DataPacket> TiAQtClientBasedLibTiA::getDataPacket()
 {
-    tia::DataPacket *tia_packet = tia_client_.getEmptyDataPacket();
+    tia::DataPacket *tia_packet = tia_client_.getEmptyDataPacket();    
 
-    //TODO: check null pointer!
+    if(tia_packet == NULL)
+        throw new TiAException("TiaQtClient::getDataPacket(): Got null pointer from TiaClient!");
 
     tia_client_.getDataPacket(*tia_packet);
 

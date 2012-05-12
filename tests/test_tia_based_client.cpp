@@ -56,13 +56,9 @@ TEST(fetchMetaInfoFromServer)
 
     CHECK(client.connected());
 
-
     tia::SSConfig config = client.getMetaInfo();
 
-    CHECK(config.signal_info.masterSamplingRate());
-
-
-
+    CHECK(config.signal_info.masterSamplingRate() > 0);
 
     client.disconnectFromServer();
 
