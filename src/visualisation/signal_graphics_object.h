@@ -5,7 +5,6 @@
 #include "base/signal_view_settings.h"
 #include "base/ft_view_settings.h"
 
-#include "data_collector/qt_tia_client/tia_metainfo.h"
 
 #include "data_collector/fourier_transform_thread.h"
 

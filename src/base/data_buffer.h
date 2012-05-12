@@ -2,8 +2,8 @@
 #define DATA_BUFFER_H
 
 #include "user_types.h"
-#include "data_collector/qt_tia_client/tia_metainfo.h"
 
+#include "data_collector/qt_tia_client/tia_types.h"
 #include "tia/ssconfig.h"
 
 #include <QObject>

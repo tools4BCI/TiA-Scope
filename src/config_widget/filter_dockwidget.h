@@ -1,7 +1,6 @@
 #ifndef FILTER_DOCKWIDGET_H
 #define FILTER_DOCKWIDGET_H
 
-#include "data_collector/qt_tia_client/tia_metainfo.h"
 #include "base/user_types.h"
 
 #include "tia/ssconfig.h"

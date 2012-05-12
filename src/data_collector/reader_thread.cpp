@@ -1,7 +1,6 @@
 #include "reader_thread.h"
 #include "base/user_types.h"
 
-#include "qt_tia_client/tia_metainfo.h"
 #include "qt_tia_client/tia_exception.h"
 
 #include <QDebug>

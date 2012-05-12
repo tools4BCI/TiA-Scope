@@ -24,16 +24,6 @@ SubjectInfoDockWidget::~SubjectInfoDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-void SubjectInfoDockWidget::setSubjectInfo (TiAQtImplementation::SubjectInfoMap const&  subject_info)
-{
-    Q_FOREACH (QString key, subject_info.keys())
-    {
-        SubjectInfoDockWidgetHelper::addKeyAndValueToTable (ui->table, key, subject_info[key]);
-    }
-}
-
-
-//-----------------------------------------------------------------------------
 void SubjectInfoDockWidget::setSubjectInfo (tia::SubjectInfo const&  subject_info)
 {
 

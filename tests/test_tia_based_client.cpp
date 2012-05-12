@@ -48,3 +48,24 @@ TEST(tryConnectoToServer)
     CHECK(!client.connected());
 }
 
+TEST(fetchMetaInfoFromServer)
+{
+    TiAQtClientBasedLibTiA client (true);
+
+    client.connectToServer("127.0.0.1",9000,false);
+
+    CHECK(client.connected());
+
+
+    tia::SSConfig config = client.getMetaInfo();
+
+    CHECK(config.signal_info.masterSamplingRate());
+
+
+
+
+    client.disconnectFromServer();
+
+    CHECK(!client.connected());
+}
+

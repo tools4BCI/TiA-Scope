@@ -1,7 +1,7 @@
 #ifndef FT_VIEW_SETTINGS_H
 #define FT_VIEW_SETTINGS_H
 
-#include "data_collector/qt_tia_client/tia_metainfo.h"
+#include "data_collector/qt_tia_client/tia_types.h"
 
 #include "tia/ssconfig.h"
 

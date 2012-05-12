@@ -2,7 +2,7 @@
 #define TIA_CLIENT_BASED_LIBTIA_H
 
 #include "../qt_tia_client.h"
-#include "../tia_metainfo.h"
+
 
 #include "tia_datapacket_basedlibtia.h"
 

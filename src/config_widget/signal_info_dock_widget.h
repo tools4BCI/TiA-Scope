@@ -2,7 +2,6 @@
 #define SIGNAL_INFO_DOCK_WIDGET_H
 
 #include "base/user_types.h"
-#include "data_collector/qt_tia_client/tia_metainfo.h"
 #include "base/signal_view_settings.h"
 
 #include "tia/ssconfig.h"

@@ -1,7 +1,6 @@
 #ifndef SCOPE_TIA_CLIENT_H
 #define SCOPE_TIA_CLIENT_H
 
-#include "tia_metainfo.h"
 #include "tia/ssconfig.h"
 
 #include "datapacket.h"

@@ -1,8 +1,6 @@
 #ifndef SIGNAL_INFO_UTILS_H
 #define SIGNAL_INFO_UTILS_H
 
-#include "data_collector/qt_tia_client/tia_metainfo.h"
-
 #include "tia/ssconfig.h"
 
 #include <QTreeWidget>
