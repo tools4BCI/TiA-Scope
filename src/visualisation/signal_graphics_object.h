@@ -30,7 +30,7 @@ class SignalGraphicsObject : public QGraphicsObject
     Q_PROPERTY (int width READ width WRITE setWidth)
 public:
 
-    explicit SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
+    explicit SignalGraphicsObject (SignalTypeFlag signal_type,
                                    tia::SSConfig const& meta_info,
                                    QSharedPointer<DataBuffer const> data_buffer,
                                    QSharedPointer<SignalViewSettings> view_settings,

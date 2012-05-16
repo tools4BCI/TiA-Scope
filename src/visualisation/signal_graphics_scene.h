@@ -2,6 +2,7 @@
 #define SIGNAL_GRAPHICS_SCENE_H
 
 #include "base/user_types.h"
+#include "tia/defines.h"
 
 #include <QGraphicsScene>
 #include <QTimer>

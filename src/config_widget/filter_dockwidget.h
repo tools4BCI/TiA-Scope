@@ -4,6 +4,7 @@
 #include "base/user_types.h"
 
 #include "tia/ssconfig.h"
+#include "tia/defines.h"
 
 #include <QTreeWidgetItem>
 #include <QDockWidget>

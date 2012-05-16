@@ -4,8 +4,6 @@
 
 #include <algorithm>
 
-using namespace TiAQtImplementation;
-
 namespace TiAScope {
 
 //-------------------------------------------------------------------------------------------------

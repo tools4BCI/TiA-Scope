@@ -222,7 +222,7 @@ void MainWindow::initDataViewScreen ()
     {
         quint32 signal_flag = tia_constatnts.getSignalFlag( signal_iter->second.type());
 
-        if (!TiAQtImplementation::isAperiodic (signal_flag))
+        if(!signal_iter->second.isAperiodic())
         {
             SignalGraphicsObject* signal_object = new SignalGraphicsObject (signal_flag, tia_meta_info, data_buffer, signal_view_settings_);
             signal_object->setWidth (signal_view->width());

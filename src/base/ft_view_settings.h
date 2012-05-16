@@ -1,7 +1,7 @@
 #ifndef FT_VIEW_SETTINGS_H
 #define FT_VIEW_SETTINGS_H
 
-#include "data_collector/qt_tia_client/tia_types.h"
+#include "tia/defines.h"
 
 #include "tia/ssconfig.h"
 
@@ -20,7 +20,7 @@ public:
 
     int maxSamplingRate () const;
 
-    int samplingRate (TiAQtImplementation::SignalTypeFlag signal) const;
+    int samplingRate (SignalTypeFlag signal) const;
 
     int lowerFrequenceBound () const {return lower_frequence_bound_;}
 
@@ -39,7 +39,7 @@ public Q_SLOTS:
 private:
     int lower_frequence_bound_;
     int upper_frequence_bound_;
-    QMap<TiAQtImplementation::SignalTypeFlag, int> sampling_rates_;
+    QMap<SignalTypeFlag, int> sampling_rates_;
     int max_sampling_rate_;
 };
 

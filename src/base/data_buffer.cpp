@@ -10,8 +10,6 @@
 #include <iostream>
 #include <cmath>
 
-using namespace TiAQtImplementation;
-
 namespace TiAScope {
 
 //-----------------------------------------------------------------------------
@@ -134,7 +132,7 @@ void DataBuffer::getData (SignalTypeFlag signal, int channel, QVarLengthArray<do
 }
 
 //-------------------------------------------------------------------------
-double DataBuffer::getMin (TiAQtImplementation::SignalTypeFlag signal, int channel) const
+double DataBuffer::getMin (SignalTypeFlag signal, int channel) const
 {
     if (!min_.contains(signal))
         return 0;
@@ -144,7 +142,7 @@ double DataBuffer::getMin (TiAQtImplementation::SignalTypeFlag signal, int chann
 }
 
 //-------------------------------------------------------------------------
-double DataBuffer::getMax (TiAQtImplementation::SignalTypeFlag signal, int channel) const
+double DataBuffer::getMax (SignalTypeFlag signal, int channel) const
 {
     if (!max_.contains(signal))
         return 0;

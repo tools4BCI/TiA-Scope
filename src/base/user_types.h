@@ -6,7 +6,6 @@
 
 namespace TiAScope {
 
-typedef quint32 SignalTypeFlag;
 typedef quint32 DeviceID;
 typedef int ChannelID;
 

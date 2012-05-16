@@ -20,7 +20,7 @@ namespace TiAScope {
 //used in libTiA
 #undef signals
 
-SignalGraphicsObject::SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag signal_type,
+SignalGraphicsObject::SignalGraphicsObject (SignalTypeFlag signal_type,
                                             tia::SSConfig const& meta_info,
                                             QSharedPointer<DataBuffer const> data_buffer, QSharedPointer<SignalViewSettings> view_settings,
                                             QSharedPointer<FTViewSettings> ft_view_settings, FourierTransformThread* ft_thread, QGraphicsItem *parent) :
@@ -44,7 +44,7 @@ SignalGraphicsObject::SignalGraphicsObject (TiAQtImplementation::SignalTypeFlag 
     label_item_ = new QGraphicsSimpleTextItem (signal_iter->second.type().c_str(), this);
 
 
-    if (TiAQtImplementation::isAperiodic (signal_type_))
+    if(signal_iter->second.isAperiodic())
     {
         // TODO: deactivated aperiodic signals
         // aperiodic_signal_ = AperiodicDataGraphicsObject::createAperiodicDataGraphicsObject (signal_type_, data_buffer, this);

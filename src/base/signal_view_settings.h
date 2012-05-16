@@ -2,6 +2,7 @@
 #define SIGNAL_VIEW_SETTINGS_H
 
 #include "user_types.h"
+#include "tia/defines.h"
 
 #include <QMap>
 #include <QObject>

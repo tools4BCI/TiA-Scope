@@ -10,10 +10,10 @@ AperiodicDataGraphicsObject* AperiodicDataGraphicsObject::createAperiodicDataGra
     AperiodicDataGraphicsObject* object = 0;
     switch (signal)
     {
-    case TiAQtImplementation::SIGNAL_TYPE_Buttons:
+    case SIG_BUTTON:
         object = new ButtonGraphicsObject (parent);
         break;
-    case TiAQtImplementation::SIGNAL_TYPE_Joystick:
+    case SIG_AXIS:
         object = new JoystickGraphicsObject (parent);
         break;
     }

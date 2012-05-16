@@ -5,8 +5,6 @@
 
 #include <QDockWidget>
 
-#include "data_collector/qt_tia_client/tia_types.h"
-
 namespace Ui {
     class SubjectInfoDockWidget;
 }

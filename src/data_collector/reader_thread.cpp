@@ -3,6 +3,9 @@
 
 #include "qt_tia_client/tia_exception.h"
 
+#include "tia/ssconfig.h"
+#include "tia/constants.h"
+
 #include <QDebug>
 #include <QMutexLocker>
 #include <iostream>
@@ -39,6 +42,10 @@ void ReaderThread::run ()
     {
         client_->startReceiving();
 
+        tia::SSConfig meta_info = client_->getMetaInfo();
+        tia::Constants tia_constants;
+
+
         running_mutex_.lock();
         while (running_)
         {
@@ -50,17 +57,29 @@ void ReaderThread::run ()
             }
             else
             {
-                Q_FOREACH (TiAQtImplementation::SignalTypeFlag signal_flag, datapacket->getSignals())
+                Q_FOREACH (SignalTypeFlag signal_flag, datapacket->getSignals())
                 {
-                    if (TiAQtImplementation::isAperiodic (signal_flag))
+
+#ifdef signals
+    #undef signals
+#endif
+                    tia::SignalInfo::SignalMap::const_iterator iter = meta_info.signal_info.signals().find(tia_constants.getSignalName(signal_flag));
+
+                    if(iter == meta_info.signal_info.signals().end())
+                        throw TiAQtImplementation::TiAException("ReaderThread::run(): Datapacket contains signal that is not in the meta info!");
+
+                    if(iter->second.isAperiodic())
                     {
                         // todo: handle aperiodic signals!
                     }
                     else
                     {
-                        for (TiAQtImplementation::ChannelIndex channel_index = 0; channel_index < datapacket->getNumChannels(signal_flag); ++channel_index)
+                        for (ChannelIndex channel_index = 0; channel_index < datapacket->getNumChannels(signal_flag); ++channel_index)
                             data_buffer_->appendData (signal_flag, channel_index, datapacket->getData (signal_flag, channel_index).toList());
                     }
+#ifndef signals
+    #define signals Q_SIGNALS
+#endif
                 }
             }
             running_mutex_.lock();

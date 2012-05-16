@@ -1,7 +1,7 @@
 #ifndef DATAPACKET_H
 #define DATAPACKET_H
 
-#include "tia_types.h"
+#include "tia/defines.h"
 #include <QVector>
 #include <QSet>
 
