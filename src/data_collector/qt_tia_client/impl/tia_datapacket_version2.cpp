@@ -92,10 +92,10 @@ DataPacketVersion2::DataPacketVersion2 (QByteArray bytes)
     unsigned offset = 28 + (signals_.size() * 4);
     for (int signal_index = 0; signal_index < signals_.size(); signal_index++)
     {
-        ChannelIndex num_channels = num_values[signal_index] / block_sizes[signal_index];
-        for (unsigned channel_index = 0; channel_index < num_channels; channel_index++)
+        quint32 num_channels = num_values[signal_index] / block_sizes[signal_index];
+        for (quint32 channel_index = 0; channel_index < num_channels; channel_index++)
         {
-            for (unsigned value_index = 0; value_index < block_sizes[signal_index]; value_index++)
+            for (quint32 value_index = 0; value_index < block_sizes[signal_index]; value_index++)
             {
                 float value;
                 memcpy (&value, bytes.mid (offset, 4).constData(), 4);
@@ -113,7 +113,7 @@ DataPacketVersion2::~DataPacketVersion2 ()
 }
 
 //-----------------------------------------------------------------------------
-QVector<double> DataPacketVersion2::getData (SignalTypeFlag signal, ChannelIndex channel) const
+QVector<double> DataPacketVersion2::getData (SignalTypeFlag signal, quint32 channel) const
 {
     return data_[signal][channel];
 }
@@ -125,7 +125,7 @@ QSet<SignalTypeFlag> DataPacketVersion2::getSignals () const
 }
 
 //-----------------------------------------------------------------------------
-ChannelIndex DataPacketVersion2::getNumChannels (SignalTypeFlag signal) const
+quint32 DataPacketVersion2::getNumChannels (SignalTypeFlag signal) const
 {
     return data_[signal].size ();
 }

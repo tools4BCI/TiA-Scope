@@ -76,11 +76,11 @@ TEST(filledDataPacket)
 
     foreach (SignalTypeFlag signal, packet.getSignals())
     {
-        ChannelIndex chan_count = packet.getNumChannels(signal);
+        quint32 chan_count = packet.getNumChannels(signal);
 
         QVector<double> signal_samples;
 
-        for (ChannelIndex chan = 0; chan < chan_count; ++chan) {
+        for (quint32 chan = 0; chan < chan_count; ++chan) {
             QVector<double> samples = packet.getData(signal,chan);
 
             for (QVector<double>::iterator it = samples.begin(); it != samples.end(); ++it) {

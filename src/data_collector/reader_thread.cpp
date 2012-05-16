@@ -74,7 +74,7 @@ void ReaderThread::run ()
                     }
                     else
                     {
-                        for (ChannelIndex channel_index = 0; channel_index < datapacket->getNumChannels(signal_flag); ++channel_index)
+                        for (quint32 channel_index = 0; channel_index < datapacket->getNumChannels(signal_flag); ++channel_index)
                             data_buffer_->appendData (signal_flag, channel_index, datapacket->getData (signal_flag, channel_index).toList());
                     }
 #ifndef signals

@@ -68,7 +68,6 @@
 #include <boost/cstdint.hpp>
 
 typedef boost::uint32_t SignalTypeFlag;
-typedef boost::uint32_t ChannelIndex;
 
 SignalTypeFlag const SIG_EEG = 0x1;
 SignalTypeFlag const SIG_EMG = 0x1 << 1;
@@ -88,8 +87,6 @@ SignalTypeFlag const SIG_USER_3 = 0x1 << 18;
 SignalTypeFlag const SIG_USER_4 = 0x1 << 19;
 SignalTypeFlag const SIG_UNDEFINED = 0x1 << 20;
 SignalTypeFlag const SIG_EVENT = 0x1 << 21;
-
-
 
 /*! @} */
 

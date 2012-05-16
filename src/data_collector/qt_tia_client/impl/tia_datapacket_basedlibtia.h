@@ -20,9 +20,9 @@ public:
     DataPacketBasedLibTiA(tia::DataPacket &tia_packet);
 
     virtual ~DataPacketBasedLibTiA ();
-    virtual QVector<double> getData (SignalTypeFlag signal, ChannelIndex channel) const;
+    virtual QVector<double> getData (SignalTypeFlag signal, quint32 channel) const;
     virtual QSet<SignalTypeFlag> getSignals () const;
-    virtual ChannelIndex getNumChannels (SignalTypeFlag signal) const;
+    virtual quint32 getNumChannels (SignalTypeFlag signal) const;
 
 private:
 

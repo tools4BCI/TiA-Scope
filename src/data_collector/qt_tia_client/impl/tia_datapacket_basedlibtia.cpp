@@ -20,7 +20,7 @@ DataPacketBasedLibTiA::~DataPacketBasedLibTiA ()
 
 //-----------------------------------------------------------------------------
 
-QVector<double> DataPacketBasedLibTiA::getData (SignalTypeFlag signal, ChannelIndex channel) const
+QVector<double> DataPacketBasedLibTiA::getData (SignalTypeFlag signal, quint32 channel) const
 {
     std::vector<double> all_chan_values = tia_packet_.getSingleDataBlock(signal);
 
@@ -70,7 +70,7 @@ QSet<SignalTypeFlag> DataPacketBasedLibTiA::getSignals () const
 
 //-----------------------------------------------------------------------------
 
-ChannelIndex DataPacketBasedLibTiA::getNumChannels (SignalTypeFlag signal) const
+quint32 DataPacketBasedLibTiA::getNumChannels (SignalTypeFlag signal) const
 {
     return tia_packet_.getNrOfChannels(signal);
 }
