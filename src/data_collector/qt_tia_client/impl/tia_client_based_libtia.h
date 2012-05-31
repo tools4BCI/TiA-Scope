@@ -23,6 +23,15 @@ public:
 
     virtual void connectToServer (QString server_address, unsigned port, bool udp_data_connection);
 
+    virtual void connectToServer (QString server_address, unsigned port);
+
+    inline void setDataConnectionType(bool udp_data_connection)
+    {
+        udp_data_connection_ = udp_data_connection;
+    }
+
+    virtual void createDataConnection ();
+
     virtual bool connected();
 
     virtual void disconnectFromServer ();    
@@ -37,6 +46,7 @@ private:
     Q_DISABLE_COPY (TiAQtClientBasedLibTiA);
 
     tia::TiAClient tia_client_;    
+    bool udp_data_connection_;
 
 };
 

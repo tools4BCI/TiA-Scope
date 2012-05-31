@@ -42,7 +42,7 @@ private Q_SLOTS:
     void on_actionReceiveData_toggled (bool checked);
     void setFTVisible (bool fts);
 
-    void startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client);
+    void startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client, bool custom_connect);
 
     void ftThreadFinished ();
     void readerThreadFinished ();

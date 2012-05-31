@@ -39,8 +39,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void on_signalTree_itemChanged (QTreeWidgetItem* item, int column);
-    void on_channelOverlappingSlider_valueChanged (int value);
-    void on_cyclicMode_toggled (bool checked);
+
 
 private:
     Ui::SignalInfoDockWidget *ui;

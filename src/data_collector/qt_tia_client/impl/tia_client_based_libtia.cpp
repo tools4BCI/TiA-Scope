@@ -27,14 +27,30 @@ TiAQtClientBasedLibTiA::~TiAQtClientBasedLibTiA()
 
 void TiAQtClientBasedLibTiA::connectToServer(QString server_address, unsigned port, bool udp_data_connection)
 {
+    connectToServer(server_address,port);
+
+    udp_data_connection_ = udp_data_connection;
+
+    createDataConnection();
+
+}
+
+//-----------------------------------------------------------------------------
+
+void TiAQtClientBasedLibTiA::connectToServer(QString server_address, unsigned port)
+{
     tia_client_.connect(server_address.toStdString(),port);
 
     tia_client_.requestConfig();
 
     //TODO: add possibility to connect to the servers state connection
+}
 
-    tia_client_.createDataConnection(udp_data_connection);
+//-----------------------------------------------------------------------------
 
+void TiAQtClientBasedLibTiA::createDataConnection()
+{
+    tia_client_.createDataConnection(udp_data_connection_);
 }
 
 //-----------------------------------------------------------------------------

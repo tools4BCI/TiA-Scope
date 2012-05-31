@@ -8,6 +8,8 @@
 #include "tia/defines.h"
 #include "tia/constants.h"
 
+#include "tia-private/newtia/tia_meta_info_parse_and_build_functions.h"
+
 #include "print_to_console.h"
 
 using namespace TiAQtImplementation;
@@ -59,6 +61,10 @@ TEST(fetchMetaInfoFromServer)
     tia::SSConfig config = client.getMetaInfo();
 
     CHECK(config.signal_info.masterSamplingRate() > 0);
+
+    std::string xml_str = buildTiAMetaInfoXMLString(config);
+
+    std::cout << xml_str << std::endl;
 
     client.disconnectFromServer();
 

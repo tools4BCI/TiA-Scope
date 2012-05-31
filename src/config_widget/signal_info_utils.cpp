@@ -29,6 +29,7 @@ void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info,
         if (signal_types_checkable)
         {
             signal_item->setFlags (signal_item->flags() | Qt::ItemIsUserCheckable);
+            signal_item->setFlags (signal_item->flags() | Qt::ItemIsTristate);
             if (default_checked)
                 signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
         }

@@ -24,10 +24,6 @@ SignalInfoDockWidget::~SignalInfoDockWidget()
 }
 
 //-----------------------------------------------------------------------------
-//bad hack to undefine signals that is used by Qt
-//but at the same time defines a method of SignalInfo
-//used in libTiA
-#undef signals
 
 void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
 {
@@ -37,8 +33,6 @@ void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
     initializing_ = false;
 }
 
-//revert hack that signals is undefined
-#define signals Q_SIGNALS
 
 //-----------------------------------------------------------------------------
 void SignalInfoDockWidget::clear ()
@@ -54,8 +48,12 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
         return;
     if (column == SignalInfoUtils::NAME_COLUMN_INDEX)
     {
-        for (int index = 0; index < item->childCount(); index++)
-            item->child (index)->setCheckState (SignalInfoUtils::NAME_COLUMN_INDEX, item->checkState(SignalInfoUtils::NAME_COLUMN_INDEX));
+
+        if(item->checkState(SignalInfoUtils::NAME_COLUMN_INDEX) != Qt::PartiallyChecked)
+            for (int index = 0; index < item->childCount(); index++)
+                item->child (index)->setCheckState (SignalInfoUtils::NAME_COLUMN_INDEX, item->checkState(SignalInfoUtils::NAME_COLUMN_INDEX));
+
+
         if (item->childCount() == 0)
         {
             Q_EMIT channelVisibilityChanged (item->data (SignalInfoUtils::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(),
@@ -68,20 +66,6 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
 //        Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
 //                                              item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
 //    }
-}
-
-//-------------------------------------------------------------------------------------------------
-void SignalInfoDockWidget::on_channelOverlappingSlider_valueChanged (int value)
-{
-    if (settings_.isNull())
-        return;
-    settings_->setChannelOverlapping (static_cast<float>(value) / 100.0);
-}
-
-//-------------------------------------------------------------------------------------------------
-void SignalInfoDockWidget::on_cyclicMode_toggled (bool checked)
-{
-    settings_->setCyclicMode (checked);
 }
 
 

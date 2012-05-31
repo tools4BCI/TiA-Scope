@@ -73,6 +73,12 @@ public:
 
     virtual SSConfig config () const;
 
+    virtual bool trySetCustomSignalInfo(SignalInfo &custom_sig_info);
+
+    virtual void createDataConnection(bool use_udp);
+
+    virtual void startReceiving();
+
     virtual void startReceiving (bool use_udp_bc);
 
     virtual bool receiving() const;

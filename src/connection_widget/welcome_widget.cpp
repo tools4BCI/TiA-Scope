@@ -6,6 +6,7 @@
 #include "data_collector/qt_tia_client/impl/tia_client_version10.h"
 #include "data_collector/qt_tia_client/impl/tia_client_based_libtia.h"
 
+
 #include <QSettings>
 #include <QHostAddress>
 #include <QMessageBox>
@@ -32,13 +33,27 @@ WelcomeWidget::~WelcomeWidget()
 //-----------------------------------------------------------------------------
 void WelcomeWidget::on_connectToServer1_clicked ()
 {
-    tryToConnect (ui->server_ip_1->text(), ui->server_port_1->text(), ui->udp_1->isChecked());
+    tryToConnect (ui->server_ip_1->text(), ui->server_port_1->text(), ui->udp_1->isChecked(),false);
 }
 
 //-----------------------------------------------------------------------------
 void WelcomeWidget::on_connectToNewServer_clicked ()
 {
-    tryToConnect (ui->new_server_ip->text(), ui->new_server_port->text(), ui->new_udp->isChecked());
+    tryToConnect (ui->new_server_ip->text(), ui->new_server_port->text(), ui->new_udp->isChecked(),false);
+}
+
+//-----------------------------------------------------------------------------
+
+void WelcomeWidget::on_customConnectToServer_clicked()
+{
+    tryToConnect (ui->server_ip_1->text(), ui->server_port_1->text(), ui->udp_1->isChecked(),true);
+}
+
+//-----------------------------------------------------------------------------
+
+void WelcomeWidget::on_customConnectToNewServer_clicked()
+{
+    tryToConnect (ui->new_server_ip->text(), ui->new_server_port->text(), ui->new_udp->isChecked(),true);
 }
 
 //-----------------------------------------------------------------------------
@@ -67,7 +82,7 @@ void WelcomeWidget::loadSettings ()
 }
 
 //-----------------------------------------------------------------------------
-void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data_connection)
+void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data_connection, bool custom_connect)
 {
     if (checkAddressString (server_ip, port))
     {
@@ -76,21 +91,32 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
         //TODO: add possibility to check if new tia should be used or old one!
 //        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
         QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientBasedLibTiA(true));
-        if (!clientConnects (new_client, server_ip, port, udp_data_connection))
+        if (!clientConnects (new_client, server_ip, port, udp_data_connection, custom_connect))
         {
-            qDebug () << "Try Client version 0.2";
-            new_client = QSharedPointer<TiAQtImplementation::TiAQtClient> (new TiAQtImplementation::TiAQtClientVersion02);
-            if (clientConnects (new_client, server_ip, port, udp_data_connection))
+            if(!custom_connect)
             {
-                Q_EMIT connectionSelected (new_client);
-                saveSettings (server_ip, port.toUInt(), udp_data_connection);
+
+                qDebug () << "Try Client version 0.2";
+                new_client = QSharedPointer<TiAQtImplementation::TiAQtClient> (new TiAQtImplementation::TiAQtClientVersion02);
+                if (clientConnects (new_client, server_ip, port, udp_data_connection, custom_connect))
+                {
+                    Q_EMIT connectionSelected (new_client,false); //due to custom connect is not supported for this version
+                    saveSettings (server_ip, port.toUInt(), udp_data_connection);
+                }
+                else
+                    QMessageBox::critical (this, "Error",
+                                           QString ("No supported signal server found at ")
+                                           .append(server_ip).append(":").append(port));
             }
             else
-                QMessageBox::critical (this, "Error", QString ("No supported signal server found at ").append(server_ip).append(":").append(port));
+                QMessageBox::information (this, "Information",
+                                          QString ("Version of signal server found at ")
+                                          .append(server_ip).append(":").append(port)
+                                          .append(" does not support custom configuration!"));
         }
         else
         {
-            Q_EMIT connectionSelected (new_client);
+            Q_EMIT connectionSelected (new_client,custom_connect);
             saveSettings (server_ip, port.toUInt(), udp_data_connection);
         }
     }
@@ -99,11 +125,24 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
 }
 
 //-----------------------------------------------------------------------------
-bool WelcomeWidget::clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port, bool udp_data_connection)
+bool WelcomeWidget::clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port, bool udp_data_connection, bool custom_connect)
 {
     try
     {
-        client->connectToServer (server_ip, port.toUInt (), udp_data_connection);
+        if(custom_connect)
+        {
+         TiAQtImplementation::TiAQtClientBasedLibTiA *lib_tia_client = dynamic_cast<TiAQtImplementation::TiAQtClientBasedLibTiA *> (client.data());
+
+         if(lib_tia_client != NULL)
+         {
+             lib_tia_client->connectToServer(server_ip,port.toUInt());
+             lib_tia_client->setDataConnectionType(udp_data_connection);
+         }
+
+        }
+        else
+            client->connectToServer (server_ip, port.toUInt (), udp_data_connection);
+
         return true;
     }
     catch (...)
@@ -124,3 +163,4 @@ bool WelcomeWidget::checkAddressString (QString server_ip, QString port) const
 }
 
 }
+

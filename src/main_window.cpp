@@ -9,17 +9,19 @@
 #include "visualisation/signal_graphics_scene.h"
 #include "visualisation/signal_graphics_view.h"
 
-#include "config_widget/signal_info_dock_widget.h"
+#include "config_widget/signal_presentation_dock_widget.h"
 #include "config_widget/subject_info_dock_widget.h"
 #include "config_widget/filter_dockwidget.h"
 #include "config_widget/application_monitor_dock_widget.h"
 
 #include "connection_widget/connect_dialog.h"
 #include "connection_widget/welcome_widget.h"
+#include "connection_widget/customize_signalinfo_dialog.h"
 
 #include "data_collector/reader_thread.h"
 #include "data_collector/fourier_transform_thread.h"
-#include "data_collector/qt_tia_client/impl/tia_client_version02.h"
+#include "data_collector/qt_tia_client/qt_tia_client.h"
+#include "data_collector/qt_tia_client/impl/tia_client_based_libtia.h"
 
 #include "tia/constants.h"
 
@@ -118,11 +120,37 @@ void MainWindow::setFTVisible (bool fts)
 }
 
 //-------------------------------------------------------------------------------------------------
-void MainWindow::startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client)
+void MainWindow::startConnection (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client,bool custom_connect)
 {
     qt_client_ = new_client;
 
-    initDataViewScreen ();
+    if(custom_connect)
+    {
+        CustomizeSignalInfoDialog *diag = new CustomizeSignalInfoDialog(this);
+
+        diag->setTiaQtClient(qt_client_);
+
+        diag->initialize();
+
+        diag->exec();
+
+        if(diag->result()  == QDialog::Accepted)
+        {
+            TiAQtImplementation::TiAQtClientBasedLibTiA *lib_tia_client = dynamic_cast<TiAQtImplementation::TiAQtClientBasedLibTiA *> (new_client.data());
+
+            if(lib_tia_client != NULL)
+            {
+                lib_tia_client->createDataConnection();
+            }
+
+            initDataViewScreen ();
+        }
+
+        diag->hide();
+        delete diag;
+    }
+    else
+        initDataViewScreen ();
 }
 
 //-----------------------------------------------------------------------------
@@ -168,7 +196,7 @@ void MainWindow::initWelcomeScreen ()
     WelcomeWidget* welcome_widget = new WelcomeWidget (this);
     setCentralWidget (welcome_widget);
     welcome_widget->show();
-    connect (welcome_widget, SIGNAL(connectionSelected(QSharedPointer<TiAQtImplementation::TiAQtClient>)), SLOT(startConnection(QSharedPointer<TiAQtImplementation::TiAQtClient>)));
+    connect (welcome_widget, SIGNAL(connectionSelected(QSharedPointer<TiAQtImplementation::TiAQtClient>, bool)), SLOT(startConnection(QSharedPointer<TiAQtImplementation::TiAQtClient>, bool)));
     ui->mainToolBar->hide ();
     delete splitter_;
     splitter_ = 0;
@@ -248,7 +276,8 @@ void MainWindow::initDataViewScreen ()
     reader_thread_ = new ReaderThread (data_buffer, qt_client_, false, this);
 
     // init signal info widget
-    SignalInfoDockWidget* signal_info_widget = new SignalInfoDockWidget (signal_view_settings_, splitter_);
+//    SignalInfoDockWidget* signal_info_widget = new SignalInfoDockWidget (signal_view_settings_, splitter_);
+    SignalPresentationDockWidget* signal_info_widget = new SignalPresentationDockWidget (signal_view_settings_, splitter_);
     dock_widgets_.append (signal_info_widget);
     addDockWidget (Qt::LeftDockWidgetArea, signal_info_widget);
 

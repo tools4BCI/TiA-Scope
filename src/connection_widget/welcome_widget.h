@@ -22,18 +22,21 @@ public:
     ~WelcomeWidget();
 
 Q_SIGNALS:
-    void connectionSelected (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client);
+    void connectionSelected (QSharedPointer<TiAQtImplementation::TiAQtClient> new_client, bool custom_connect);
 
 private Q_SLOTS:
     void on_connectToServer1_clicked ();
     void on_connectToNewServer_clicked ();
     void saveSettings (QString server_ip, unsigned port, bool udp_data_connection);
 
+    void on_customConnectToNewServer_clicked();
+    void on_customConnectToServer_clicked();
+
 private:
     virtual void showEvent (QShowEvent* event);
     void loadSettings ();
-    void tryToConnect (QString server_ip, QString port, bool udp_data_connection);
-    bool clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port, bool udp_data_connection);
+    void tryToConnect (QString server_ip, QString port, bool udp_data_connection, bool custom_connect);
+    bool clientConnects (QSharedPointer<TiAQtImplementation::TiAQtClient> client, QString server_ip, QString port, bool udp_data_connection, bool custom_connect);
     bool checkAddressString (QString server_ip, QString port) const;
 
     Ui::WelcomeWidget *ui;
