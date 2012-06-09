@@ -33,6 +33,13 @@ void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
     initializing_ = false;
 }
 
+//-----------------------------------------------------------------------------
+void SignalInfoDockWidget::updateSignalInfo(tia::SSConfig &signal_info)
+{
+    QTreeWidgetItem *root = ui->signalTree->invisibleRootItem();
+
+    SignalInfoUtils::updateSignalInfo(root,signal_info);
+}
 
 //-----------------------------------------------------------------------------
 void SignalInfoDockWidget::clear ()

@@ -23,6 +23,8 @@ SignalPresentationDockWidget::SignalPresentationDockWidget(QSharedPointer<Signal
     ((QVBoxLayout *)ui->dockWidgetContents->layout())->insertWidget(2,signal_info_widget_);
 }
 
+//-----------------------------------------------------------------------------
+
 SignalPresentationDockWidget::~SignalPresentationDockWidget()
 {
     delete ui;

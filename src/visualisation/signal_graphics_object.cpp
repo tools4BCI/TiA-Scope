@@ -146,7 +146,7 @@ void SignalGraphicsObject::setWidth (int width)
 }
 
 //-------------------------------------------------------------------------------------------------
-void SignalGraphicsObject::setChannelVisibility (SignalTypeFlag signal, ChannelID channel, bool visible)
+void SignalGraphicsObject::setChannelVisibility (SignalTypeFlag signal, qint32 channel, bool visible)
 {
     if (signal == signal_type_ && fts_.size() == 0)
     {

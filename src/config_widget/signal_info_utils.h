@@ -15,6 +15,10 @@ namespace SignalInfoUtils
 
     //-------------------------------------------------------------------------    
     void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool default_checked = true, bool signal_types_checkable = true);
+
+
+    //-------------------------------------------------------------------------
+    void updateSignalInfo(QTreeWidgetItem* tree_widget, tia::SSConfig &meta_info);
 }
 
 

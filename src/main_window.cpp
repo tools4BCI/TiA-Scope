@@ -245,6 +245,7 @@ void MainWindow::initDataViewScreen ()
     //used in libTiA
     #undef signals
 
+
     for (tia::SignalInfo::SignalMap::const_iterator signal_iter = tia_meta_info.signal_info.signals().begin ();
          signal_iter != tia_meta_info.signal_info.signals ().end (); ++signal_iter)
     {

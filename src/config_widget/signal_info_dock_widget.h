@@ -31,6 +31,8 @@ public:
 
     void setSignalInfo (tia::SSConfig const& signal_info);
 
+    void updateSignalInfo(tia::SSConfig &signal_info);
+
 public Q_SLOTS:
     void clear ();
 

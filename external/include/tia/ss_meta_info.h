@@ -41,6 +41,7 @@
 #define SERVER_META_INFO_H
 
 #include <boost/cstdint.hpp>
+#include <boost/shared_ptr.hpp>
 
 // STL
 #include <string>
@@ -177,8 +178,14 @@ class Channel
      */
     void setId(const std::string& id) { id_ = id; }
 
+    boost::uint32_t number() const { return number_; }
+
+    void setNumber(boost::uint32_t number) { number_ = number; }
+
   private:
     std::string id_;    ///<
+    boost::uint32_t number_;
+
 };
 
 //-----------------------------------------------------------------------------
@@ -295,6 +302,8 @@ class SignalInfo
     #undef SIGNAL_INFO_HELPER
 #endif
 };
+
+typedef boost::shared_ptr<SignalInfo> SignalInfoPtr;
 
 } // Namespace tobiss
 

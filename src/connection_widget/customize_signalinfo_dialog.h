@@ -4,6 +4,8 @@
 #include <QDialog>
 #include "data_collector/qt_tia_client/qt_tia_client.h"
 #include "tia/ssconfig.h"
+#include "base/user_types.h"
+#include "config_widget/signal_info_dock_widget.h"
 
 
 namespace Ui {
@@ -27,9 +29,14 @@ public:
     }
 
     void initialize();
-    
+
+private Q_SLOTS:
+    void on_buttonBox_accepted();
+
 private:
     Ui::CustomizeSignalInfoDialog *ui;
+
+    SignalInfoDockWidget* signal_info_widget_;
 
     QSharedPointer<TiAQtImplementation::TiAQtClient> qt_tia_client_;
     tia::SSConfig meta_info_;
