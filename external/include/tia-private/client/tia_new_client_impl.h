@@ -97,12 +97,13 @@ public:
 private:
     void sendMessage (TiAControlMessage const& message);
     void waitForOKResponse ();
-    void waitForErrorResponse ();
-
+    void waitForErrorResponse ();       
 
     //-------------------------------------------------------------------------
     TiAControlMessage waitForControlMessage (std::string const& command_name);
 
+    //-----------------------------------------------------------------------------
+    TiAControlMessage waitForResponse();
 
     std::string const MESSAGE_VERSION_;
     std::string server_ip_address_;

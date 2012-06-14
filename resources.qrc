@@ -12,5 +12,6 @@
         <file>icons/zoom_out.png</file>
         <file>icons/auto_scaling.png</file>
         <file>icons/filter.png</file>
+        <file>icons/error.png</file>
     </qresource>
 </RCC>

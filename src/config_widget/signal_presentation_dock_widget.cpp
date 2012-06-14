@@ -34,7 +34,7 @@ SignalPresentationDockWidget::~SignalPresentationDockWidget()
 
 void SignalPresentationDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
 {
-    signal_info_widget_->setSignalInfo(signal_info);
+    signal_info_widget_->setSignalInfo(signal_info, false);
 }
 
 //-----------------------------------------------------------------------------

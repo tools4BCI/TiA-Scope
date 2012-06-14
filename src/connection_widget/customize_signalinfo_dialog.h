@@ -2,7 +2,7 @@
 #define CUSTOMIZE_SIGNALINFO_DIALOG_H
 
 #include <QDialog>
-#include "data_collector/qt_tia_client/qt_tia_client.h"
+#include "data_collector/qt_tia_client/impl/tia_client_based_libtia.h"
 #include "tia/ssconfig.h"
 #include "base/user_types.h"
 #include "config_widget/signal_info_dock_widget.h"
@@ -23,24 +23,35 @@ public:
     explicit CustomizeSignalInfoDialog(QWidget *parent = 0);
     ~CustomizeSignalInfoDialog();
 
-    inline void setTiaQtClient(QSharedPointer<TiAQtImplementation::TiAQtClient> qt_tia_client)
+    inline void setTiaQtClient(QSharedPointer<TiAQtImplementation::TiAQtClientBasedLibTiA> qt_tia_client)
     {
         qt_tia_client_ = qt_tia_client;
     }
 
     void initialize();
 
-private Q_SLOTS:
-    void on_buttonBox_accepted();
+    inline tia::SSConfig getCustomMetaInfo()
+    {
+        return meta_info_;
+    }
 
 private:
+    bool validateDialog(QString &error_container);
     Ui::CustomizeSignalInfoDialog *ui;
 
     SignalInfoDockWidget* signal_info_widget_;
 
-    QSharedPointer<TiAQtImplementation::TiAQtClient> qt_tia_client_;
+    QSharedPointer<TiAQtImplementation::TiAQtClientBasedLibTiA> qt_tia_client_;
     tia::SSConfig meta_info_;
 
+    void showError(QString error_msg);
+
+public Q_SLOTS:
+    virtual void done(int result);
+
+private Q_SLOTS:
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 };
 
 }

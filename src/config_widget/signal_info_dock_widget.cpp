@@ -25,11 +25,11 @@ SignalInfoDockWidget::~SignalInfoDockWidget()
 
 //-----------------------------------------------------------------------------
 
-void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info)
+void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info, bool use_channel_numbers)
 {
     initializing_ = true;
     ui->signalTree->clear ();
-    SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info);
+    SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info, use_channel_numbers);
     initializing_ = false;
 }
 

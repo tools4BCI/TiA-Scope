@@ -29,7 +29,7 @@ public:
     explicit SignalInfoDockWidget (QSharedPointer<SignalViewSettings> settings, QWidget *parent = 0);
     ~SignalInfoDockWidget ();  
 
-    void setSignalInfo (tia::SSConfig const& signal_info);
+    void setSignalInfo (tia::SSConfig const& signal_info, bool use_channel_numbers);
 
     void updateSignalInfo(tia::SSConfig &signal_info);
 

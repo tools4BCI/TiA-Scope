@@ -34,6 +34,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <stdexcept>
 
 namespace TiAScope {
 
@@ -126,9 +127,21 @@ void MainWindow::startConnection (QSharedPointer<TiAQtImplementation::TiAQtClien
 
     if(custom_connect)
     {
+
+        //check if the client supports custom connect
+
+        QSharedPointer<TiAQtImplementation::TiAQtClientBasedLibTiA> tia_client =
+                qSharedPointerDynamicCast<TiAQtImplementation::TiAQtClientBasedLibTiA>(new_client);
+
+        if(tia_client.isNull())
+        {
+            throw std::runtime_error("MainWindow::startConnection(): Client doesn't support custom connect!");
+        }
+
+
         CustomizeSignalInfoDialog *diag = new CustomizeSignalInfoDialog(this);
 
-        diag->setTiaQtClient(qt_client_);
+        diag->setTiaQtClient(tia_client);
 
         diag->initialize();
 

@@ -6,6 +6,7 @@
 
 #include "tia-private/newtia/tia_meta_info_parse_and_build_functions.h"
 
+#include <QMessageBox>
 #include <iostream>
 
 namespace TiAScope
@@ -37,27 +38,96 @@ void CustomizeSignalInfoDialog::initialize()
 
     meta_info_ = qt_tia_client_->getMetaInfo();
 
-    signal_info_widget_->setSignalInfo(meta_info_);
+    signal_info_widget_->setSignalInfo(meta_info_, true);
 
     ui->horizontalLayout->insertWidget(0,signal_info_widget_);
+
+
+    ui->errorLabel->setVisible(false);
+    ui->horizontal_line->setVisible(false);
+}
+
+//-----------------------------------------------------------------------------
+
+bool CustomizeSignalInfoDialog::validateDialog(QString &error_container)
+{
+    std::cout << tia::buildTiAMetaInfoXMLString(meta_info_) << std::endl;
+
+    signal_info_widget_->updateSignalInfo(meta_info_);    
+
+    std::string std_error_container;
+
+    bool server_result = qt_tia_client_->trySetCustomSignalInfo(meta_info_.signal_info, std_error_container);
+
+    error_container = std_error_container.c_str();
+
+    if(server_result == false)
+    {
+        return false;
+    }
+    else
+    {
+        //if the server was able to accept our customized signal info
+        //request the updated meta_info from the server
+        qt_tia_client_->requestMetaInfo();
+        return true;
+    }
 
 }
 
 //-----------------------------------------------------------------------------
 
-void CustomizeSignalInfoDialog::on_buttonBox_accepted()
+void CustomizeSignalInfoDialog::showError(QString error_msg)
 {
-    std::cout << tia::buildTiAMetaInfoXMLString(meta_info_) << std::endl;
+    ui->errorLabel->setText(error_msg);
+    ui->errorLabel->setVisible(true);
+    ui->horizontal_line->setVisible(true);
+}
 
-    signal_info_widget_->updateSignalInfo(meta_info_);
+//-----------------------------------------------------------------------------
 
-    //TODO: send meta info to server and wait for response!!!!
-//    setResult(QDialog::Rejected);
+void CustomizeSignalInfoDialog::done(int result)
+{
+    if(QDialog::Accepted == result) // ok was pressed
+    {
+        QString error_container;
 
-    std::cout << "-------------------spacer---------------------" << std::endl;
+        if(validateDialog(error_container)) // validate the data somehow
+        {
+            QDialog::done(result);
+            return;
+        }
+        else
+        {
+            if(error_container.length() == 0)
+                error_container = "Not available.";
 
-    std::cout << tia::buildTiAMetaInfoXMLString(meta_info_) << std::endl;
+//            QMessageBox::information (this, "Information",
+//                                      QString ("Server rejected custom signal info! Details: ").append(error_container));
+
+            showError(error_container);
+            return;
+        }
+    }
+    else // cancel, close or exc was pressed
+    {
+        QDialog::done(result);
+        return;
+    }
 }
 
 }
 
+//-----------------------------------------------------------------------------
+
+void TiAScope::CustomizeSignalInfoDialog::on_buttonBox_accepted()
+{
+    done(QDialog::Accepted);
+}
+
+//-----------------------------------------------------------------------------
+
+void TiAScope::CustomizeSignalInfoDialog::on_buttonBox_rejected()
+{
+    done(QDialog::Rejected);
+}

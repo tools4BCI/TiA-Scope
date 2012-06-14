@@ -14,7 +14,7 @@ namespace SignalInfoUtils
 //used in libTiA
 #undef signals
 
-void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool default_checked, bool signal_types_checkable)
+void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool use_channel_numbers, bool default_checked, bool signal_types_checkable)
 {
     tia::Constants tia_constants;
 
@@ -49,7 +49,10 @@ void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info,
             else
                 channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Unchecked);
             channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal_flag);
-            channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, signal_iter->second.channels()[channel_index].number());
+            if(use_channel_numbers)
+                channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, signal_iter->second.channels()[channel_index].number());
+            else
+                channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, channel_index);
             channel_item->setText (NAME_COLUMN_INDEX, signal_iter->second.channels ()[channel_index].id().c_str());
             index++;
         }

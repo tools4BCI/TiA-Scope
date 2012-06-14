@@ -48,6 +48,13 @@ void TiAQtClientBasedLibTiA::connectToServer(QString server_address, unsigned po
 
 //-----------------------------------------------------------------------------
 
+bool TiAQtClientBasedLibTiA::trySetCustomSignalInfo(tia::SignalInfo &custom_sig_info, std::string &error_msg)
+{
+    return tia_client_.trySetCustomSignalInfo(custom_sig_info, error_msg);
+}
+
+//-----------------------------------------------------------------------------
+
 void TiAQtClientBasedLibTiA::createDataConnection()
 {
     tia_client_.createDataConnection(udp_data_connection_);
@@ -81,6 +88,13 @@ QSharedPointer<DataPacket> TiAQtClientBasedLibTiA::getDataPacket()
     QSharedPointer<DataPacket> packet (new DataPacketBasedLibTiA(*tia_packet));
 
     return packet;
+}
+
+//-----------------------------------------------------------------------------
+
+void TiAQtClientBasedLibTiA::requestMetaInfo()
+{
+    tia_client_.requestConfig();
 }
 
 //-----------------------------------------------------------------------------
