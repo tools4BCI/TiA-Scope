@@ -87,8 +87,7 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
     if (checkAddressString (server_ip, port))
     {
 
-        //use libTia instead of own TiAClientImplementation
-        //TODO: add possibility to check if new tia should be used or old one!
+        //use libTia instead of own TiAClientImplementation        
 //        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
         QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientBasedLibTiA(true));
         if (!clientConnects (new_client, server_ip, port, udp_data_connection, custom_connect))
@@ -145,8 +144,9 @@ bool WelcomeWidget::clientConnects (QSharedPointer<TiAQtImplementation::TiAQtCli
 
         return true;
     }
-    catch (...)
+    catch (std::exception ex)
     {
+        qDebug () << "WelcomeWidget::clientConnects(): Exception" << ex.what();
         return false;
     }
 }

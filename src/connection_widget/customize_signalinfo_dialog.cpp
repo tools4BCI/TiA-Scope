@@ -50,14 +50,16 @@ void CustomizeSignalInfoDialog::initialize()
 //-----------------------------------------------------------------------------
 
 bool CustomizeSignalInfoDialog::validateDialog(QString &error_container)
-{
-    std::cout << tia::buildTiAMetaInfoXMLString(meta_info_) << std::endl;
+{    
 
-    signal_info_widget_->updateSignalInfo(meta_info_);    
+    tia::SSConfig meta_info_copy = meta_info_;
+
+    signal_info_widget_->updateSignalInfo(meta_info_copy);
 
     std::string std_error_container;
 
-    bool server_result = qt_tia_client_->trySetCustomSignalInfo(meta_info_.signal_info, std_error_container);
+    bool server_result = qt_tia_client_->trySetCustomSignalInfo(
+                meta_info_copy.signal_info, std_error_container);
 
     error_container = std_error_container.c_str();
 
@@ -99,8 +101,8 @@ void CustomizeSignalInfoDialog::done(int result)
         }
         else
         {
-            if(error_container.length() == 0)
-                error_container = "Not available.";
+//            if(error_container.length() == 0)
+//                error_container = "";
 
 //            QMessageBox::information (this, "Information",
 //                                      QString ("Server rejected custom signal info! Details: ").append(error_container));
