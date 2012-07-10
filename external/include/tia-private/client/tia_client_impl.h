@@ -115,7 +115,7 @@ public:
    * @brief Asks the server to accept the custom signal info.
    *        NOT implemented yet due to deprecated tia version!
    */
-  virtual bool trySetCustomSignalInfo(SignalInfo &custom_sig_info);
+  virtual bool trySetCustomSignalInfo(SignalInfo &custom_sig_info, std::string &error_msg);
 
   /**
    * @brief Establishes a DataConnection to the server either
@@ -171,6 +171,8 @@ public:
   * @brief todo
   */
   virtual DataPacket* getEmptyDataPacket();
+
+  virtual DataPacket* createDataPacket();
 
   /**
    * @brief Sets the client's data input buffer size to the given value

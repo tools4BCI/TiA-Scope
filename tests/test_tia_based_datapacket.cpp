@@ -7,7 +7,7 @@
 #include "data_collector/qt_tia_client/impl/tia_datapacket_basedlibtia.h"
 #include "data_collector/qt_tia_client/impl/tia_datapacket_version2.h"
 
-#include "tia-private/datapacket/data_packet_3_impl.h"
+#include "tia/tia_client.h"
 
 #include "tia/defines.h"
 #include "tia/constants.h"
@@ -28,9 +28,11 @@ using namespace TiAQtImplementation;
 
 TEST(emptyDataPacket)
 {
-    tia::DataPacket3Impl empty_tia_packet;
+    tia::TiAClient client(true);
 
-    DataPacketBasedLibTiA empty_packet (empty_tia_packet);
+    tia::DataPacket *empty_tia_packet = client.getEmptyDataPacket();
+
+    DataPacketBasedLibTiA empty_packet (*empty_tia_packet);
 
     CHECK_EQUAL(empty_packet.getSignals().count(),0);
 
@@ -42,9 +44,12 @@ TEST(emptyDataPacket)
 
 TEST(filledDataPacket)
 {
-    tia::DataPacket3Impl tia_packet;
+    tia::TiAClient client(true);
 
-    tia_packet.reset();
+    tia::DataPacket *tia_packet = client.getEmptyDataPacket();
+
+
+    tia_packet->reset();
 
     std::vector<double> raw_data;
 
@@ -57,10 +62,10 @@ TEST(filledDataPacket)
 
     quint32 block_sizes [] = { 1, 2};
 
-    tia_packet.insertDataBlock(raw_data,SIG_EEG,block_sizes[0]);
-    tia_packet.insertDataBlock(raw_data,SIG_EOG,block_sizes[1]);
+    tia_packet->insertDataBlock(raw_data,SIG_EEG,block_sizes[0]);
+    tia_packet->insertDataBlock(raw_data,SIG_EOG,block_sizes[1]);
 
-    DataPacketBasedLibTiA packet (tia_packet);
+    DataPacketBasedLibTiA packet (*tia_packet);
 
 
     CHECK_EQUAL(packet.getSignals().count(),2);

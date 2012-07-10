@@ -4,8 +4,6 @@
 #include "tia/constants.h"
 
 
-#include "tia-private/newtia/tia_meta_info_parse_and_build_functions.h"
-
 #include <QMessageBox>
 #include <iostream>
 

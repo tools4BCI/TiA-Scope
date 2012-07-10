@@ -50,7 +50,7 @@ private:
     Q_DISABLE_COPY (TiAQtClientBasedLibTiA);
 
     tia::TiAClient tia_client_;    
-    bool udp_data_connection_;
+    bool udp_data_connection_;    
 
 };
 
