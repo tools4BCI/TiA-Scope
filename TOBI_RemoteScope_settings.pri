@@ -22,16 +22,16 @@ unix {
     HARDWARE_PLATFORM = $$system(uname -m)
     contains( HARDWARE_PLATFORM, x86_64 )::{
         # 64-bit Linux
-        LIBS += -L../external/lib/ticpp/linux  \
-                -L../external/lib/tia/linux/amd64 \\
-                -Wl,-rpath=../external/lib/tia/linux/amd64 \
+        LIBS += -L$$PWD/external/lib/ticpp/linux  \
+                -L$$PWD/external/lib/tia/linux/amd64 \\
+                -Wl,-rpath=$$PWD/external/lib/tia/linux/amd64 \
                 -ltia  -lticpp_64
 
     }else::{
         # 32-bit Linux
-        LIBS += -L../external/lib/ticpp/linux  \
-                -L../external/lib/tia/linux/x86 \
-                -Wl,-rpath=../external/lib/tia/linux/x86 \
+        LIBS += -L$$PWD/external/lib/ticpp/linux  \
+                -L$$PWD/external/lib/tia/linux/x86 \
+                -Wl,-rpath=$$PWD/external/lib/tia/linux/x86 \
                 -ltia  -lticpp
 
     }
