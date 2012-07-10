@@ -108,10 +108,10 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
                                            .append(server_ip).append(":").append(port));
             }
             else
-                QMessageBox::information (this, "Information",
-                                          QString ("Version of signal server found at ")
+                QMessageBox::critical (this, "Information",
+                                          QString ("No signal server found at ")
                                           .append(server_ip).append(":").append(port)
-                                          .append(" does not support custom configuration!"));
+                                          .append(" that does support custom configuration!"));
         }
         else
         {
