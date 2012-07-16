@@ -51,7 +51,7 @@ unix {
     contains( HARDWARE_PLATFORM, x86_64 )::{
         # 64-bit Linux
         LIBS += -Lexternal/lib/ticpp/linux  \
-                -Lexternal/lib/tia/linux/amd64 \\
+                -Lexternal/lib/tia/linux/amd64 \
                 -Wl,-rpath=external/lib/tia/linux/amd64 \
                 -ltia  -lticpp_64 \
                 -lUnitTest++_64

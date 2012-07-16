@@ -23,7 +23,7 @@ unix {
     contains( HARDWARE_PLATFORM, x86_64 )::{
         # 64-bit Linux
         LIBS += -L$$PWD/external/lib/ticpp/linux  \
-                -L$$PWD/external/lib/tia/linux/amd64 \\
+                -L$$PWD/external/lib/tia/linux/amd64 \
                 -Wl,-rpath=$$PWD/external/lib/tia/linux/amd64 \
                 -ltia  -lticpp_64
 
