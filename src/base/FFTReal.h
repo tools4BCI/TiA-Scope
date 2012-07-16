@@ -40,7 +40,7 @@ public:
 		(i.e. float, double or long double). */
 	typedef float	flt_t;
 
-	explicit			FFTReal (const long length);
+    explicit			FFTReal (const double length);
 						~FFTReal ();
 	void				do_fft (flt_t f [], const flt_t x []) const;
 	void				do_ifft (const flt_t f [], flt_t x []) const;

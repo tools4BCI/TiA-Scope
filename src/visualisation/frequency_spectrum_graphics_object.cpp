@@ -12,6 +12,7 @@
 namespace TiAScope {
 
 int FrequencySpectrumGraphicsObject::MAX_HISTORY_SIZE_ = 100;
+qreal const FrequencySpectrumGraphicsObject::LABEL_SPACING_ = 200;
 
 //-------------------------------------------------------------------------------------------------
 FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel,

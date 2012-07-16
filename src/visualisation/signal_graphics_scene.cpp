@@ -3,6 +3,13 @@
 #include "base/helpers.h"
 
 #include <QDebug>
+#ifdef __cplusplus
+ #define __STDC_CONSTANT_MACROS
+ #ifdef _STDINT_H
+  #undef _STDINT_H
+ #endif
+ # include <stdint.h>
+#endif
 
 namespace TiAScope {
 
@@ -10,7 +17,7 @@ namespace TiAScope {
 SignalGraphicsScene::SignalGraphicsScene (QObject *parent) :
     QGraphicsScene (0, 0, 0, 0, parent)
 {
-    setObjectName (QString("SignalGraphicsScene - 0x").append(QString::number(reinterpret_cast<unsigned int64_t>(this), 16)));
+    setObjectName (QString("SignalGraphicsScene - 0x").append(QString::number(reinterpret_cast<uint64_t>(this), 16)));
 }
 
 //-------------------------------------------------------------------------------------------------
