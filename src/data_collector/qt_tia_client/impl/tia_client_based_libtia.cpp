@@ -47,8 +47,14 @@ void TiAQtClientBasedLibTiA::connectToServer(QString server_address, unsigned po
 }
 
 //-----------------------------------------------------------------------------
+tia::CustomSignalInfoPtr TiAQtClientBasedLibTiA::getConfigAsCustomConfig() const
+{
+    return tia_client_.getConfigAsCustomConfig();
+}
 
-bool TiAQtClientBasedLibTiA::trySetCustomSignalInfo(tia::SignalInfo &custom_sig_info, std::string &error_msg)
+//-----------------------------------------------------------------------------
+
+bool TiAQtClientBasedLibTiA::trySetCustomSignalInfo(tia::CustomSignalInfoPtr custom_sig_info, std::string &error_msg)
 {
     return tia_client_.trySetCustomSignalInfo(custom_sig_info, error_msg);
 }

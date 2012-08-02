@@ -2,6 +2,7 @@
 #define SIGNAL_INFO_UTILS_H
 
 #include "tia/ssconfig.h"
+#include "tia/custom_signal_info.h"
 
 #include <QTreeWidget>
 
@@ -18,7 +19,7 @@ namespace SignalInfoUtils
 
 
     //-------------------------------------------------------------------------
-    void updateSignalInfo(QTreeWidgetItem* tree_widget, tia::SSConfig &meta_info);
+    void updateSignalInfo(QTreeWidgetItem* tree_widget, tia::CustomSignalInfoPtr custom_signal_info);
 }
 
 

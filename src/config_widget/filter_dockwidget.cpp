@@ -16,6 +16,7 @@ FilterDockWidget::FilterDockWidget (unsigned min_samplingrate, QWidget *parent) 
 {
     ui->setupUi(this);
     ui->lowpassCutoff->setMaximum (min_samplingrate / 2);
+    Filters::instance().reset();
 }
 
 //-----------------------------------------------------------------------------

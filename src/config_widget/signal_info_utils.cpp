@@ -36,7 +36,7 @@ void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info,
             if (default_checked)
                 signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
         }
-        signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate()).append( " Hz"));
+        signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate()).append( " Hz"));        
 
         unsigned index = 0;
 
@@ -60,7 +60,7 @@ void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info,
 }
 
 //-----------------------------------------------------------------------------
-void updateSignalInfo(QTreeWidgetItem* root, tia::SSConfig &meta_info)
+void updateSignalInfo(QTreeWidgetItem* root, tia::CustomSignalInfoPtr custom_signal_info)
 {
     tia::Constants tia_constants;
 
@@ -74,19 +74,19 @@ void updateSignalInfo(QTreeWidgetItem* root, tia::SSConfig &meta_info)
             ; //nothing to do, all channels of the signal are accepted
         else
         {
-            tia::SignalInfo::SignalMap::iterator iter = meta_info.signal_info.signals().find(tia_constants.getSignalName(signal_flag));
+            tia::CustomSignalInfo::CustomSignalMap::iterator iter = custom_signal_info->signals().find(tia_constants.getSignalName(signal_flag));
 
-            if(iter == meta_info.signal_info.signals().end())
-                throw std::runtime_error("ReaderThread::run(): Datapacket contains signal that is not in the meta info!");
+            if(iter == custom_signal_info->signals().end())
+                throw std::runtime_error("SignalInfoUtils::updateSignalInfo(): Column contains signal that is not in the meta info!");
             else if(signal_item->checkState(NAME_COLUMN_INDEX) == Qt::Unchecked)
             {
                 //delete whole signal form meta_info
-                meta_info.signal_info.signals().erase(iter);
+                custom_signal_info->signals().erase(iter);
             }
             else
             {
                 //check state is intermediate => not all channels are deleted
-                tia::Signal &signal = iter->second;
+                tia::CustomSignal &signal = iter->second;
 
                 for (int chan_tree_idx = 0; chan_tree_idx < signal_item->childCount(); ++chan_tree_idx)
                 {
@@ -94,9 +94,9 @@ void updateSignalInfo(QTreeWidgetItem* root, tia::SSConfig &meta_info)
                     if(chan_item->checkState(NAME_COLUMN_INDEX) == Qt::Unchecked)
                     {
                         //add channel to new vector
-                        std::vector<tia::Channel> &channels = signal.channels();
+                        std::vector<tia::CustomChannel> &channels = signal.channels();
 
-                        std::vector<tia::Channel>::iterator chan_iter = channels.begin();
+                        std::vector<tia::CustomChannel>::iterator chan_iter = channels.begin();
 
                         for(; chan_iter != channels.end();)
                         {

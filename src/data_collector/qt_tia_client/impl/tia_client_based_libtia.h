@@ -30,7 +30,9 @@ public:
         udp_data_connection_ = udp_data_connection;
     }
 
-    virtual bool trySetCustomSignalInfo(tia::SignalInfo &custom_sig_info, std::string &error_msg);
+    virtual tia::CustomSignalInfoPtr getConfigAsCustomConfig() const;
+
+    virtual bool trySetCustomSignalInfo(tia::CustomSignalInfoPtr custom_sig_info, std::string &error_msg);
 
     virtual void createDataConnection ();
 

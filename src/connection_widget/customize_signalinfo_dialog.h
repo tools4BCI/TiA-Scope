@@ -6,6 +6,7 @@
 #include "tia/ssconfig.h"
 #include "base/user_types.h"
 #include "config_widget/signal_info_dock_widget.h"
+#include "config_widget/signal_properties_dock_widget.h"
 
 
 namespace Ui {
@@ -30,19 +31,16 @@ public:
 
     void initialize();
 
-    inline tia::SSConfig getCustomMetaInfo()
-    {
-        return meta_info_;
-    }
-
 private:
     bool validateDialog(QString &error_container);
     Ui::CustomizeSignalInfoDialog *ui;
 
     SignalInfoDockWidget* signal_info_widget_;
+    SignalPropertiesDockWidget *signal_properties_widget_;
 
     QSharedPointer<TiAQtImplementation::TiAQtClientBasedLibTiA> qt_tia_client_;
-    tia::SSConfig meta_info_;
+    tia::CustomSignalInfoPtr custom_signal_info_;
+    tia::SSConfig original_meta_info_;
 
     void showError(QString error_msg);
 
@@ -52,6 +50,7 @@ public Q_SLOTS:
 private Q_SLOTS:
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
+    void signal_info_widget_selectedSignalChanged (SignalTypeFlag signal);
 };
 
 }

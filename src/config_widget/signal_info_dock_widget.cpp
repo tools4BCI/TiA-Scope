@@ -2,6 +2,8 @@
 #include "ui_signal_info_dock_widget.h"
 #include "signal_info_utils.h"
 
+#include "tia/constants.h"
+
 namespace TiAScope
 {
 
@@ -28,13 +30,26 @@ SignalInfoDockWidget::~SignalInfoDockWidget()
 void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info, bool use_channel_numbers)
 {
     initializing_ = true;
-    ui->signalTree->clear ();
+    ui->signalTree->clear ();        
+
     SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info, use_channel_numbers);
+
+
+    tia::SignalInfo::SignalMap::const_iterator signal_iter =
+            signal_info.signal_info.signals().begin ();
+    if(signal_iter != signal_info.signal_info.signals ().end ())
+    {
+        tia::Constants tia_constants;
+        quint16 first_signal = tia_constants.getSignalFlag(signal_iter->first);
+
+        Q_EMIT selectedSignalChanged(first_signal);
+    }
+
     initializing_ = false;
 }
 
 //-----------------------------------------------------------------------------
-void SignalInfoDockWidget::updateSignalInfo(tia::SSConfig &signal_info)
+void SignalInfoDockWidget::updateSignalInfo(tia::CustomSignalInfoPtr signal_info)
 {
     QTreeWidgetItem *root = ui->signalTree->invisibleRootItem();
 
@@ -68,12 +83,22 @@ void SignalInfoDockWidget::on_signalTree_itemChanged (QTreeWidgetItem* item, int
                                             item->checkState(SignalInfoUtils::NAME_COLUMN_INDEX) == Qt::Checked);
         }
     }
-//    else if (column == SignalInfoDockWidgetHelper::FT_COLUMN_INDEX)
-//    {
-//        Q_EMIT signalChannelFTEnabledChanged (item->data (SignalInfoDockWidgetHelper::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt(), item->data (SignalInfoDockWidgetHelper::CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole).toUInt(),
-//                                              item->checkState(SignalInfoDockWidgetHelper::FT_COLUMN_INDEX) == Qt::Checked);
-//    }
 }
 
+//-----------------------------------------------------------------------------
+
+void SignalInfoDockWidget::on_signalTree_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *)
+{
+    quint16 signal_flag = current->data(SignalInfoUtils::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt();
+    Q_EMIT selectedSignalChanged(signal_flag);
+}
+
+//-----------------------------------------------------------------------------
+
+void SignalInfoDockWidget::on_signalTree_itemClicked(QTreeWidgetItem *item, int)
+{
+    quint16 signal_flag = item->data(SignalInfoUtils::SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole).toUInt();
+    Q_EMIT selectedSignalChanged(signal_flag);
+}
 
 } // TiAScope
