@@ -37,7 +37,7 @@ private:
     SignalTypeFlag const SIGNAL_;
     int const CHANNEL_;
 
-    static qreal const LABEL_SPACING_ = 200;
+    static qreal const LABEL_SPACING_; // = 200;
 
     int frequency_range_;
     //QVector<double> data_;

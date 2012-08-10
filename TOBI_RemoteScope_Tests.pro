@@ -24,6 +24,9 @@ INCLUDEPATH += src \
     external/include \
     tests/UnitTest++
 
+win32 {
+  INCLUDEPATH += C:/boost/1_49_0
+}
 
 include(src/data_collector/data_collector.pri)
 include(src/base/base.pri)
@@ -51,7 +54,7 @@ unix {
     contains( HARDWARE_PLATFORM, x86_64 )::{
         # 64-bit Linux
         LIBS += -Lexternal/lib/ticpp/linux  \
-                -Lexternal/lib/tia/linux/amd64 \\
+                -Lexternal/lib/tia/linux/amd64 \
                 -Wl,-rpath=external/lib/tia/linux/amd64 \
                 -ltia  -lticpp_64 \
                 -lUnitTest++_64
@@ -67,4 +70,9 @@ unix {
     }
 }
 
-win32:LIBS += external/lib/tia/win/Win32/tia.lib
+win32 {
+  LIBS += $$PWD/external/lib/tia/win/Win32/tia.lib \
+          $$PWD/external/lib/ticpp/win/Win32/libticpp.lib \
+          -LC:/boost/1_49_0/lib_32\
+          -llibboost_system-vc100-mt-s-1_49
+}
