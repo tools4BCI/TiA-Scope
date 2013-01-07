@@ -36,7 +36,7 @@ TEST(emptyDataPacket)
 
     CHECK_EQUAL(empty_packet.getSignals().count(),0);
 
-    CHECK_EQUAL(empty_packet.getNumChannels(SIG_EMG), 0);
+    CHECK_EQUAL(empty_packet.getNumChannels(SIG_EMG), 0u);
 
 }
 

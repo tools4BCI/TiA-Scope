@@ -154,9 +154,9 @@ void MainWindow::startConnection (QSharedPointer<TiAQtImplementation::TiAQtClien
             if(lib_tia_client != NULL)
             {
                 lib_tia_client->createDataConnection();
-            }
 
-            initDataViewScreen ();
+                initDataViewScreen ();
+            }            
         }
 
         diag->hide();

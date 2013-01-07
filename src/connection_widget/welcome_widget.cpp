@@ -3,7 +3,6 @@
 
 #include "data_collector/qt_tia_client/tia_exception.h"
 #include "data_collector/qt_tia_client/impl/tia_client_version02.h"
-#include "data_collector/qt_tia_client/impl/tia_client_version10.h"
 #include "data_collector/qt_tia_client/impl/tia_client_based_libtia.h"
 
 
@@ -87,8 +86,7 @@ void WelcomeWidget::tryToConnect (QString server_ip, QString port, bool udp_data
     if (checkAddressString (server_ip, port))
     {
 
-        //use libTia instead of own TiAClientImplementation        
-//        QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientVersion10);
+        //try first client that uses libtia
         QSharedPointer<TiAQtImplementation::TiAQtClient> new_client (new TiAQtImplementation::TiAQtClientBasedLibTiA(true));
         if (!clientConnects (new_client, server_ip, port, udp_data_connection, custom_connect))
         {
@@ -128,6 +126,7 @@ bool WelcomeWidget::clientConnects (QSharedPointer<TiAQtImplementation::TiAQtCli
 {
     try
     {
+        // if custom connect do not send the "GetDataConnection" command to the server
         if(custom_connect)
         {
          TiAQtImplementation::TiAQtClientBasedLibTiA *lib_tia_client = dynamic_cast<TiAQtImplementation::TiAQtClientBasedLibTiA *> (client.data());

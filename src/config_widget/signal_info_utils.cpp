@@ -100,7 +100,7 @@ void updateSignalInfo(QTreeWidgetItem* root, tia::CustomSignalInfoPtr custom_sig
 
                         for(; chan_iter != channels.end();)
                         {
-                            if(chan_iter->number() == chan_item->data(CHANNEL_INDEX_COLUMN_INDEX,Qt::UserRole).toInt())
+                            if(chan_iter->number() == chan_item->data(CHANNEL_INDEX_COLUMN_INDEX,Qt::UserRole).toUInt())
                                 chan_iter = channels.erase(chan_iter);
                             else
                                 ++chan_iter;

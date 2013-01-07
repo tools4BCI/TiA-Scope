@@ -40,6 +40,7 @@ template <class T> class complex
   void*  operator new (size_t) {
 	  T* re = new T;
 	  T* im = new T;
+      return 0;
   }
   complex(T r, T i) :re(r), im(i) {}
   complex(T r) : re(r), im(0) {}

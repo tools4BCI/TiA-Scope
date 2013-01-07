@@ -136,7 +136,7 @@ void CustomizeSignalInfoDialog::signal_info_widget_selectedSignalChanged(SignalT
 {
     tia::Constants constants;
     qDebug("Selection changed to signal type: ");
-    qDebug(constants.getSignalName(signal).c_str());
+    qDebug() << constants.getSignalName(signal).c_str();
     qDebug("\n");    
 
     tia::CustomSignal &model = custom_signal_info_->signals()[constants.getSignalName(signal)];
