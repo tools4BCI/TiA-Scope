@@ -16,16 +16,6 @@ using namespace TiAQtImplementation;
 
 //-----------------------------------------------------------------------------
 
-//TEST(toUpper)
-
-//{
-//    QString str = "Hello";
-
-//    CHECK(str.toUpper() == QString("HELLO"));
-//}
-
-//-----------------------------------------------------------------------------
-
 TEST(emptyDataPacket)
 {
     tia::TiAClient client(true);
@@ -93,8 +83,6 @@ TEST(filledDataPacket)
             }
 
         }
-
-//        qDebug() << "signal: " << flag_string_converter.getSignalName(signal).c_str() << ", channels: " << chan_count << ", data: " << signal_samples;
 
         CHECK_ARRAY_CLOSE(signal_samples.toStdVector(),raw_data,raw_data_size,0.00000);
 

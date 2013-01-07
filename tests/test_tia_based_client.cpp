@@ -14,16 +14,6 @@ using namespace TiAQtImplementation;
 
 //-----------------------------------------------------------------------------
 
-//TEST(toUpper)
-
-//{
-//    QString str = "Hello";
-
-//    CHECK(str.toUpper() == QString("HELLO"));
-//}
-
-//-----------------------------------------------------------------------------
-
 TEST(tryConnectoToServer)
 {
     TiAQtClientBasedLibTiA client (true);
