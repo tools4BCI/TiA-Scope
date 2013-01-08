@@ -30,6 +30,34 @@ WelcomeWidget::~WelcomeWidget()
 }
 
 //-----------------------------------------------------------------------------
+void WelcomeWidget::on_new_udp_toggled(bool checked)
+{
+    if(checked)
+        ui->customConnectToNewServer->setEnabled(false);
+}
+
+//-----------------------------------------------------------------------------
+void WelcomeWidget::on_new_tcp_toggled(bool checked)
+{
+    if(checked)
+        ui->customConnectToNewServer->setEnabled(true);
+}
+
+//-----------------------------------------------------------------------------
+void WelcomeWidget::on_udp_1_toggled(bool checked)
+{
+    if(checked)
+        ui->customConnectToServer->setEnabled(false);
+}
+
+//-----------------------------------------------------------------------------
+void WelcomeWidget::on_tcp_1_toggled(bool checked)
+{
+    if(checked)
+        ui->customConnectToServer->setEnabled(true);
+}
+
+//-----------------------------------------------------------------------------
 void WelcomeWidget::on_connectToServer1_clicked ()
 {
     tryToConnect (ui->server_ip_1->text(), ui->server_port_1->text(), ui->udp_1->isChecked(),false);
