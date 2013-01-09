@@ -32,18 +32,10 @@ void SignalInfoDockWidget::setSignalInfo (tia::SSConfig const& signal_info, bool
     initializing_ = true;
     ui->signalTree->clear ();        
 
-    SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info, use_channel_numbers);
+    SignalTypeFlag first_item = SignalInfoUtils::addSignalsToTree (ui->signalTree, signal_info, use_channel_numbers);
 
 
-    tia::SignalInfo::SignalMap::const_iterator signal_iter =
-            signal_info.signal_info.signals().begin ();
-    if(signal_iter != signal_info.signal_info.signals ().end ())
-    {
-        tia::Constants tia_constants;
-        quint16 first_signal = tia_constants.getSignalFlag(signal_iter->first);
-
-        Q_EMIT selectedSignalChanged(first_signal);
-    }
+    Q_EMIT selectedSignalChanged(first_item);
 
     initializing_ = false;
 }

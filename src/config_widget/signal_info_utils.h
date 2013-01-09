@@ -4,6 +4,8 @@
 #include "tia/ssconfig.h"
 #include "tia/custom_signal_info.h"
 
+#include "tia/defines.h"
+
 #include <QTreeWidget>
 
 //-----------------------------------------------------------------------------
@@ -15,7 +17,7 @@ namespace SignalInfoUtils
     const int CHANNEL_INDEX_COLUMN_INDEX = 3;
 
     //-------------------------------------------------------------------------    
-    void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool use_channel_numbers, bool default_checked = true, bool signal_types_checkable = true);
+    SignalTypeFlag addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool use_channel_numbers, bool default_checked = true, bool signal_types_checkable = true);
 
 
     //-------------------------------------------------------------------------

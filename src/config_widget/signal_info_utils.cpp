@@ -14,49 +14,66 @@ namespace SignalInfoUtils
 //used in libTiA
 #undef signals
 
-void addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool use_channel_numbers, bool default_checked, bool signal_types_checkable)
+SignalTypeFlag addSignalsToTree (QTreeWidget* tree_widget, tia::SSConfig const& meta_info, bool use_channel_numbers, bool default_checked, bool signal_types_checkable)
 {
     tia::Constants tia_constants;
+
+    SignalTypeFlag first_item = 0;
 
     for (tia::SignalInfo::SignalMap::const_iterator signal_iter = meta_info.signal_info.signals().begin ();
          signal_iter != meta_info.signal_info.signals ().end (); ++signal_iter)
     {
-        quint32 signal_flag = tia_constants.getSignalFlag( signal_iter->second.type());
 
-        QTreeWidgetItem* signal_item = new QTreeWidgetItem (tree_widget);
-
-        signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal_flag);
-        signal_item->setText (NAME_COLUMN_INDEX, signal_iter->second.type().c_str());
-        signal_item->setFlags (Qt::ItemIsEnabled);
-
-        if (signal_types_checkable)
+        if(signal_iter->second.samplingRate() == 0)
         {
-            signal_item->setFlags (signal_item->flags() | Qt::ItemIsUserCheckable);
-            signal_item->setFlags (signal_item->flags() | Qt::ItemIsTristate);
-            if (default_checked)
-                signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
+            ; //TODO: handle aperiodic signals specifically
         }
-        signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate()).append( " Hz"));        
-
-        unsigned index = 0;
-
-        for (unsigned channel_index = 0; channel_index < signal_iter->second.channels().size(); channel_index++)
+        else
         {
-            QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
-            channel_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-            if (default_checked)
-                channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
-            else
-                channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Unchecked);
-            channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal_flag);
-            if(use_channel_numbers)
-                channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, signal_iter->second.channels()[channel_index].number());
-            else
-                channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, channel_index);
-            channel_item->setText (NAME_COLUMN_INDEX, signal_iter->second.channels ()[channel_index].id().c_str());
-            index++;
+            quint32 signal_flag = tia_constants.getSignalFlag( signal_iter->second.type());
+
+            QTreeWidgetItem* signal_item = new QTreeWidgetItem (tree_widget);
+
+            if(first_item == 0)
+            {
+                first_item = signal_flag;
+            }
+
+            signal_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal_flag);
+            signal_item->setText (NAME_COLUMN_INDEX, signal_iter->second.type().c_str());
+            signal_item->setFlags (Qt::ItemIsEnabled);
+
+            if (signal_types_checkable)
+            {
+                signal_item->setFlags (signal_item->flags() | Qt::ItemIsUserCheckable);
+                signal_item->setFlags (signal_item->flags() | Qt::ItemIsTristate);
+                if (default_checked)
+                    signal_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
+            }
+            signal_item->setText (SAMPLING_RATE_COLUMN_INDEX, QString::number (signal_iter->second.samplingRate()).append( " Hz"));
+
+            unsigned index = 0;
+
+            for (unsigned channel_index = 0; channel_index < signal_iter->second.channels().size(); channel_index++)
+            {
+                QTreeWidgetItem* channel_item = new QTreeWidgetItem (signal_item);
+                channel_item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+                if (default_checked)
+                    channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Checked);
+                else
+                    channel_item->setCheckState (NAME_COLUMN_INDEX, Qt::Unchecked);
+                channel_item->setData (SIGNAL_TYPE_COLUMN_INDEX, Qt::UserRole, signal_flag);
+                if(use_channel_numbers)
+                    channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, signal_iter->second.channels()[channel_index].number());
+                else
+                    channel_item->setData (CHANNEL_INDEX_COLUMN_INDEX, Qt::UserRole, channel_index);
+                channel_item->setText (NAME_COLUMN_INDEX, signal_iter->second.channels ()[channel_index].id().c_str());
+                index++;
+            }
         }
     }
+
+    return first_item;
 }
 
 //-----------------------------------------------------------------------------
