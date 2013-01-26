@@ -21,7 +21,6 @@ contains( HARDWARE_PLATFORM, x86_64 )::{
 
 
 unix {
-    LIBS += -lboost_thread -lboost_system
 
     HARDWARE_PLATFORM = $$system(uname -m)
     contains( HARDWARE_PLATFORM, x86_64 )::{
@@ -39,6 +38,8 @@ unix {
                 -ltia  -lticpp
 
     }
+
+    LIBS += -lboost_thread -lboost_system
 }
 
 win32 {

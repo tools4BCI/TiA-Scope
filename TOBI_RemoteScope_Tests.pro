@@ -48,7 +48,6 @@ contains( HARDWARE_PLATFORM, x86_64 )::{
 LIBS += -Ltests/UnitTest++
 
 unix {
-    LIBS += -lboost_thread -lboost_system
 
     HARDWARE_PLATFORM = $$system(uname -m)
     contains( HARDWARE_PLATFORM, x86_64 )::{
@@ -68,6 +67,9 @@ unix {
                 -lUnitTest++
 
     }
+
+    LIBS += -lboost_thread -lboost_system
+
 }
 
 win32 {
