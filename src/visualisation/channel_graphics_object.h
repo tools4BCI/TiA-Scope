@@ -4,6 +4,7 @@
 #include "base/data_buffer.h"
 #include "base/signal_view_settings.h"
 #include "base_graphics_object.h"
+#include "data_collector/filters.h"
 
 #include <QGraphicsObject>
 #include <QTime>
@@ -22,6 +23,8 @@ public:
                                     int width, int height, ChannelGraphicsObject *previous_channel = 0,
                                     QGraphicsItem *parent = 0);
 
+    //virtual ~ChannelGraphicsObject () {if (ds_filter_) delete ds_filter_;}
+
     virtual QRectF boundingRect() const;
 
     int getLabelWidth() const;
@@ -33,6 +36,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void updateView ();
+    void updateData ();
     void updateOverlapping ();
 
 private Q_SLOTS:
@@ -43,7 +47,7 @@ private:
     int bottomY ();
     virtual void contextMenuEvent (QGraphicsSceneContextMenuEvent *event);
 
-    virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);    
 
     ChannelGraphicsObject *previous_channel_;
     SignalTypeFlag const signal_;
@@ -62,7 +66,10 @@ private:
     int error_;
     int label_width_;
 
-    QImage image_buffer_;
+
+    FilterID ds_filter_id_;
+    int ds_factor_;
+    qreal spatial_resolution_;
 };
 
 } // TiAScope

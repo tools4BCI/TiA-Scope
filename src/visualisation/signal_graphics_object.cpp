@@ -134,7 +134,12 @@ int SignalGraphicsObject::width () const
 void SignalGraphicsObject::updateToDataBuffer ()
 {
     Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
+        channel->updateData ();
+
+    Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
         channel->updateView ();
+
+
     if (aperiodic_signal_)
         aperiodic_signal_->updateView ();
     update ();

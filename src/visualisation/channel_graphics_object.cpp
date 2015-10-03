@@ -28,7 +28,10 @@ ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel
     sampling_rate_ (sampling_rate),
     data_buffer_ (data_buffer),
     view_settings_ (view_settings),
-    number_new_samples_ (0)
+    number_new_samples_ (0),
+    ds_filter_id_ (0),
+    ds_factor_ (1),
+    spatial_resolution_(-1.0)
 {
     cyclic_start_ = QPointF (0, 0);
     error_ = 0;
@@ -71,22 +74,61 @@ void ChannelGraphicsObject::setLabelVisible(bool visible)
 //-----------------------------------------------------------------------------
 void ChannelGraphicsObject::updateView ()
 {
+    update();
+}
+
+//-----------------------------------------------------------------------------
+void ChannelGraphicsObject::updateData ()
+{
     double seconds_to_display = view_settings_->getSignalVisualisationTime();
     data_.resize (seconds_to_display * sampling_rate_);
     qreal x_step = width () - label_width_;
     x_step /= sampling_rate_ * seconds_to_display;
     data_buffer_->lockForRead();
     number_new_samples_ = data_buffer_->numberNewSamples (signal_, channel_);
-    cyclic_start_.setX (cyclic_start_.x() + (x_step * number_new_samples_));
+    data_buffer_->getData (signal_, channel_, data_);
+    data_buffer_->unlockForRead();    
+
+    // downsample datastream if the x-step size is too small
+
+    // resolution has changed => compute new ds filter
+    if (qAbs<qreal>(spatial_resolution_ - x_step*ds_factor_) > 0.0001){
+
+        if(x_step < 0.5) {
+            ds_factor_ = (int)( 0.5/x_step);
+        }
+        else {
+            ds_factor_ = 1;
+        }
+
+        if (ds_filter_id_ > 0) {
+            Filters::instance().removeFilter(ds_filter_id_);
+            ds_filter_id_ = 0;
+        }
+
+        if (ds_factor_ > 1)
+            ds_filter_id_ = Filters::instance().appendFilter("Butterworth", QString::number(((double)sampling_rate_)/ds_factor_/2));
+
+        spatial_resolution_ = x_step*ds_factor_;
+
+    }
+
+
+    cyclic_start_.setX (cyclic_start_.x() + x_step * number_new_samples_);
+
     if (cyclic_start_.x() > (width () - label_width_))
         cyclic_start_.setX (cyclic_start_.x() - width () + label_width_);
 
+    // do the downsampling if necessary
+    if (ds_filter_id_>0 && ds_factor_ > 1){
+        // downsample
+        for (int idx = 0; idx < data_.size()/ds_factor_; ++idx) {
+            data_[idx] = data_[idx*ds_factor_];
+        }
+        data_.resize(data_.size()/ds_factor_);
 
-    data_buffer_->getData (signal_, channel_, data_);
-    data_buffer_->unlockForRead();
+    }
 
-
-    update ();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -119,7 +161,7 @@ int ChannelGraphicsObject::bottomY ()
 //-------------------------------------------------------------------------------------------------
 void ChannelGraphicsObject::contextMenuEvent (QGraphicsSceneContextMenuEvent *event)
 {
-    QMenu context_menu;;
+    QMenu context_menu;
     QAction* hide_action = context_menu.addAction ("Hide");
     connect (hide_action, SIGNAL(triggered()), SLOT(hide()));
     context_menu.exec (event->screenPos());
@@ -127,7 +169,7 @@ void ChannelGraphicsObject::contextMenuEvent (QGraphicsSceneContextMenuEvent *ev
 
 //-------------------------------------------------------------------------------------------------
 void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
-{
+{    
     painter->setPen (Qt::black);
     painter->setClipping (false);
     painter->setClipRect (boundingRect());
@@ -150,12 +192,6 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     QPointF first (width () - label_width_, 0);
     QPointF second (width () - label_width_, 0);
 
-    double seconds_to_display = view_settings_->getSignalVisualisationTime();
-
-    qreal x_step = width () - label_width_;
-    x_step /= sampling_rate_ * seconds_to_display;
-
-
     painter->setPen (Qt::red);
     if (cyclic_mode)
         painter->drawLine (cyclic_start_.x(), -height() / 2, cyclic_start_.x(), height() / 2);
@@ -165,19 +201,22 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
 
     ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, width () - label_width_);
 
-    bool first_run = true;
+    bool first_run = true;        
 
-    qDebug() << "Buffer size: " << data_.size() << "new samples: " << number_new_samples_ << "x_step: " << x_step;
+    //qDebug() << "Buffer size: " << data_.size() << "new samples: " << number_new_samples_;
+    //qDebug() << "ds factor: " << ds_factor_ << "spatial_res: " << spatial_resolution_;
 
     for (int sample = data_.size() - 1; sample >= 0; sample--)
     {
+        //if (cyclic_mode && sample < data_.size() - number_new_samples_)
+        //    break;
 
         qreal y = 0;
         y = data_[sample] * y_scaling;
-        first.setX (first.x() - x_step);
+        first.setX (first.x() - spatial_resolution_);
         if (first.x() <= 0 && cyclic_mode)
         {
-            first.setX (width () - label_width_);
+            first.setX (first.x() + width () - label_width_);
             first_run = true;
         }
         first.setY (y);
@@ -186,9 +225,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
         else
             first_run = false;
         second = first;
-
-
-    }
+    }       
 }
 
 //-------------------------------------------------------------------------------------------------

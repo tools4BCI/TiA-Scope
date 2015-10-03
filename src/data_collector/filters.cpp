@@ -21,8 +21,8 @@ Filters::~Filters ()
 
 //-----------------------------------------------------------------------------
 Filters::Filters () :
-        next_free_filter_id_ (0),
-        next_free_filtered_signal_id_ (0)
+        next_free_filter_id_ (1),
+        next_free_filtered_signal_id_ (1)
 {
 }
 
@@ -44,9 +44,23 @@ FilterID Filters::appendFilter (QString filter_name, QString parameter)
     applied_filters_parameters_[new_filter_id] = parameter;
     Q_FOREACH (FilteredSignalID signal_id, signal_filters_.keys())
     {
-        signal_filters_[signal_id].append (buildFilter (filter_name, signal_samplingrates_[signal_id], parameter));
+        signal_filters_[signal_id].insert(new_filter_id, buildFilter (filter_name, signal_samplingrates_[signal_id], parameter));
     }
     return new_filter_id;
+}
+
+//-----------------------------------------------------------------------------
+void Filters::removeFilter(FilterID filter_id)
+{
+    QMutexLocker locker (&mutex_);
+
+    applied_filters_.remove(filter_id);
+    applied_filters_parameters_.remove(filter_id);
+
+    Q_FOREACH (FilteredSignalID signal_id, signal_filters_.keys())
+    {
+        signal_filters_[signal_id].remove(filter_id);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -74,7 +88,7 @@ FilteredSignalID Filters::registerSignalToBeFiltered (double sampling_rate)
 
     Q_FOREACH (FilterID filter_id, applied_filters_.keys ())
     {
-        signal_filters_[signal_id].append (buildFilter (applied_filters_[filter_id], sampling_rate, applied_filters_parameters_[filter_id]));
+        signal_filters_[signal_id].insert(filter_id, buildFilter (applied_filters_[filter_id], sampling_rate, applied_filters_parameters_[filter_id]));
     }
 
     return signal_id;

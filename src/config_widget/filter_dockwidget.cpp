@@ -46,7 +46,7 @@ void FilterDockWidget::on_lowpass_toggled (bool checked)
 void FilterDockWidget::on_lowpassCutoff_valueChanged (QString const& value)
 {
     Filters::instance().reset();
-    Filters::instance().appendFilter ("Butterworth", value);
+    Filters::instance().appendFilter ("Butterworth", value);    
 }
 
 //-----------------------------------------------------------------------------

@@ -34,7 +34,10 @@ public:
     QStringList availableFilters () const;
 
     //-----------------------------------------------------------------------------
-    FilterID appendFilter (QString filter_name, QString parameter);
+    FilterID appendFilter (QString filter_name, QString parameter);    
+
+    //-----------------------------------------------------------------------------
+    void removeFilter (FilterID filter_id);
 
     //-----------------------------------------------------------------------------
     /// delete all filters
@@ -58,7 +61,7 @@ private:
     QMap<FilterID, QString> applied_filters_;
     QMap<FilterID, QString> applied_filters_parameters_;
     QMap<FilteredSignalID, double> signal_samplingrates_;
-    QMap<FilteredSignalID, QVector<QSharedPointer<Filter> > > signal_filters_;
+    QMap<FilteredSignalID, QMap<FilterID, QSharedPointer<Filter> > > signal_filters_;
     QMutex mutex_;
 };
 
