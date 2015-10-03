@@ -16,10 +16,10 @@ namespace ChannelGraphicsObjectHelper
 }
 
 //-----------------------------------------------------------------------------
-ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel,
+ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel, QString channel_str,
                                               int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
                                               QSharedPointer<SignalViewSettings> view_settings,
-                                              ChannelGraphicsObject *previous_channel,
+                                              int width, int height, ChannelGraphicsObject *previous_channel,
                                               QGraphicsItem *parent) :
     BaseGraphicsObject (parent),
     previous_channel_ (previous_channel),
@@ -27,12 +27,22 @@ ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel
     channel_ (channel),
     sampling_rate_ (sampling_rate),
     data_buffer_ (data_buffer),
-    view_settings_ (view_settings)
+    view_settings_ (view_settings),
+    number_new_samples_ (0)
 {
     cyclic_start_ = QPointF (0, 0);
     error_ = 0;
     connect (this, SIGNAL(bottomYChanged(int)), SLOT(emitOverlappingBottomChanges(int)));
     connect (view_settings_.data(), SIGNAL(channelOverlappingChanged()), SLOT(updateOverlapping()));
+
+    setWidth(width);
+    setHeight(height);
+
+    label_item_ = new QGraphicsSimpleTextItem (channel_str, this);    
+    label_width_ = label_item_->boundingRect().width();
+
+    label_item_->setY(height/2 - label_item_->boundingRect().height()/2);
+
 }
 
 //-----------------------------------------------------------------------------
@@ -42,20 +52,39 @@ QRectF ChannelGraphicsObject::boundingRect() const
 }
 
 //-----------------------------------------------------------------------------
+int ChannelGraphicsObject::getLabelWidth() const
+{
+    return label_item_->boundingRect().width();
+}
+
+//-----------------------------------------------------------------------------
+void ChannelGraphicsObject::setLabelWidth(int width)
+{    
+    label_width_ = width;
+}
+//-----------------------------------------------------------------------------
+void ChannelGraphicsObject::setLabelVisible(bool visible)
+{
+    label_item_->setVisible(visible);
+}
+
+//-----------------------------------------------------------------------------
 void ChannelGraphicsObject::updateView ()
 {
     double seconds_to_display = view_settings_->getSignalVisualisationTime();
     data_.resize (seconds_to_display * sampling_rate_);
-    qreal x_step = width ();
+    qreal x_step = width () - label_width_;
     x_step /= sampling_rate_ * seconds_to_display;
     data_buffer_->lockForRead();
-    int new_samples = data_buffer_->numberNewSamples (signal_, channel_);
-    cyclic_start_.setX (cyclic_start_.x() + (x_step * new_samples));
-    if (cyclic_start_.x() > width ())
-        cyclic_start_.setX (cyclic_start_.x() - width ());
+    number_new_samples_ = data_buffer_->numberNewSamples (signal_, channel_);
+    cyclic_start_.setX (cyclic_start_.x() + (x_step * number_new_samples_));
+    if (cyclic_start_.x() > (width () - label_width_))
+        cyclic_start_.setX (cyclic_start_.x() - width () + label_width_);
+
 
     data_buffer_->getData (signal_, channel_, data_);
     data_buffer_->unlockForRead();
+
 
     update ();
 }
@@ -106,7 +135,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     //    painter->drawRect (boundingRect());
 
     double y_scaling = yScalingFactor() * view_settings_->getBasicYScaling();
-    painter->translate (0, height() / 2);
+    painter->translate (label_width_, height() / 2);
     if (view_settings_->autoScalingEnabled())
     {
         double max = qAbs (data_buffer_->getMax (signal_, channel_));
@@ -118,13 +147,14 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
 
     bool cyclic_mode = view_settings_->getCyclicMode();
 
-    QPointF first (width (), 0);
-    QPointF second (width (), 0);
+    QPointF first (width () - label_width_, 0);
+    QPointF second (width () - label_width_, 0);
 
     double seconds_to_display = view_settings_->getSignalVisualisationTime();
 
-    qreal x_step = width ();
+    qreal x_step = width () - label_width_;
     x_step /= sampling_rate_ * seconds_to_display;
+
 
     painter->setPen (Qt::red);
     if (cyclic_mode)
@@ -133,18 +163,21 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     if (cyclic_mode)
         first = cyclic_start_;
 
-    ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, width ());
+    ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, width () - label_width_);
 
     bool first_run = true;
 
+    qDebug() << "Buffer size: " << data_.size() << "new samples: " << number_new_samples_ << "x_step: " << x_step;
+
     for (int sample = data_.size() - 1; sample >= 0; sample--)
     {
+
         qreal y = 0;
         y = data_[sample] * y_scaling;
         first.setX (first.x() - x_step);
         if (first.x() <= 0 && cyclic_mode)
         {
-            first.setX (width ());
+            first.setX (width () - label_width_);
             first_run = true;
         }
         first.setY (y);
@@ -153,6 +186,8 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
         else
             first_run = false;
         second = first;
+
+
     }
 }
 

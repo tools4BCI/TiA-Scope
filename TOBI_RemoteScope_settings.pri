@@ -3,7 +3,7 @@ CONFIG += no_keywords
 INCLUDEPATH += $$PWD/external/include
 
 win32 {
-  INCLUDEPATH += C:/boost/1_49_0
+  INCLUDEPATH += C:/boost/boost_1_51_0_speed_mt
 }
 
 RESOURCES += \
@@ -45,8 +45,8 @@ unix {
 win32 {
   LIBS += $$PWD/external/lib/tia/win/Win32/tia.lib \
           $$PWD/external/lib/ticpp/win/Win32/libticpp.lib \
-          -LC:/boost/1_49_0/lib_32\
-          -llibboost_system-vc100-mt-s-1_49
+          -LC:/boost/boost_1_51_0_speed_mt/lib_32 \
+          -lboost_system-vc100-mt-1_51
 }
 
 

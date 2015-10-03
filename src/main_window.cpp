@@ -231,6 +231,11 @@ void MainWindow::initDataViewScreen ()
     SignalGraphicsScene* fft_graphics_scene = new SignalGraphicsScene (splitter_);
     fft_graphics_scene->connect (fft_view_, SIGNAL(widthChanged(int)), SLOT(setSceneRectWidth(int)));
 
+    // visualization options
+    signal_view->setAutoFillBackground(false);
+    signal_view->setAttribute(Qt::WA_OpaquePaintEvent, true);
+    signal_view->setAttribute(Qt::WA_NoSystemBackground, true);
+
     splitter_->addWidget (signal_view);
     splitter_->addWidget (fft_view_);
     setCentralWidget (splitter_);

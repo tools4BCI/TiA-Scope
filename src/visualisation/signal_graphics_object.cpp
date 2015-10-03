@@ -11,6 +11,7 @@
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsSceneWheelEvent>
 #include <QDebug>
+#include <QString>
 
 namespace TiAScope {
 
@@ -33,6 +34,7 @@ SignalGraphicsObject::SignalGraphicsObject (SignalTypeFlag signal_type,
     ft_view_settings_ (ft_view_settings)
 {
     tia::Constants tia_constants;
+    int max_label_width = 0;
 
     tia::SignalInfo::SignalMap::const_iterator signal_iter =  meta_info.signal_info.signals().find(tia_constants.getSignalName(signal_type));
 
@@ -80,19 +82,29 @@ SignalGraphicsObject::SignalGraphicsObject (SignalTypeFlag signal_type,
             ChannelGraphicsObject* previous_channel = 0;
             for (unsigned channel_index = 0; channel_index < signal_iter->second.channels().size(); channel_index++)
             {
-                ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, signal_iter->second.samplingRate(), data_buffer, view_settings, previous_channel, this);
+                QString channel_str = QString(signal_iter->second.channels()[channel_index].id().c_str());
+
+                ChannelGraphicsObject* channel = new ChannelGraphicsObject (signal_type_, channel_index, channel_str, signal_iter->second.samplingRate(), data_buffer, view_settings,width_, ChannelGraphicsObject::defaultHeight(), previous_channel, this);
                 if (previous_channel)
                     channel->connect (previous_channel, SIGNAL(overlappingBottomYChanged(int)), SLOT(setYPos(int)));
 
                 channel->setPos (0, (ChannelGraphicsObject::defaultHeight() * channels_.size()) + label_item_->boundingRect().height());
-                channel->setHeight (ChannelGraphicsObject::defaultHeight());
-                channel->setWidth (width_);
+                //channel->setHeight (ChannelGraphicsObject::defaultHeight());
+                //channel->setWidth (width_);
                 channels_[channel_index] = channel;
                 children_.append (channel);
                 previous_channel = channel;
+
+                if (channel->getLabelWidth() > max_label_width)
+                    max_label_width = channel->getLabelWidth();
+
             }
             connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
             channels_[0]->updateOverlapping();
+
+            Q_FOREACH (ChannelGraphicsObject* channel, channels_.values())
+                channel->setLabelWidth(max_label_width);
+
         }
     }
 }
@@ -151,9 +163,15 @@ void SignalGraphicsObject::setChannelVisibility (SignalTypeFlag signal, qint32 c
     if (signal == signal_type_ && fts_.size() == 0)
     {
         if (visible)
+        {
             helpers::animateProperty (channels_[channel], "height", channels_[channel]->height(), ChannelGraphicsObject::defaultHeight());
+            channels_[channel]->setLabelVisible(true);
+        }
         else
+        {
+            channels_[channel]->setLabelVisible(false);
             helpers::animateProperty (channels_[channel], "height", channels_[channel]->height(), 0);
+        }
     }
 }
 

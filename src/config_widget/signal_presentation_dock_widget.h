@@ -39,6 +39,8 @@ private Q_SLOTS:
     void on_channelOverlappingSlider_valueChanged (int value);
     void on_cyclicMode_toggled (bool checked);
 
+    void on_spinBoxVisTime_valueChanged(int arg1);
+
 private:
     Ui::SignalPresentationDockWidget *ui;
     SignalInfoDockWidget *signal_info_widget_;

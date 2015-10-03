@@ -16,13 +16,17 @@ class ChannelGraphicsObject : public BaseGraphicsObject
 {
     Q_OBJECT
 public:
-    explicit ChannelGraphicsObject (SignalTypeFlag signal, int channel,
+    explicit ChannelGraphicsObject (SignalTypeFlag signal, int channel, QString channel_str,
                                     int sampling_rate, QSharedPointer<DataBuffer const> data_buffer,
                                     QSharedPointer<SignalViewSettings> view_settings,
-                                    ChannelGraphicsObject *previous_channel = 0,
+                                    int width, int height, ChannelGraphicsObject *previous_channel = 0,
                                     QGraphicsItem *parent = 0);
 
     virtual QRectF boundingRect() const;
+
+    int getLabelWidth() const;
+    void setLabelWidth(int width);
+    void setLabelVisible(bool visible);
 
 Q_SIGNALS:
     void overlappingBottomYChanged (int overlapped_bottom_y);
@@ -48,11 +52,17 @@ private:
     QSharedPointer<DataBuffer const> data_buffer_;
     QSharedPointer<SignalViewSettings> view_settings_;
 
+    QGraphicsSimpleTextItem* label_item_;
+
     QPointF cyclic_start_;
 
     QVarLengthArray<double> data_;
+    int number_new_samples_;
     QTime time_;
     int error_;
+    int label_width_;
+
+    QImage image_buffer_;
 };
 
 } // TiAScope

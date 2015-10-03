@@ -2,6 +2,8 @@
 #include "ui_signal_presentation_dock_widget.h"
 #include "signal_info_utils.h"
 
+#include <QDebug>
+
 namespace TiAScope {
 
 SignalPresentationDockWidget::SignalPresentationDockWidget(QSharedPointer<SignalViewSettings> settings, QWidget *parent) :
@@ -20,7 +22,7 @@ SignalPresentationDockWidget::SignalPresentationDockWidget(QSharedPointer<Signal
     connect(signal_info_widget_, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)),
                  this, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)));
 
-    ((QVBoxLayout *)ui->dockWidgetContents->layout())->insertWidget(2,signal_info_widget_);
+    ((QVBoxLayout *)ui->dockWidgetContents->layout())->insertWidget(3,signal_info_widget_);
 }
 
 //-----------------------------------------------------------------------------
@@ -58,3 +60,9 @@ void SignalPresentationDockWidget::on_cyclicMode_toggled (bool checked)
 }
 
 } // TiAScope
+
+//-------------------------------------------------------------------------------------------------
+void TiAScope::SignalPresentationDockWidget::on_spinBoxVisTime_valueChanged(int value)
+{
+    settings_->setSignalVisualisationTime(value);
+}
