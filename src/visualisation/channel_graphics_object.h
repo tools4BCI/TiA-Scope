@@ -66,10 +66,9 @@ private:
     int error_;
     int label_width_;
 
-
-    FilterID ds_filter_id_;
     int ds_factor_;
     qreal spatial_resolution_;
+    qreal last_overflow_pos_;
 };
 
 } // TiAScope
