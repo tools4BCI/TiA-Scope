@@ -43,9 +43,7 @@ ChannelGraphicsObject::ChannelGraphicsObject (SignalTypeFlag signal, int channel
     label_item_ = new QGraphicsSimpleTextItem (channel_str, this);    
     label_width_ = label_item_->boundingRect().width();
 
-    label_item_->setY(height/2 - label_item_->boundingRect().height()/2);
-
-    //image_buffer_ = QImage(width, height, QImage::Format_ARGB32);
+    label_item_->setY(height/2 - label_item_->boundingRect().height()/2);    
 
 }
 
@@ -103,8 +101,10 @@ void ChannelGraphicsObject::updateData ()
         }
 
         spatial_resolution_ = x_step;
+        ds_pos_ = 0;
     }
 
+    ds_pos_ = (ds_pos_ + number_new_samples_) % ds_factor_;
 
     cyclic_start_.setX (cyclic_start_.x() + x_step * number_new_samples_);
 
@@ -184,29 +184,33 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     bool first_run = true;        
 
     qreal min_pix_y_value = 0.0;
-    qreal max_pix_y_value = 0.0;
-    int steps = 0;
+    qreal max_pix_y_value = 0.0;    
 
     qDebug() << "Buffer size: " << data_.size() << "new samples: " << number_new_samples_;
     qDebug() << "ds factor: " << ds_factor_ << "spatial_res: " << spatial_resolution_;   
 
 
-
     ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, width () - label_width_);
 
-    for (int sample = data_.size() - 1; sample >= 0; sample = sample - ds_factor_)
+    int start_sample = data_.size() - 1;
+
+    if (ds_factor_ > 1){
+
+        start_sample = start_sample - ds_pos_;
+        first.setX(first.x() - spatial_resolution_*ds_pos_);
+    }
+
+    for (int sample = start_sample; sample >= 0; sample = sample - ds_factor_)
     {
 
-        steps = 0;
         if (ds_factor_ > 1){
             max_pix_y_value = min_pix_y_value = data_[sample] * y_scaling;
 
             for (int subsample = sample; subsample > sample - ds_factor_ && subsample > 0; subsample--) {
                 max_pix_y_value = max_pix_y_value < data_[subsample] * y_scaling ? data_[subsample] * y_scaling : max_pix_y_value;
-                min_pix_y_value = min_pix_y_value > data_[subsample] * y_scaling ? data_[subsample] * y_scaling : min_pix_y_value;
-                ++steps;
+                min_pix_y_value = min_pix_y_value > data_[subsample] * y_scaling ? data_[subsample] * y_scaling : min_pix_y_value;                
             }
-            first.setX(first.x() - spatial_resolution_*steps);
+            first.setX(first.x() - spatial_resolution_*ds_factor_);
             first.setY(max_pix_y_value);
 
         }else{

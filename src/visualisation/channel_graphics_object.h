@@ -66,7 +66,7 @@ private:
     int error_;
     int label_width_;
 
-    int ds_factor_;
+    int ds_factor_, ds_pos_;
     qreal spatial_resolution_;
     qreal last_overflow_pos_;
 };
