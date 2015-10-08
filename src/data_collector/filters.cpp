@@ -1,5 +1,6 @@
 #include "filters.h"
 #include "filters/butterworth_filter.h"
+#include "filters/butterworth_highpass.h"
 
 #include <QMutexLocker>
 
@@ -29,7 +30,7 @@ Filters::Filters () :
 //-----------------------------------------------------------------------------
 QStringList Filters::availableFilters () const
 {
-    return QStringList () << "Butterworth";
+    return QStringList () << "Butterworth" << "ButterworthHighpass";
 }
 
 //-----------------------------------------------------------------------------
@@ -111,6 +112,8 @@ QSharedPointer<Filter> Filters::buildFilter (QString filter_name, double samplin
 {
     if (filter_name == QString ("Butterworth"))
         return QSharedPointer<Filter> (new ButterworthFilter (sampling_rate, parameter.toDouble()));
+    if (filter_name == QString ("ButterworthHighpass"))
+        return QSharedPointer<Filter> (new ButterworthHighpass (parameter.toInt()));
     return QSharedPointer<Filter> ();
 }
 

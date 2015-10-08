@@ -36,10 +36,15 @@ private Q_SLOTS:
     void on_lowpassCutoff_valueChanged (QString const& text);
     void on_signalTree_itemChanged (QTreeWidgetItem* item, int column);
 
+    void on_highpassCutoff_currentIndexChanged(int index);
+
+    void on_highpass_toggled(bool arg1);
+
 private:
     Ui::FilterDockWidget *ui;
     bool initializing_;
     unsigned num_ffts_;
+    FilterID lowpass_filter_id_, highpass_filter_id_;
 };
 
 }

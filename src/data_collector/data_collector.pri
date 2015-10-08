@@ -15,7 +15,8 @@ HEADERS += \
     data_collector/qt_tia_client/impl/data_receive_blocker.h \
     data_collector/qt_tia_client/impl/line_receive_blocker.h \
     data_collector/qt_tia_client/impl/tia_datapacket_basedlibtia.h \
-    data_collector/qt_tia_client/impl/tia_client_based_libtia.h
+    data_collector/qt_tia_client/impl/tia_client_based_libtia.h \
+    data_collector/filters/butterworth_highpass.h
 
 SOURCES += \
     $$PWD/reader_thread.cpp \
@@ -28,4 +29,5 @@ SOURCES += \
     data_collector/qt_tia_client/impl/data_receive_blocker.cpp \
     data_collector/qt_tia_client/impl/line_receive_blocker.cpp \
     data_collector/qt_tia_client/impl/tia_datapacket_basedlibtia.cpp \
-    data_collector/qt_tia_client/impl/tia_client_based_libtia.cpp
+    data_collector/qt_tia_client/impl/tia_client_based_libtia.cpp \
+    data_collector/filters/butterworth_highpass.cpp

@@ -88,8 +88,7 @@ void ChannelGraphicsObject::updateData ()
     data_buffer_->getData (signal_, channel_, data_);
     data_buffer_->unlockForRead();    
 
-    // downsample datastream if the x-step size is too small
-
+    // downsample datastream if the x-step size is small enough
     // resolution has changed => compute new ds filter
     if (qAbs<qreal>(spatial_resolution_ - x_step) > 0.0001){
 
@@ -104,8 +103,10 @@ void ChannelGraphicsObject::updateData ()
         ds_pos_ = 0;
     }
 
+    // compute position of last sample in downsampling stream
     ds_pos_ = (ds_pos_ + number_new_samples_) % ds_factor_;
 
+    // compute position of last sample on screen
     cyclic_start_.setX (cyclic_start_.x() + x_step * number_new_samples_);
 
     if (cyclic_start_.x() > (width () - label_width_)){
@@ -158,6 +159,7 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     painter->setPen (Qt::black);
     painter->setClipping (false);
     painter->setClipRect (boundingRect());
+
     //if (view_settings_->getChannelOverlapping() == 0)
     //    painter->drawRect (boundingRect());
 
@@ -177,29 +179,32 @@ void ChannelGraphicsObject::paint (QPainter *painter, const QStyleOptionGraphics
     QPointF first (width () - label_width_, 0);
     QPointF second (width () - label_width_, 0);
 
-    painter->setPen (Qt::darkBlue);
     if (cyclic_mode)
         first = cyclic_start_;
 
+    painter->setPen (Qt::darkBlue);    
+
     bool first_run = true;        
 
+    // helpers for minimum and maximum value
     qreal min_pix_y_value = 0.0;
     qreal max_pix_y_value = 0.0;    
 
-    qDebug() << "Buffer size: " << data_.size() << "new samples: " << number_new_samples_;
-    qDebug() << "ds factor: " << ds_factor_ << "spatial_res: " << spatial_resolution_;   
+    //qDebug() << "Buffer size: " << data_.size() << "new samples: " << number_new_samples_;
+    //qDebug() << "ds factor: " << ds_factor_ << "spatial_res: " << spatial_resolution_;
 
 
     ChannelGraphicsObjectHelper::drawZeroLine (painter, 0, width () - label_width_);
 
     int start_sample = data_.size() - 1;
-
     if (ds_factor_ > 1){
 
         start_sample = start_sample - ds_pos_;
         first.setX(first.x() - spatial_resolution_*ds_pos_);
     }
 
+    // iterate over groups of samples which are aligned according to the
+    // downsampling stream's position endoced in ds_pos_
     for (int sample = start_sample; sample >= 0; sample = sample - ds_factor_)
     {
 

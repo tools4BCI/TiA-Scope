@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TiA Scope 1.0</string>
+   <string>TiA Scope 1.1</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
