@@ -17,10 +17,15 @@ class FrequencySpectrumGraphicsObject : public BaseGraphicsObject
 {
     Q_OBJECT
 public:
-    explicit FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel, QSharedPointer<FTViewSettings> view_settings,
+    explicit FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel, QString label, QSharedPointer<FTViewSettings> view_settings,
                                               QGraphicsItem *parent = 0);
 
     virtual QRectF boundingRect() const;
+
+    int getLabelWidth() const;
+    void setLabelWidth(int width);
+    void setLabelVisible(bool visible);
+
 public Q_SLOTS:
     void updateData (QVector<double> data, SignalTypeFlag signal, int channel, int frequency_range);
     void enableDrawing (SignalTypeFlag signal, int channel, bool enabled);
@@ -53,6 +58,9 @@ private:
     static int MAX_HISTORY_SIZE_;
 
     QMutex update_buffer_lock_;
+
+    QGraphicsSimpleTextItem* label_item_;
+    int label_width_;
 };
 
 } // TiAScope

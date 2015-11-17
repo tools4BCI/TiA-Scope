@@ -11,9 +11,12 @@ SignalViewSettings::SignalViewSettings(QObject *parent) :
     cyclic_mode_ (true),
     channel_overlapping_ (0)
 {
-    QSettings settings;
+    QSettings settings(QString("tiascope.ini"),QSettings::IniFormat);
     signal_visualisation_time_ = settings.value ("visualisation/signal_visualisation_time", 2).toDouble();
     basic_y_scaling_ = settings.value ("visualisation/basic_y_scaling", 1).toDouble();
+    auto_scaling_ = settings.value ("visualisation/auto_scaling", false).toBool();
+    cyclic_mode_ = settings.value ("visualisation/cyclic_mode", true).toBool();
+    channel_overlapping_ = settings.value ("visualisation/channel_overlapping", 0.0).toFloat();
 }
 
 //---------------------------------------------------------------------------------------------

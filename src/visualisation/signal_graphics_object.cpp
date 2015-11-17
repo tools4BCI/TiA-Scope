@@ -60,7 +60,9 @@ SignalGraphicsObject::SignalGraphicsObject (SignalTypeFlag signal_type,
             FrequencySpectrumGraphicsObject* previous_channel = 0;
             for (unsigned channel_index = 0; channel_index < signal_iter->second.channels().size(); channel_index++)
             {
-                FrequencySpectrumGraphicsObject* ft_channel = new FrequencySpectrumGraphicsObject (signal_type_, channel_index, ft_view_settings_, this);
+                QString channel_str = QString(signal_iter->second.channels()[channel_index].id().c_str());
+
+                FrequencySpectrumGraphicsObject* ft_channel = new FrequencySpectrumGraphicsObject (signal_type_, channel_index, channel_str, ft_view_settings_, this);
                 ft_channel->connect (ft_thread, SIGNAL(FTEnabledChanged(SignalTypeFlag,int,bool)), SLOT(enableDrawing(SignalTypeFlag,int,bool)));
                 if (previous_channel)
                 {
@@ -72,8 +74,16 @@ SignalGraphicsObject::SignalGraphicsObject (SignalTypeFlag signal_type,
                 ft_channel->connect (ft_thread, SIGNAL(FTFinished(QVector<double>, SignalTypeFlag, int, int)), SLOT(updateData (QVector<double>, SignalTypeFlag, int, int)), Qt::BlockingQueuedConnection);
                 fts_[channel_index] = ft_channel;
                 children_.append (ft_channel);
+
+                if (ft_channel->getLabelWidth() > max_label_width)
+                    max_label_width = ft_channel->getLabelWidth();
+
                 previous_channel = ft_channel;
             }
+
+            Q_FOREACH (FrequencySpectrumGraphicsObject* ft_channel, fts_.values())
+                ft_channel->setLabelWidth(max_label_width);
+
             connect (previous_channel, SIGNAL(bottomYChanged(int)), SLOT(setHeight(int)));
             fts_[0]->setYPos (0);
         }

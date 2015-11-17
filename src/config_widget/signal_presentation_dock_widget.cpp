@@ -18,6 +18,11 @@ SignalPresentationDockWidget::SignalPresentationDockWidget(QSharedPointer<Signal
 
     signal_info_widget_->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
+    ui->channelOverlappingSlider->setValue((int)(settings_->getChannelOverlapping()*100));
+    ui->cyclicMode->setChecked(settings_->getCyclicMode());
+    ui->scrollingMode->setChecked(!settings_->getCyclicMode());
+    ui->spinBoxVisTime->setValue(settings_->getSignalVisualisationTime());
+
     //pass signal from SignalInfoDockWidget on
     connect(signal_info_widget_, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)),
                  this, SIGNAL(channelVisibilityChanged(SignalTypeFlag,ChannelID,bool)));

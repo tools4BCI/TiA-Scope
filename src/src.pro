@@ -18,3 +18,25 @@ SOURCES += $$_PRO_FILE_PWD_/main.cpp \
 HEADERS  += $$_PRO_FILE_PWD_/main_window.h
 
 FORMS    += $$_PRO_FILE_PWD_/main_window.ui
+
+#copy configuration file to output folder
+OTHER_FILES += \
+    tiascope.ini
+
+ESCAPED_PWD = $$PWD
+win32:ESCAPED_PWD ~= s,/,\\,g
+ESCAPED_OUT_PWD = $$OUT_PWD
+win32:ESCAPED_OUT_PWD ~= s,/,\\,g
+
+win32 {
+    copyfiles.commands += @echo NOW COPYING initialization files &
+    copyfiles.commands += @call copy /Y $$quote($$ESCAPED_PWD\\tiascope.ini) $$quote($$ESCAPED_OUT_PWD\\)
+}
+
+unix {
+    copyfiles.commands += echo NOW COPYING initialization files &
+    copyfiles.commands += cp $$quote($$ESCAPED_PWD/tiascope.ini) $$quote($$ESCAPED_OUT_PWD\\)
+}
+
+QMAKE_EXTRA_TARGETS += copyfiles
+POST_TARGETDEPS += copyfiles

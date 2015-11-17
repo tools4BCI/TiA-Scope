@@ -247,7 +247,7 @@ void MainWindow::initDataViewScreen ()
 
     signal_view_settings_ = QSharedPointer<SignalViewSettings> (new SignalViewSettings);
     signal_view_settings_->connect (ui->actionAutoScaling, SIGNAL(toggled(bool)), SLOT(setAutoScalingEnabled(bool)));
-    ui->actionAutoScaling->setChecked (false);
+    ui->actionAutoScaling->setChecked (signal_view_settings_->autoScalingEnabled());
 
     QSharedPointer<FTViewSettings> ft_view_settings (new FTViewSettings (tia_meta_info));
 

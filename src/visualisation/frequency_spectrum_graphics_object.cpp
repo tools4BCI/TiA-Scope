@@ -15,7 +15,7 @@ int FrequencySpectrumGraphicsObject::MAX_HISTORY_SIZE_ = 100;
 qreal const FrequencySpectrumGraphicsObject::LABEL_SPACING_ = 200;
 
 //-------------------------------------------------------------------------------------------------
-FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel,
+FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag signal, int channel, QString label,
                                                                   QSharedPointer<FTViewSettings> view_settings, QGraphicsItem *parent) :
     BaseGraphicsObject (parent),
     SIGNAL_ (signal),
@@ -28,6 +28,26 @@ FrequencySpectrumGraphicsObject::FrequencySpectrumGraphicsObject (SignalTypeFlag
     buffer_ = QPixmap (100, 200);
     connect (view_settings_.data(), SIGNAL(lowerFrequenceBoundChanged ()), SLOT(updateWholeHistory()));
     connect (view_settings_.data(), SIGNAL(upperFrequenceBoundChanged ()), SLOT(updateWholeHistory()));
+
+    label_item_ = new QGraphicsSimpleTextItem (label, this);
+    label_width_ = label_item_->boundingRect().width();
+}
+
+//-----------------------------------------------------------------------------
+int FrequencySpectrumGraphicsObject::getLabelWidth() const
+{
+    return label_item_->boundingRect().width();
+}
+
+//-----------------------------------------------------------------------------
+void FrequencySpectrumGraphicsObject::setLabelWidth(int width)
+{
+    label_width_ = width;
+}
+//-----------------------------------------------------------------------------
+void FrequencySpectrumGraphicsObject::setLabelVisible(bool visible)
+{
+    label_item_->setVisible(visible);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -48,7 +68,9 @@ void FrequencySpectrumGraphicsObject::updateData (QVector<double> data, SignalTy
 
     frequency_range_ = frequency_range;
 
-//    updateBuffer (false);
+//    updateBuffer (false);    
+
+    label_item_->setY(height()*3/4 - label_item_->boundingRect().height()/2);
     update ();
 
     buffer_current_pos_++;
@@ -67,10 +89,14 @@ void FrequencySpectrumGraphicsObject::enableDrawing (SignalTypeFlag signal, int 
         newly_disabled = (enabled_) && (!enabled);
         enabled_ = enabled;
     }
-    if (newly_enabled)
+    if (newly_enabled) {
         helpers::animateProperty (this, "height", 0, defaultHeight());
-    if (newly_disabled)
+        setLabelVisible(true);
+    }
+    if (newly_disabled){
         helpers::animateProperty (this, "height", height(), 0);
+        setLabelVisible(false);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -95,13 +121,13 @@ void FrequencySpectrumGraphicsObject::paint (QPainter *painter, const QStyleOpti
     QLinkedList<QVector<double> >::const_iterator data_iter = history_.end ();
     data_iter--;
 
-    painter->translate (0, height () * 3 / 4);
+    painter->translate (label_width_, height () * 3 / 4);
 
     painter->setPen(Qt::blue);
-    painter->drawLine (0, 0, width (), 0);
+    painter->drawLine (0, 0, width () - label_width_, 0);
     painter->setPen (Qt::blue);
 
-    qreal x_step = width ();
+    qreal x_step = width () - label_width_;
     x_step /= data_iter->size();
 
     qreal x_pos = 0;
@@ -115,10 +141,10 @@ void FrequencySpectrumGraphicsObject::paint (QPainter *painter, const QStyleOpti
 
     painter->setPen(Qt::black);
     painter->drawLine (0, 1, 0, 5);
-    painter->drawLine (width () - 1, 1, width () - 1, 5);
+    painter->drawLine (width () - label_width_ - 1, 1, width () - label_width_ - 1, 5);
     painter->drawText (0, 5, LABEL_SPACING_, 20, Qt::AlignVCenter | Qt::AlignLeft,  "0.0Hz");
-    painter->drawText (width () - LABEL_SPACING_ - 1, 5, LABEL_SPACING_, 20, Qt::AlignRight | Qt::AlignVCenter, QString::number (frequency_range_, 'f', 1).append("Hz"));
-    drawXLabelInTheMiddle (painter, 0, width ());
+    painter->drawText (width () - label_width_ - LABEL_SPACING_ - 1, 5, LABEL_SPACING_, 20, Qt::AlignRight | Qt::AlignVCenter, QString::number (frequency_range_, 'f', 1).append("Hz"));
+    drawXLabelInTheMiddle (painter, 0, width () - label_width_);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -184,7 +210,7 @@ void FrequencySpectrumGraphicsObject::colouredVisualisation (QPainter *painter)
     if (max_index_ < 1)
         return;
     int y_axis_width = 100;
-    int drawing_width = width() - y_axis_width;
+    int drawing_width = width() - label_width_ - y_axis_width;
     qreal adapted_pos = buffer_current_pos_ * drawing_width;
     adapted_pos /= buffer_.width();
 //    painter->drawPixmap (QRectF (0, 0, drawing_width, height()), buffer_, QRectF (0, 0, buffer_.width(), upper_index_ - lower_index_));
@@ -204,7 +230,7 @@ void FrequencySpectrumGraphicsObject::drawXLabelInTheMiddle (QPainter* painter, 
     qreal middle_pos = (right + left) / 2;
 
     painter->drawLine (middle_pos, 1, middle_pos, 5);
-    painter->drawText (middle_pos - (LABEL_SPACING_ / 2), 5, LABEL_SPACING_, 20, Qt::AlignCenter, QString::number(static_cast<double>(frequency_range_ * middle_pos) / width (), 'f', 1));
+    painter->drawText (middle_pos - (LABEL_SPACING_ / 2), 5, LABEL_SPACING_, 20, Qt::AlignCenter, QString::number(static_cast<double>(frequency_range_ * middle_pos) / (width () - label_width_), 'f', 1));
 
     if ((right - left) > LABEL_SPACING_)
     {
